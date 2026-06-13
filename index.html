@@ -5,694 +5,729 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hatzing a Dynasty 26</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&family=Inter:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#faf7f2;color:#1c1a17;font-size:14px;}
 
-:root {
-  --ink:      #1c1a17;
-  --paper:    #faf7f2;
-  --rule:     #e2dbd0;
-  --green:    #2a5c45;
-  --green-lt: #e8f2ec;
-  --blue:     #1e4a7a;
-  --blue-lt:  #e6eff8;
-  --gold:     #a07820;
-  --gold-lt:  #fef6e0;
-  --red:      #b83230;
-  --purple:   #6a3a8a;
-  --purple-lt:#f0e8f8;
-  --teal:     #1a6b6b;
-  --teal-lt:  #e0f4f4;
-  --orange:   #c05a10;
-  --orange-lt:#fdf0e4;
-  --pink:     #a03060;
-  --pink-lt:  #fce8f0;
-  --sans: 'Inter', system-ui, sans-serif;
-  --serif: 'Playfair Display', Georgia, serif;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--sans); background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.5; }
+.masthead{background:linear-gradient(135deg,#1a3a2a,#2d5a3d 55%,#1a3a5a);color:white;padding:1.5rem 1rem 1.2rem;}
+.masthead h1{font-family:'Playfair Display',serif;font-size:1.9rem;font-style:italic;margin-bottom:0.2rem;}
+.masthead p{opacity:0.7;font-size:0.8rem;}
 
-/* ── MASTHEAD ── */
-.masthead {
-  background: linear-gradient(135deg, #1a3a2a 0%, #2d5a3d 55%, #1a3a5a 100%);
-  color: white; padding: 2rem 1.5rem 1.5rem; position: relative; overflow: hidden;
-}
-.masthead::before {
-  content:''; position:absolute; inset:0; opacity:0.06;
-  background-image: repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%);
-  background-size: 20px 20px; pointer-events:none;
-}
-.masthead-eyebrow { font-size:0.67rem; letter-spacing:0.18em; text-transform:uppercase; opacity:0.6; margin-bottom:0.3rem; }
-.masthead h1 { font-family:var(--serif); font-size:2.2rem; font-weight:700; font-style:italic; line-height:1.1; margin-bottom:0.25rem; }
-.masthead-sub { opacity:0.7; font-size:0.82rem; margin-bottom:1rem; }
-.masthead-stats { display:flex; gap:0.6rem; flex-wrap:wrap; }
-.stat { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.18); border-radius:8px; padding:0.4rem 0.8rem; text-align:center; }
-.stat-val { font-size:1.1rem; font-weight:700; }
-.stat-lbl { font-size:0.58rem; opacity:0.7; text-transform:uppercase; letter-spacing:0.09em; }
+.filter-bar{background:white;border-bottom:2px solid #e2dbd0;padding:0.6rem 1rem;position:sticky;top:0;z-index:100;}
+.filter-label{font-size:0.68rem;color:#aaa;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:0.4rem;}
+.btns{display:flex;gap:0.35rem;flex-wrap:wrap;}
+.fbtn{padding:0.28rem 0.7rem;border-radius:20px;border:2px solid;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;background:white;transition:all 0.12s;}
+.fbtn.active{color:white;}
+.fbtn-All{border-color:#555;color:#555;}.fbtn-All.active{background:#555;}
+.fbtn-SF{border-color:#2a5c45;color:#2a5c45;}.fbtn-SF.active{background:#2a5c45;}
+.fbtn-C{border-color:#a07820;color:#a07820;}.fbtn-C.active{background:#a07820;}
+.fbtn-M{border-color:#1a6b6b;color:#1a6b6b;}.fbtn-M.active{background:#1a6b6b;}
+.fbtn-DK{border-color:#1e4a7a;color:#1e4a7a;}.fbtn-DK.active{background:#1e4a7a;}
+.fbtn-AA{border-color:#6a3a8a;color:#6a3a8a;}.fbtn-AA.active{background:#6a3a8a;}
+.fbtn-CE{border-color:#c05a10;color:#c05a10;}.fbtn-CE.active{background:#c05a10;}
+.fbtn-JM{border-color:#a03060;color:#a03060;}.fbtn-JM.active{background:#a03060;}
 
-/* ── FAMILY FILTER BAR ── */
-.filter-bar {
-  background:white; border-bottom:2px solid var(--rule);
-  position:sticky; top:0; z-index:100;
-  padding:0.6rem 1rem;
-}
-/* Desktop: buttons */
-.filter-buttons { display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center; }
-.filter-label { font-size:0.72rem; color:#999; text-transform:uppercase; letter-spacing:0.08em; margin-right:0.2rem; flex-shrink:0; }
-.fbtn {
-  padding:0.3rem 0.75rem; border-radius:20px; border:2px solid transparent;
-  cursor:pointer; font-family:var(--sans); font-size:0.78rem; font-weight:600;
-  background:var(--paper); color:#666; transition:all 0.15s;
-}
-.fbtn:hover { opacity:0.85; }
-.fbtn.active { color:white; }
-.fbtn-all { border-color:#666; }
-.fbtn-all.active { background:#444; border-color:#444; }
-.fbtn-SF  { border-color:var(--green); }   .fbtn-SF.active  { background:var(--green); }
-.fbtn-C   { border-color:var(--gold); }    .fbtn-C.active   { background:var(--gold); }
-.fbtn-M   { border-color:var(--teal); }    .fbtn-M.active   { background:var(--teal); }
-.fbtn-DK  { border-color:var(--blue); }    .fbtn-DK.active  { background:var(--blue); }
-.fbtn-AA  { border-color:var(--purple); }  .fbtn-AA.active  { background:var(--purple); }
-.fbtn-CE  { border-color:var(--orange); }  .fbtn-CE.active  { background:var(--orange); }
-.fbtn-JM  { border-color:var(--pink); }    .fbtn-JM.active  { background:var(--pink); }
-.fbtn-GG  { border-color:var(--red); }     .fbtn-GG.active  { background:var(--red); }
 
-/* Mobile: dropdown */
-.filter-dropdown { display:none; width:100%; padding:0.5rem 0.75rem; border:2px solid var(--rule); border-radius:8px; font-family:var(--sans); font-size:0.9rem; background:white; color:var(--ink); }
+/* mobile dropdown */
+.mob-select{display:none;width:100%;padding:0.5rem;border:2px solid #e2dbd0;border-radius:8px;font-family:'Inter',sans-serif;font-size:0.9rem;background:white;}
+@media(max-width:600px){.btns{display:none;}.mob-select{display:block;}.filter-label{margin-bottom:0;}}
 
-@media (max-width:640px) {
-  .filter-buttons { display:none; }
-  .filter-dropdown { display:block; }
-}
+.wrap{max-width:700px;margin:0 auto;padding:0.75rem 0.75rem 3rem;}
 
-/* ── TABS ── */
-.tab-bar {
-  background:white; border-bottom:1px solid var(--rule);
-  display:flex; overflow-x:auto; -webkit-overflow-scrolling:touch;
-}
-.tab-bar::-webkit-scrollbar { display:none; }
-.tab-btn {
-  padding:0.75rem 1rem; border:none; border-bottom:3px solid transparent;
-  background:none; cursor:pointer; font-family:var(--sans); font-size:0.82rem;
-  color:#888; white-space:nowrap; font-weight:500; margin-bottom:-1px;
-}
-.tab-btn.active { color:var(--green); border-bottom-color:var(--green); font-weight:700; }
+/* city header */
+.city{margin-bottom:0.4rem;}
+.city-hdr{display:flex;align-items:center;gap:0.5rem;padding:0.6rem 0.9rem;border-radius:8px;cursor:pointer;color:white;user-select:none;}
+.city-hdr:hover{opacity:0.92;}
+.city-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;flex:1;}
+.city-flag{font-size:1.4rem;line-height:1;flex-shrink:0;}
+.city-dates{font-size:0.7rem;opacity:0.75;}
+.city-chev{font-size:0.6rem;opacity:0.7;transition:transform 0.2s;}
+.city.open .city-chev{transform:rotate(180deg);}
+.city-body{display:none;padding-top:0.3rem;}
+.city.open .city-body{display:block;}
+.city.hidden{display:none;}
 
-/* ── LAYOUT ── */
-.content { max-width:960px; margin:0 auto; padding:1.25rem 1rem 3rem; }
-.panel { display:none; }
-.panel.active { display:block; }
-.section-title {
-  font-family:var(--serif); font-size:1rem; font-weight:600; color:var(--green);
-  border-bottom:1px solid var(--rule); padding-bottom:0.35rem; margin:1.25rem 0 0.75rem;
-}
-.section-title:first-child { margin-top:0; }
+/* day card */
+.day{background:white;border:1px solid #e2dbd0;border-radius:8px;margin-bottom:0.3rem;overflow:hidden;}
+.day.conflict{border-color:#d4a020;}
+.day.hidden{display:none;}
+.day-hdr{display:flex;align-items:center;gap:0.45rem;padding:0.5rem 0.8rem;cursor:pointer;}
+.day-hdr:hover{background:#f8f5f0;}
+.day-dt{width:70px;flex-shrink:0;}
+.day-dow{font-size:0.68rem;color:#aaa;font-weight:500;}
+.day-d{font-size:0.72rem;font-weight:700;color:#555;}
+.day-loc{font-weight:600;font-size:0.84rem;flex:1;}
+.day-chev{font-size:0.6rem;color:#ccc;transition:transform 0.2s;flex-shrink:0;}
+.day.open .day-chev{transform:rotate(180deg);}
+.day-body{display:none;border-top:1px solid #e2dbd0;}
+.day.open .day-body{display:block;}
 
-/* ── GROUP COLOR DOTS ── */
-.gdot { width:9px; height:9px; border-radius:50%; display:inline-block; flex-shrink:0; }
-.gc-SF  { background:var(--green); }
-.gc-C   { background:var(--gold); }
-.gc-M   { background:var(--teal); }
-.gc-DK  { background:var(--blue); }
-.gc-AA  { background:var(--purple); }
-.gc-CE  { background:var(--orange); }
-.gc-JM  { background:var(--pink); }
-.gc-GG  { background:var(--red); }
-.gt-SF  { color:var(--green); }
-.gt-C   { color:var(--gold); }
-.gt-M   { color:var(--teal); }
-.gt-DK  { color:var(--blue); }
-.gt-AA  { color:var(--purple); }
-.gt-CE  { color:var(--orange); }
-.gt-JM  { color:var(--pink); }
-.gt-GG  { color:var(--red); }
+/* who bar */
+.who{display:flex;gap:0.2rem;flex-wrap:wrap;padding:0.45rem 0.8rem;background:#f8f5f0;border-bottom:1px solid #e2dbd0;}
+.w{font-size:0.61rem;font-weight:700;padding:0.08rem 0.38rem;border-radius:20px;color:white;}
+.wSF{background:#2a5c45;}.wC{background:#a07820;}.wM{background:#1a6b6b;}
+.wDK{background:#1e4a7a;}.wAA{background:#6a3a8a;}.wCE{background:#c05a10;}
+.wJM{background:#a03060;}
 
-/* ── ROUTE CARDS ── */
-.route-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:0.75rem; margin-bottom:1rem; }
-.route-card { background:white; border-radius:10px; padding:0.9rem; border:2px solid var(--rule); }
-.route-label { font-size:0.73rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.6rem; display:flex; align-items:center; gap:0.4rem; }
-.route-row { display:flex; align-items:center; gap:0.4rem; padding:0.22rem 0; border-bottom:1px solid #f4f0e8; font-size:0.79rem; }
-.route-row:last-child { border-bottom:none; }
-.route-city { font-weight:600; flex:1; }
-.route-date { color:#999; font-size:0.7rem; white-space:nowrap; }
-.nights-pill { font-size:0.62rem; font-weight:700; padding:0.08rem 0.32rem; border-radius:4px; white-space:nowrap; flex-shrink:0; }
+/* detail rows */
+.details{padding:0.5rem 0.8rem;}
+.row{display:flex;gap:0.5rem;padding:0.27rem 0;border-bottom:1px solid #f4f0e8;font-size:0.79rem;align-items:flex-start;}
+.row:last-child{border-bottom:none;}
+.ri{width:20px;text-align:center;flex-shrink:0;font-size:0.85rem;}
+.rl{font-size:0.61rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#aaa;width:65px;flex-shrink:0;padding-top:1px;}
+.rv{flex:1;color:#333;line-height:1.4;}
+.rv strong{color:#1c1a17;}
+.warn{color:#b83230;font-weight:600;}
+.note{color:#a07820;}
 
-/* ── DAY ITEMS ── */
-.day-item { background:white; border:1px solid var(--rule); border-radius:9px; margin-bottom:0.35rem; overflow:hidden; transition:border-color 0.15s; }
-.day-item.split { border-color:#e0b830; }
-.day-header { display:flex; align-items:center; gap:0.5rem; padding:0.6rem 0.9rem; cursor:pointer; user-select:none; }
-.day-header:hover { background:#faf7f2; }
-.day-date { font-size:0.7rem; color:#999; width:78px; flex-shrink:0; }
-.day-loc { font-weight:600; font-size:0.85rem; flex:1; }
-.day-chevron { font-size:0.62rem; color:#ccc; transition:transform 0.2s; flex-shrink:0; }
-.day-item.open .day-chevron { transform:rotate(180deg); }
-.day-body { display:none; padding:0.7rem 0.9rem 0.9rem; border-top:1px solid var(--rule); }
-.day-item.open .day-body { display:block; }
-.who-chips { display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:0.6rem; }
-.who-chip { font-size:0.65rem; font-weight:700; padding:0.12rem 0.45rem; border-radius:20px; color:white; }
-.wc-SF{background:var(--green);} .wc-C{background:var(--gold);} .wc-M{background:var(--teal);}
-.wc-DK{background:var(--blue);} .wc-AA{background:var(--purple);} .wc-CE{background:var(--orange);}
-.wc-JM{background:var(--pink);} .wc-GG{background:var(--red);}
-.day-notes { font-size:0.82rem; line-height:1.5; color:#444; }
-.day-split-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-top:0.5rem; }
-@media(max-width:500px){.day-split-grid{grid-template-columns:1fr;}}
-.split-panel { border-radius:7px; padding:0.55rem 0.7rem; font-size:0.79rem; line-height:1.45; }
+/* split panels */
+.splits{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin:0.5rem 0.8rem 0.5rem;}
+@media(max-width:480px){.splits{grid-template-columns:1fr;}}
+.sp{border-radius:6px;padding:0.45rem 0.6rem;font-size:0.77rem;line-height:1.4;}
+.sp-lbl{font-size:0.61rem;font-weight:700;text-transform:uppercase;margin-bottom:0.2rem;}
 
-/* ── BOOKING ITEMS ── */
-.booking-item { background:white; border:1px solid var(--rule); border-radius:8px; padding:0.6rem 0.85rem; display:flex; align-items:flex-start; gap:0.5rem; margin-bottom:0.3rem; }
-.booking-title { font-weight:600; font-size:0.83rem; }
-.booking-meta { font-size:0.71rem; color:#888; margin-top:0.08rem; }
-.booking-note { font-size:0.7rem; color:var(--red); margin-top:0.08rem; }
-.priority-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; margin-top:4px; }
-.pd-high{background:#dc3545;} .pd-med{background:#fd7e14;}
-
-/* ── BADGES ── */
-.badge { font-size:0.65rem; padding:0.13rem 0.45rem; border-radius:20px; font-weight:600; white-space:nowrap; flex-shrink:0; border:1px solid; }
-.b-confirmed { background:#d4edda; color:#155724; border-color:#c3e6cb; }
-.b-book      { background:#fff3cd; color:#856404; border-color:#ffc107; }
-.b-prebook   { background:#d1ecf1; color:#0c5460; border-color:#bee5eb; }
-.b-tbc       { background:#f8d7da; color:#721c24; border-color:#f5c6cb; }
-
-/* ── TRAVELLER CARDS ── */
-.trav-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:0.6rem; }
-.trav-card { background:white; border:1px solid var(--rule); border-radius:10px; padding:0.85rem; display:flex; gap:0.65rem; }
-.trav-code { width:42px; height:42px; border-radius:8px; color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; flex-shrink:0; }
-.trav-name { font-weight:600; font-size:0.84rem; }
-.trav-members { font-size:0.72rem; color:#888; margin-top:0.1rem; }
-.trav-legs { font-size:0.72rem; color:#555; margin-top:0.25rem; border-top:1px solid #f0ece4; padding-top:0.25rem; }
-
-/* ── OPEN ITEMS ── */
-.open-list { background:white; border:1px solid var(--rule); border-radius:10px; overflow:hidden; }
-.open-row { display:flex; gap:0.5rem; padding:0.6rem 0.9rem; border-bottom:1px solid #f4f0e8; font-size:0.82rem; align-items:flex-start; }
-.open-row:last-child { border-bottom:none; }
-.open-row.urgent { background:#fffbf0; }
-
-/* ── HIDDEN BY FILTER ── */
-.day-item.hidden { display:none; }
-.booking-item.hidden { display:none; }
+/* city colours */
+.bg-transit{background:linear-gradient(90deg,#3a3a3a,#555);}
+.bg-greece{background:linear-gradient(90deg,#1a6b3a,#2a8a50);}
+.bg-disney{background:linear-gradient(90deg,#2c4a8a,#3a5fb0);}
+.bg-paris{background:linear-gradient(90deg,#2c4a8a,#3a5fb0);}
+.bg-bcn{background:linear-gradient(90deg,#8a2a1a,#b03020);}
+.bg-mad{background:linear-gradient(90deg,#6a1a1a,#9a2020);}
+.bg-flr{background:linear-gradient(90deg,#7a4a10,#a06020);}
+.bg-rom{background:linear-gradient(90deg,#4a2a10,#7a4020);}
 </style>
 </head>
 <body>
 
-<!-- MASTHEAD -->
 <div class="masthead">
-  <div class="masthead-eyebrow">Family Holiday · Europe 2026</div>
-  <h1>Hatzing a Dynasty 26</h1>
-  <p class="masthead-sub">11 Sep – 18 Oct · Adelaide → Greece → Paris → Barcelona → Madrid → Florence → Rome → Home</p>
-  <div class="masthead-stats">
-    <div class="stat"><div class="stat-val">23</div><div class="stat-lbl">Travellers</div></div>
-    <div class="stat"><div class="stat-val">8</div><div class="stat-lbl">Groups</div></div>
-    <div class="stat"><div class="stat-val">11 Sep</div><div class="stat-lbl">Depart ADL</div></div>
-    <div class="stat"><div class="stat-val">18 Oct</div><div class="stat-lbl">SF home</div></div>
-  </div>
+  <h1>Hatzing a Dynasty 26 🌍</h1>
+  <p>11 Sep – 18 Oct · Select your name to see your trip</p>
 </div>
 
-<!-- FAMILY FILTER -->
 <div class="filter-bar">
-  <!-- Desktop buttons -->
-  <div class="filter-buttons">
-    <span class="filter-label">Filter:</span>
-    <button class="fbtn fbtn-all active" onclick="setFilter('All',this)">All</button>
-    <button class="fbtn fbtn-SF"  onclick="setFilter('SF',this)">SF</button>
-    <button class="fbtn fbtn-C"   onclick="setFilter('C',this)">C</button>
-    <button class="fbtn fbtn-M"   onclick="setFilter('M',this)">M</button>
-    <button class="fbtn fbtn-DK"  onclick="setFilter('DK',this)">DK</button>
-    <button class="fbtn fbtn-AA"  onclick="setFilter('AA',this)">AA</button>
-    <button class="fbtn fbtn-CE"  onclick="setFilter('CE',this)">CE</button>
-    <button class="fbtn fbtn-JM"  onclick="setFilter('JM',this)">JM</button>
-    <button class="fbtn fbtn-GG"  onclick="setFilter('GG',this)">GG</button>
+  <span class="filter-label">Who are you?</span>
+  <div class="btns">
+    <button class="fbtn fbtn-All active" onclick="go('All',this)">Everyone</button>
+    <button class="fbtn fbtn-SF"  onclick="go('SF',this)">Sam &amp; Fiona</button>
+    <button class="fbtn fbtn-C"   onclick="go('C',this)">Christine</button>
+    <button class="fbtn fbtn-M"   onclick="go('M',this)">Manuel</button>
+    <button class="fbtn fbtn-DK"  onclick="go('DK',this)">Denes &amp; Kay</button>
+    <button class="fbtn fbtn-AA"  onclick="go('AA',this)">Alex &amp; Alex</button>
+    <button class="fbtn fbtn-CE"  onclick="go('CE',this)">Christos &amp; Erin</button>
+    <button class="fbtn fbtn-JM"  onclick="go('JM',this)">Martine &amp; Jake</button>
   </div>
-  <!-- Mobile dropdown -->
-  <select class="filter-dropdown" onchange="setFilterDropdown(this.value)">
-    <option value="All">All Groups</option>
-    <option value="SF">SF — Sam &amp; Fiona</option>
-    <option value="C">C — Christine Hatzi</option>
-    <option value="M">M — Manuel Hatzi</option>
-    <option value="DK">DK — Denes &amp; Kayleen</option>
-    <option value="AA">AA — Alex &amp; Alex</option>
-    <option value="CE">CE — Christos &amp; Erin</option>
-    <option value="JM">JM — Martine &amp; Jake</option>
-    <option value="GG">GG — Greg &amp; Gail</option>
+  <select class="mob-select" onchange="go(this.value,null)">
+    <option value="All">Everyone</option>
+    <option value="SF">Sam &amp; Fiona</option>
+    <option value="C">Christine</option>
+    <option value="M">Manuel</option>
+    <option value="DK">Denes &amp; Kay</option>
+    <option value="AA">Alex &amp; Alex</option>
+    <option value="CE">Christos &amp; Erin</option>
+    <option value="JM">Martine &amp; Jake</option>
   </select>
 </div>
 
-<!-- TABS -->
-<div class="tab-bar">
-  <button class="tab-btn active" onclick="showTab('overview',this)">🗺️ Overview</button>
-  <button class="tab-btn" onclick="showTab('itinerary',this)">📅 Itinerary</button>
-  <button class="tab-btn" onclick="showTab('bookings',this)">✅ Bookings</button>
-  <button class="tab-btn" onclick="showTab('travellers',this)">👥 Travellers</button>
-  <button class="tab-btn" onclick="showTab('notes',this)">📌 Notes</button>
-</div>
+<div class="wrap">
 
-<div class="content">
-
-<!-- ══ OVERVIEW ══ -->
-<div id="panel-overview" class="panel active">
-  <p class="section-title">All Routes</p>
-  <div class="route-grid" id="route-grid">
-
-    <div class="route-card" data-groups="SF">
-      <div class="route-label"><span class="gdot gc-SF"></span><span class="gt-SF">SF — Sam &amp; Fiona Gowen</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">2n</span><span class="route-date">13–14 Sep</span></div>
-      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">7n</span><span class="route-date">15–21 Sep</span></div>
-      <div class="route-row"><span>🫒</span><span class="route-city">Kalamata</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">4n</span><span class="route-date">22–25 Sep</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Athens hotel</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">1n</span><span class="route-date">26 Sep</span></div>
-      <div class="route-row"><span>🏰</span><span class="route-city">Paris Disney</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">3n</span><span class="route-date">27–29 Sep</span></div>
-      <div class="route-row"><span>🗼</span><span class="route-city">Paris City</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">3n</span><span class="route-date">30 Sep–3 Oct</span></div>
-      <div class="route-row"><span>🦜</span><span class="route-city">Barcelona</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">4n</span><span class="route-date">3–7 Oct</span></div>
-      <div class="route-row"><span>⚽</span><span class="route-city">Madrid</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">3n</span><span class="route-date">7–10 Oct</span></div>
-      <div class="route-row"><span>🌸</span><span class="route-city">Florence/Tuscany</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">3n</span><span class="route-date">10–13 Oct</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Rome</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)">3n</span><span class="route-date">13–16 Oct</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">EK98 → Dubai → Adelaide</span><span class="nights-pill" style="background:var(--green-lt);color:var(--green)"></span><span class="route-date">Home 18 Oct</span></div>
-    </div>
-
-    <div class="route-card" data-groups="C">
-      <div class="route-label"><span class="gdot gc-C"></span><span class="gt-C">C — Christine Hatzi</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-pill" style="background:var(--gold-lt);color:var(--gold)">2n</span><span class="route-date">13–14 Sep</span></div>
-      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-pill" style="background:var(--gold-lt);color:var(--gold)">7n</span><span class="route-date">15–21 Sep</span></div>
-      <div class="route-row"><span>🇬🇷</span><span class="route-city">Stays in Greece</span><span class="nights-pill" style="background:var(--gold-lt);color:var(--gold)">4n</span><span class="route-date">22–25 Sep</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Athens hotel</span><span class="nights-pill" style="background:var(--gold-lt);color:var(--gold)">1n</span><span class="route-date">26 Sep</span></div>
-      <div class="route-row"><span>🦜</span><span class="route-city">Barcelona</span><span class="nights-pill" style="background:var(--gold-lt);color:var(--gold)">4n</span><span class="route-date">3–7 Oct</span></div>
-      <div class="route-row"><span>⚽</span><span class="route-city">Madrid</span><span class="nights-pill" style="background:var(--gold-lt);color:var(--gold)">3n</span><span class="route-date">7–10 Oct</span></div>
-      <div class="route-row"><span>🌸</span><span class="route-city">Florence/Tuscany</span><span class="nights-pill" style="background:var(--gold-lt);color:var(--gold)">3n</span><span class="route-date">10–13 Oct</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Rome</span><span class="nights-pill" style="background:var(--gold-lt);color:var(--gold)">3n</span><span class="route-date">13–16 Oct</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Home from Rome</span><span class="nights-pill"></span><span class="route-date">~16 Oct</span></div>
-    </div>
-
-    <div class="route-card" data-groups="M">
-      <div class="route-label"><span class="gdot gc-M"></span><span class="gt-M">M — Manuel Hatzi</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-pill" style="background:var(--teal-lt);color:var(--teal)">2n</span><span class="route-date">13–14 Sep</span></div>
-      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-pill" style="background:var(--teal-lt);color:var(--teal)">7n</span><span class="route-date">15–21 Sep</span></div>
-      <div class="route-row"><span>🇬🇷</span><span class="route-city">Stays in Greece</span><span class="nights-pill" style="background:var(--teal-lt);color:var(--teal)">4n</span><span class="route-date">22–25 Sep</span></div>
-      <div class="route-row"><span>🇬🇧</span><span class="route-city">UK</span><span class="nights-pill" style="background:var(--teal-lt);color:var(--teal)"></span><span class="route-date">~3 Oct</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Home from UK</span><span class="nights-pill"></span><span class="route-date">TBC</span></div>
-    </div>
-
-    <div class="route-card" data-groups="DK">
-      <div class="route-label"><span class="gdot gc-DK"></span><span class="gt-DK">DK — Denes &amp; Kayleen Marantos</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-pill" style="background:var(--blue-lt);color:var(--blue)">2n</span><span class="route-date">13–14 Sep</span></div>
-      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-pill" style="background:var(--blue-lt);color:var(--blue)">7n</span><span class="route-date">15–21 Sep</span></div>
-      <div class="route-row"><span>🫒</span><span class="route-city">Kalamata</span><span class="nights-pill" style="background:var(--blue-lt);color:var(--blue)">4n</span><span class="route-date">22–25 Sep</span></div>
-      <div class="route-row"><span>🇸🇬</span><span class="route-city">Singapore</span><span class="nights-pill" style="background:var(--blue-lt);color:var(--blue)">3n</span><span class="route-date">~26–28 Sep</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Home from Singapore</span><span class="nights-pill"></span><span class="route-date">~29 Sep</span></div>
-    </div>
-
-    <div class="route-card" data-groups="AA">
-      <div class="route-label"><span class="gdot gc-AA"></span><span class="gt-AA">AA — Alex &amp; Aleksandra + kids</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">2n</span><span class="route-date">13–14 Sep</span></div>
-      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">7n</span><span class="route-date">15–21 Sep</span></div>
-      <div class="route-row"><span>🫒</span><span class="route-city">Kalamata</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">4n</span><span class="route-date">22–25 Sep</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Athens hotel</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">1n</span><span class="route-date">26 Sep</span></div>
-      <div class="route-row"><span>🏰</span><span class="route-city">Paris Disney</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">3n</span><span class="route-date">27–29 Sep</span></div>
-      <div class="route-row"><span>🗼</span><span class="route-city">Paris City</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">3n</span><span class="route-date">30 Sep–3 Oct</span></div>
-      <div class="route-row"><span>🇷🇸</span><span class="route-city">Serbia</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">5n</span><span class="route-date">3–8 Oct</span></div>
-      <div class="route-row"><span>🌸</span><span class="route-city">Florence/Tuscany</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">~5n</span><span class="route-date">~8–13 Oct</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Rome</span><span class="nights-pill" style="background:var(--purple-lt);color:var(--purple)">3n</span><span class="route-date">13–16 Oct</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Home from Rome</span><span class="nights-pill"></span><span class="route-date">~16 Oct</span></div>
-    </div>
-
-    <div class="route-card" data-groups="CE">
-      <div class="route-label"><span class="gdot gc-CE"></span><span class="gt-CE">CE — Christos &amp; Erin + kids</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-pill" style="background:var(--orange-lt);color:var(--orange)">2n</span><span class="route-date">13–14 Sep</span></div>
-      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-pill" style="background:var(--orange-lt);color:var(--orange)">7n</span><span class="route-date">15–21 Sep</span></div>
-      <div class="route-row"><span>🫒</span><span class="route-city">Kalamata</span><span class="nights-pill" style="background:var(--orange-lt);color:var(--orange)">4n</span><span class="route-date">22–25 Sep</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Athens hotel</span><span class="nights-pill" style="background:var(--orange-lt);color:var(--orange)">1n</span><span class="route-date">26 Sep</span></div>
-      <div class="route-row"><span>🏰</span><span class="route-city">Paris Disney</span><span class="nights-pill" style="background:var(--orange-lt);color:var(--orange)">3n</span><span class="route-date">27–29 Sep</span></div>
-      <div class="route-row"><span>🇸🇬</span><span class="route-city">Singapore</span><span class="nights-pill" style="background:var(--orange-lt);color:var(--orange)">3n</span><span class="route-date">~3–6 Oct</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Home from Singapore</span><span class="nights-pill"></span><span class="route-date">~6 Oct</span></div>
-    </div>
-
-    <div class="route-card" data-groups="JM">
-      <div class="route-label"><span class="gdot gc-JM"></span><span class="gt-JM">JM — Martine, Jake &amp; girls</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-pill" style="background:var(--pink-lt);color:var(--pink)">2n</span><span class="route-date">13–14 Sep</span></div>
-      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-pill" style="background:var(--pink-lt);color:var(--pink)">7n</span><span class="route-date">15–21 Sep</span></div>
-      <div class="route-row"><span>🇪🇬</span><span class="route-city">Egypt</span><span class="nights-pill" style="background:var(--pink-lt);color:var(--pink)"></span><span class="route-date">22–25 Sep</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Athens hotel</span><span class="nights-pill" style="background:var(--pink-lt);color:var(--pink)">1n</span><span class="route-date">26 Sep</span></div>
-      <div class="route-row"><span>🏰</span><span class="route-city">Paris Disney</span><span class="nights-pill" style="background:var(--pink-lt);color:var(--pink)">3n</span><span class="route-date">27–29 Sep</span></div>
-      <div class="route-row"><span>🗼</span><span class="route-city">Paris City</span><span class="nights-pill" style="background:var(--pink-lt);color:var(--pink)">3n</span><span class="route-date">30 Sep–3 Oct</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Home from Paris</span><span class="nights-pill"></span><span class="route-date">~3 Oct</span></div>
-    </div>
-
-    <div class="route-card" data-groups="GG">
-      <div class="route-label"><span class="gdot gc-GG"></span><span class="gt-GG">GG — Greg &amp; Gail Mann</span></div>
-      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-pill" style="background:#fde8e8;color:var(--red)">2n</span><span class="route-date">13–14 Sep</span></div>
-      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-pill" style="background:#fde8e8;color:var(--red)">7n</span><span class="route-date">15–21 Sep</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Home (Greece)</span><span class="nights-pill"></span><span class="route-date">~22 Sep</span></div>
-      <div class="route-row"><span>🦜</span><span class="route-city">Barcelona</span><span class="nights-pill" style="background:#fde8e8;color:var(--red)">4n</span><span class="route-date">~2–6 Oct</span></div>
-      <div class="route-row"><span>✈️</span><span class="route-city">Home from Barcelona</span><span class="nights-pill"></span><span class="route-date">~6 Oct</span></div>
-    </div>
-
+<!-- ═══ ADELAIDE / TRANSIT ═══ -->
+<div class="city" data-g="SF AA CE JM DK M C">
+  <div class="city-hdr bg-transit" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/au.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">Adelaide &amp; Transit</span><span class="city-dates">6–12 Sep</span><span class="city-chev">▼</span>
   </div>
-</div>
+  <div class="city-body">
 
-<!-- ══ ITINERARY ══ -->
-<div id="panel-itinerary" class="panel">
-  <p class="section-title">Day by Day — tap to expand</p>
-  <div id="days-container">
-
-    <div class="day-item" data-groups="SF AA CE JM DK M C" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">11–12 Sep</span><span class="day-loc">✈️ Adelaide — Depart</span><span class="badge b-book">Book</span><span class="day-chevron">▼</span></div>
+    <div class="day" data-g="DK" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sun</div><div class="day-d">~6 Sep</div></div><span class="day-loc">✈️ DK depart early — Greek islands solo</span><span class="day-chev">▼</span></div>
       <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-AA">AA</span><span class="who-chip wc-CE">CE</span><span class="who-chip wc-JM">JM</span><span class="who-chip wc-DK">DK</span><span class="who-chip wc-M">M</span><span class="who-chip wc-C">C</span></div>
-        <div class="day-notes">Depart Adelaide ~10pm. Long-haul to Athens — expect 2 travel days with connections.</div>
-      </div>
-    </div>
-
-    <div class="day-item" data-groups="SF AA CE JM DK M C" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">13–14 Sep</span><span class="day-loc">🏛️ Athens — All together</span><span class="badge b-prebook">Pre-book</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-AA">AA</span><span class="who-chip wc-CE">CE</span><span class="who-chip wc-JM">JM</span><span class="who-chip wc-DK">DK</span><span class="who-chip wc-M">M</span><span class="who-chip wc-C">C</span></div>
-        <div class="day-notes">Day 1: Arrive, recover, easy Plaka walk. Day 2: Acropolis + Acropolis Museum (pre-book). Dinner at Kuzina or Mani Mani.</div>
-      </div>
-    </div>
-
-    <div class="day-item" data-groups="SF AA CE JM DK M C" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">15–21 Sep</span><span class="day-loc">🏖️ Ikaria — 7 nights</span><span class="badge b-tbc">TBC</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-AA">AA</span><span class="who-chip wc-CE">CE</span><span class="who-chip wc-JM">JM</span><span class="who-chip wc-DK">DK</span><span class="who-chip wc-M">M</span><span class="who-chip wc-C">C</span></div>
-        <div class="day-notes">Seven nights — the soul of the trip. Beach days, village walks, Panagiria festival (if dates align), local tavernas and wine. Slow pace before the city marathon begins.</div>
-      </div>
-    </div>
-
-    <div class="day-item split" data-groups="SF AA CE DK JM M C" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">22–25 Sep</span><span class="day-loc">⚠️ Groups split — Kalamata / Egypt / Greece</span><span class="badge b-tbc">TBC</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="day-split-grid">
-          <div class="split-panel" style="background:var(--green-lt);border:1px solid #b8d9c8">
-            <div style="font-size:0.65rem;font-weight:700;color:var(--green);margin-bottom:0.25rem">🟢 SF · AA · CE · DK — Kalamata/Vasilitsi</div>
-            Beach, Peloponnese villages. Day trip: Methoni / Koroni / Pylos. Pool and final Peloponnese dinner.
-          </div>
-          <div class="split-panel" style="background:var(--pink-lt);border:1px solid #e8b8d0">
-            <div style="font-size:0.65rem;font-weight:700;color:var(--pink);margin-bottom:0.25rem">🩷 JM — Egypt</div>
-            Martine, Jake, Grace &amp; Annabelle head to Egypt. Rejoin group at Athens hotel 26 Sep.
-          </div>
-        </div>
-        <div class="split-panel" style="background:var(--gold-lt);border:1px solid #e0cc88;margin-top:0.5rem">
-          <div style="font-size:0.65rem;font-weight:700;color:var(--gold);margin-bottom:0.25rem">🟡 C · M — Stay in Greece</div>
-          Christine and Manuel remain in Greece. C rejoins 26 Sep for Athens hotel before flying to Barcelona. M heads to UK from Greece.
+        <div class="who"><span class="w wDK">DK</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Depart</span><span class="rv">Denes &amp; Kay fly Adelaide → Greece ~1 week before everyone else.</span></div>
+          <div class="row"><span class="ri"><img src="https://flagcdn.com/32x24/gr.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="rl">Islands</span><span class="rv">Solo exploration of other Greek islands (TBC — Santorini, Mykonos, Rhodes etc). Join everyone in Athens on 13 Sep.</span></div>
         </div>
       </div>
     </div>
 
-    <div class="day-item" data-groups="SF AA CE JM C" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">26 Sep</span><span class="day-loc">✈️ Athens Airport Hotel</span><span class="badge b-book">Book</span><span class="day-chevron">▼</span></div>
+    <div class="day" data-g="SF AA CE JM M C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Thu</div><div class="day-d">11 Sep</div></div><span class="day-loc">✈️ Depart Adelaide</span><span class="day-chev">▼</span></div>
       <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-AA">AA</span><span class="who-chip wc-CE">CE</span><span class="who-chip wc-JM">JM</span><span class="who-chip wc-C">C</span></div>
-        <div class="day-notes">All Paris/Disney groups reconvene at Athens airport hotel. DK depart for Singapore. M departs for UK. Check in 26 Sep, out 27 Sep.</div>
-      </div>
-    </div>
-
-    <div class="day-item" data-groups="SF AA CE JM C" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">27–29 Sep</span><span class="day-loc">🏰 Disneyland Paris — ALL Disney groups</span><span class="badge b-confirmed">Confirmed</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-AA">AA</span><span class="who-chip wc-CE">CE</span><span class="who-chip wc-JM">JM</span><span class="who-chip wc-C">C — joins BCN not Disney</span></div>
-        <div class="day-notes">AF1533 ATH→CDG dep 14:40 arr 17:15. Private car to Disneyland hotel. 2 full days in the parks — passes pre-paid, QR codes sent. <strong>⚠️ Test QR on iPhone — Android Play Store issues in AU.</strong> C flies direct to Barcelona.</div>
-      </div>
-    </div>
-
-    <div class="day-item" data-groups="SF AA JM CE" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">30 Sep–3 Oct</span><span class="day-loc">🗼 Paris City</span><span class="badge b-prebook">Pre-book</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-AA">AA</span><span class="who-chip wc-JM">JM</span><span class="who-chip wc-CE">CE</span></div>
-        <div class="day-notes">Eiffel Tower · Notre-Dame · Seine river cruise · Musée d'Orsay · Musée de l'Orangerie · Sacré-Cœur (optional). Louvre skipped — already done. Pre-book all attractions. JM and CE depart from Paris on 3 Oct.</div>
-      </div>
-    </div>
-
-    <div class="day-item split" data-groups="SF AA CE JM C GG" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">3 Oct</span><span class="day-loc">⚠️ Groups split after Paris</span><span class="badge b-book">Book</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="day-split-grid">
-          <div class="split-panel" style="background:var(--green-lt);border:1px solid #b8d9c8">
-            <div style="font-size:0.65rem;font-weight:700;color:var(--green);margin-bottom:0.25rem">🟢 SF · C — Barcelona</div>
-            SF flies Paris→Barcelona (AF1648). C joins from Athens. GG flies in from Australia. All meet at BCN hotel.
-          </div>
-          <div class="split-panel" style="background:var(--purple-lt);border:1px solid #c8a8e0">
-            <div style="font-size:0.65rem;font-weight:700;color:var(--purple);margin-bottom:0.25rem">🟣 AA — Serbia</div>
-            Alex, Aleksandra, Kosta &amp; Ella fly Paris→Serbia. 5 nights (Belgrade TBC).
-          </div>
-        </div>
-        <div class="day-split-grid" style="margin-top:0.5rem">
-          <div class="split-panel" style="background:var(--orange-lt);border:1px solid #e8c090">
-            <div style="font-size:0.65rem;font-weight:700;color:var(--orange);margin-bottom:0.25rem">🟠 CE — Singapore</div>
-            Christos, Erin &amp; kids fly Paris→Singapore. 3 nights then home.
-          </div>
-          <div class="split-panel" style="background:var(--pink-lt);border:1px solid #e8b8d0">
-            <div style="font-size:0.65rem;font-weight:700;color:var(--pink);margin-bottom:0.25rem">🩷 JM — Home</div>
-            Martine, Jake, Grace &amp; Annabelle fly home from Paris.
-          </div>
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span><span class="w wM">M</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🛫</span><span class="rl">Depart</span><span class="rv">Adelaide Airport ~10pm. All main groups fly same day.</span></div>
+          <div class="row"><span class="ri">🔁</span><span class="rl">Routing</span><span class="rv">Long-haul to Athens via Dubai (Emirates) or Singapore. Confirm with Max.</span></div>
+          <div class="row"><span class="ri">🧳</span><span class="rl">Tip</span><span class="rv">Arrive airport 3hrs early. <span class="warn">Download Disney QR passes to iPhone NOW — Android Play Store issues in AU.</span></span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">On the plane</span></div>
         </div>
       </div>
     </div>
 
-    <div class="day-item" data-groups="SF C GG" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">3–7 Oct</span><span class="day-loc">🦜 Barcelona</span><span class="badge b-prebook">Pre-book</span><span class="day-chevron">▼</span></div>
+    <div class="day" data-g="SF AA CE JM M C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Fri</div><div class="day-d">12 Sep</div></div><span class="day-loc">✈️ In Transit — Dubai</span><span class="day-chev">▼</span></div>
       <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-C">C</span><span class="who-chip wc-GG">GG</span></div>
-        <div class="day-notes">Sagrada Família · Gothic Quarter · La Boqueria · Park Güell · Gaudí sites. Possible match. Hotel TBC — Corner Hotel Eixample suggested. Greg &amp; Gail join ~2 Oct, depart ~6 Oct.</div>
-      </div>
-    </div>
-
-    <div class="day-item" data-groups="SF C" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">7–10 Oct</span><span class="day-loc">⚽ Madrid</span><span class="badge b-tbc">TBC</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-C">C</span></div>
-        <div class="day-notes">Bernabéu (match if available, else stadium tour) · Royal Palace · Plaza Mayor · Retiro Park · Prado Museum. 3 nights.</div>
-      </div>
-    </div>
-
-    <div class="day-item" data-groups="SF C AA" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">10–13 Oct</span><span class="day-loc">🌸 Florence/Tuscany</span><span class="badge b-tbc">TBC</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-C">C</span><span class="who-chip wc-AA">AA — joins from Serbia</span></div>
-        <div class="day-notes"><strong>Still deciding: Florence city vs Chianti agriturismo.</strong> Florence: David · Duomo · Ponte Vecchio · Uffizi. Chianti: winery days · Greve · Panzano. AA joins from Serbia ~8 Oct. 3 nights (SF/C) ~5 nights (AA).</div>
-      </div>
-    </div>
-
-    <div class="day-item" data-groups="SF C AA" onclick="toggleDay(this)">
-      <div class="day-header"><span class="day-date">13–16 Oct</span><span class="day-loc">🏛️ Rome</span><span class="badge b-prebook">Pre-book</span><span class="day-chevron">▼</span></div>
-      <div class="day-body">
-        <div class="who-chips"><span class="who-chip wc-SF">SF</span><span class="who-chip wc-C">C</span><span class="who-chip wc-AA">AA</span></div>
-        <div class="day-notes">Colosseum + Roman Forum (skip-the-line) · Vatican Museums + Sistine Chapel (skip-the-line) · St Peter's · Pantheon (16 Oct morning). <strong>16 Oct:</strong> SF private car FCO 1pm → EK98 dep 15:45 → Dubai → Adelaide 18 Oct. C and AA depart ~16 Oct TBC.</div>
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span><span class="w wM">M</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🔁</span><span class="rl">Transit</span><span class="rv">Connection through Dubai or Singapore. ~20–24hrs total travel.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">On the plane — arrive Athens morning 13 Sep</span></div>
+        </div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══ BOOKINGS ══ -->
-<div id="panel-bookings" class="panel">
-  <p class="section-title">All Bookings</p>
-  <div id="bookings-container">
-
-    <div class="booking-item" data-groups="SF AA CE JM DK M C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">International flights ADL→Athens (11 Sep)</div><div class="booking-meta">✈️ Flight · All groups · 11 Sep</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM DK M C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Athens hotel (Plaka/Syntagma)</div><div class="booking-meta">🏨 Hotel · All groups · 13–14 Sep</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM DK M C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Acropolis timed entry</div><div class="booking-meta">🎟️ Attraction · All groups · 14 Sep</div></div><span class="badge b-prebook">Pre-book</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM DK M C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Athens→Ikaria domestic flight</div><div class="booking-meta">✈️ Flight · All groups · 15 Sep</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM DK M C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Ikaria accommodation (villa/hotel)</div><div class="booking-meta">🏨 Hotel · All groups · 15–21 Sep</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="SF AA CE DK"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Ikaria→Kalamata flights</div><div class="booking-meta">✈️ Flight · SF, AA, CE, DK · 22 Sep</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="JM"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">JM: Ikaria→Egypt flights</div><div class="booking-meta">✈️ Flight · JM · 22 Sep</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF AA CE DK"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Kalamata/Vasilitsi villa/hotel</div><div class="booking-meta">🏨 Hotel · SF, AA, CE, DK · 22–25 Sep</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="DK"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">DK: Kalamata→Singapore flight</div><div class="booking-meta">✈️ Flight · DK · ~25 Sep</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="DK"><div class="priority-dot pd-med"></div><div style="flex:1"><div class="booking-title">DK: Singapore hotel (3 nights)</div><div class="booking-meta">🏨 Hotel · DK · ~26–28 Sep</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Athens airport hotel (in 26, out 27 Sep)</div><div class="booking-meta">🏨 Hotel · SF, AA, CE, JM, C · 26 Sep</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">AF1533 ATH→CDG dep 14:40 arr 17:15 (27 Sep)</div><div class="booking-meta">✈️ Flight · SF, AA, CE, JM · 27 Sep</div><div class="booking-note">⚠️ SF confirmed · AA/CE/JM TBC</div></div><span class="badge b-confirmed">Confirmed (SF)</span></div>
-    <div class="booking-item" data-groups="C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">C: Athens→Barcelona direct flight (27 Sep)</div><div class="booking-meta">✈️ Flight · C · 27 Sep</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Private car CDG→Disneyland hotel</div><div class="booking-meta">🚗 Transfer · SF · 27 Sep</div></div><span class="badge b-confirmed">Confirmed</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Disneyland Paris hotel (27–30 Sep)</div><div class="booking-meta">🏨 Hotel · SF, AA, CE, JM · 27–30 Sep</div><div class="booking-note">⚠️ Test QR on iPhone — Android Play Store issues in AU</div></div><span class="badge b-confirmed">Confirmed</span></div>
-    <div class="booking-item" data-groups="SF AA CE JM"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Paris city hotel (30 Sep–3 Oct)</div><div class="booking-meta">🏨 Hotel · SF, AA, JM, CE · 30 Sep–3 Oct</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="SF AA JM CE"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Eiffel Tower timed entry</div><div class="booking-meta">🎟️ Attraction · SF, AA, JM, CE · 1 Oct</div></div><span class="badge b-prebook">Pre-book</span></div>
-    <div class="booking-item" data-groups="SF AA JM CE"><div class="priority-dot pd-med"></div><div style="flex:1"><div class="booking-title">Seine river cruise</div><div class="booking-meta">🎟️ Activity · SF, AA, JM, CE · 1 Oct</div></div><span class="badge b-prebook">Pre-book</span></div>
-    <div class="booking-item" data-groups="SF AA JM CE"><div class="priority-dot pd-med"></div><div style="flex:1"><div class="booking-title">Musée d'Orsay + Musée de l'Orangerie</div><div class="booking-meta">🎟️ Attraction · SF, AA, JM, CE · 2 Oct</div></div><span class="badge b-prebook">Pre-book</span></div>
-    <div class="booking-item" data-groups="CE"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">CE: Paris→Singapore flight (~3 Oct)</div><div class="booking-meta">✈️ Flight · CE · ~3 Oct</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="CE"><div class="priority-dot pd-med"></div><div style="flex:1"><div class="booking-title">CE: Singapore hotel (3 nights)</div><div class="booking-meta">🏨 Hotel · CE · ~3–6 Oct</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">AA: Paris→Serbia flight (3 Oct)</div><div class="booking-meta">✈️ Flight · AA · 3 Oct · Belgrade TBC</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">AA: Serbia hotel (3–8 Oct, 5 nights)</div><div class="booking-meta">🏨 Hotel · AA · 3–8 Oct</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">AA: Serbia→Florence/Tuscany flight (~8 Oct)</div><div class="booking-meta">✈️ Flight · AA · ~8 Oct</div><div class="booking-note">⚠️ Book after Florence/Chianti decision confirmed</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF C GG"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">AF1648 CDG→BCN dep 13:00 (30 Sep) — SF</div><div class="booking-meta">✈️ Flight · SF · 30 Sep</div></div><span class="badge b-confirmed">Confirmed</span></div>
-    <div class="booking-item" data-groups="SF C GG"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Barcelona hotel — Corner Hotel Eixample (TBC)</div><div class="booking-meta">🏨 Hotel · SF, C, GG · 3–7 Oct</div><div class="booking-note">⚠️ Extra room for GG — confirm cost</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="GG"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">GG: Flights ADL→Barcelona and back (~2–6 Oct)</div><div class="booking-meta">✈️ Flight · GG · ~2 Oct &amp; ~6 Oct</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF C GG"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Sagrada Família tickets (skip-the-line)</div><div class="booking-meta">🎟️ Attraction · SF, C, GG · 4–5 Oct</div></div><span class="badge b-prebook">Pre-book</span></div>
-    <div class="booking-item" data-groups="SF C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Barcelona→Madrid high-speed train (7 Oct)</div><div class="booking-meta">🚄 Train · SF, C · 7 Oct</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Madrid hotel (7–10 Oct, 3 nights)</div><div class="booking-meta">🏨 Hotel · SF, C · 7–10 Oct</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="SF C"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Bernabéu match or stadium tour</div><div class="booking-meta">⚽ Event · SF, C · 8 Oct · Check 2026 fixture release</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="SF C AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Madrid→Florence flight (10 Oct) — Axis to book</div><div class="booking-meta">✈️ Flight · SF, C · 10 Oct · AA separate from Serbia</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF C AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Florence/Tuscany hotel or Chianti agriturismo</div><div class="booking-meta">🏨 Hotel · SF, C, AA · 10–13 Oct</div><div class="booking-note">⚠️ Awaiting Max's recommendation on Florence vs Chianti</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="SF C AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Florence→Rome train (13 Oct) — Axis to book</div><div class="booking-meta">🚄 Train · SF, C, AA · 13 Oct</div></div><span class="badge b-book">Book</span></div>
-    <div class="booking-item" data-groups="SF C AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Rome hotel — Prati area (13–16 Oct, 3 nights)</div><div class="booking-meta">🏨 Hotel · SF, C, AA · 13–16 Oct</div></div><span class="badge b-tbc">TBC</span></div>
-    <div class="booking-item" data-groups="SF C AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Colosseum + Roman Forum — skip-the-line</div><div class="booking-meta">🎟️ Attraction · SF, C, AA · 14 Oct</div></div><span class="badge b-prebook">Pre-book</span></div>
-    <div class="booking-item" data-groups="SF C AA"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">Vatican Museums + Sistine Chapel — skip-the-line</div><div class="booking-meta">🎟️ Attraction · SF, C, AA · 15 Oct</div></div><span class="badge b-prebook">Pre-book</span></div>
-    <div class="booking-item" data-groups="SF"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">SF: Private car FCO airport (collect 1pm, 16 Oct)</div><div class="booking-meta">🚗 Transfer · SF · 16 Oct</div></div><span class="badge b-confirmed">Confirmed</span></div>
-    <div class="booking-item" data-groups="SF"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">SF: EK98 FCO→DXB dep 15:45 arr 23:30 (16 Oct)</div><div class="booking-meta">✈️ Flight · SF · 16 Oct · Emirates confirmed</div></div><span class="badge b-confirmed">Confirmed</span></div>
-    <div class="booking-item" data-groups="SF"><div class="priority-dot pd-high"></div><div style="flex:1"><div class="booking-title">SF: Dubai→Adelaide connecting flight</div><div class="booking-meta">✈️ Flight · SF · 16–17 Oct</div><div class="booking-note">⚠️ Flight number unknown — confirm with Max</div></div><span class="badge b-book">Book</span></div>
-
+<!-- ═══ GREECE ═══ -->
+<div class="city" data-g="SF AA CE JM DK M C">
+  <div class="city-hdr bg-greece" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/gr.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">Athens · Ikaria · Kalamata</span><span class="city-dates">13–26 Sep</span><span class="city-chev">▼</span>
   </div>
-</div>
+  <div class="city-body">
 
-<!-- ══ TRAVELLERS ══ -->
-<div id="panel-travellers" class="panel">
-  <p class="section-title">All 23 Travellers</p>
-  <div class="trav-grid" id="trav-grid">
-
-    <div class="trav-card" data-groups="SF">
-      <div class="trav-code" style="background:var(--green)">SF</div>
-      <div>
-        <div class="trav-name">Sam &amp; Fiona Gowen</div>
-        <div class="trav-members">Samuel Gowen · Fiona Gowen</div>
-        <div class="trav-legs">Greece → Disney/Paris → Barcelona → Madrid → Florence → Rome → EK98 → Adelaide 18 Oct</div>
+    <div class="day" data-g="SF AA CE JM DK M C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sun</div><div class="day-d">13 Sep</div></div><span class="day-loc">🏛️ Arrive Athens</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span><span class="w wDK">DK</span><span class="w wM">M</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🛬</span><span class="rl">Arrive</span><span class="rv">All groups arrive Athens. DK joins from their Greek island trip. Check in Plaka/Syntagma area.</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv">Easy walk around Plaka — charming old neighbourhood. Coffee, gelato, no agenda needed.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Strofi (rooftop Acropolis views) or Lithos (great mezze). Keep it simple — first night.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Athens hotel</span></div>
+        </div>
       </div>
     </div>
 
-    <div class="trav-card" data-groups="C">
-      <div class="trav-code" style="background:var(--gold)">C</div>
-      <div>
-        <div class="trav-name">Christine Hatzi</div>
-        <div class="trav-members">Christine Hatzi · The matriarch 👑</div>
-        <div class="trav-legs">Greece → stays Greece (Kalamata) → Barcelona → Madrid → Florence → Rome → home ~16 Oct</div>
+    <div class="day" data-g="SF AA CE JM DK M C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Mon</div><div class="day-d">14 Sep</div></div><span class="day-loc">🏛️ Athens — Acropolis Day</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span><span class="w wDK">DK</span><span class="w wM">M</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Acropolis</strong> — go early (8am) before the heat. Parthenon, Erechtheion, extraordinary views. <span class="warn">Pre-book timed entry.</span></span></div>
+          <div class="row"><span class="ri">🏛️</span><span class="rl">Mid-morn</span><span class="rv"><strong>Acropolis Museum</strong> — world class, air-conditioned. Allow 1.5hrs.</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv">Monastiraki flea market. Plaka lanes. Syntagma Square — changing of the guard at Parliament (every hour).</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Kuzina (modern Greek) or Mani Mani — pre-book.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Athens hotel · Fly to Ikaria tomorrow — check in online tonight</span></div>
+        </div>
       </div>
     </div>
 
-    <div class="trav-card" data-groups="M">
-      <div class="trav-code" style="background:var(--teal)">M</div>
-      <div>
-        <div class="trav-name">Manuel Hatzi</div>
-        <div class="trav-members">Manuel Hatzi</div>
-        <div class="trav-legs">Greece → stays Greece → UK → home</div>
+    <div class="day" data-g="SF AA CE JM DK M C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Tue</div><div class="day-d">15 Sep</div></div><span class="day-loc">✈️ Athens → Ikaria</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span><span class="w wDK">DK</span><span class="w wM">M</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Flight</span><span class="rv">Athens ATH → Ikaria JIK · ~45min · <span class="warn">Small plane — book early, limited seats</span></span></div>
+          <div class="row"><span class="ri">🚗</span><span class="rl">Transfer</span><span class="rv">Taxi to Armenistis/Evdilos area. Roads are very winding — allow extra time.</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv">Check in, first swim at Messakti or Livadi beach.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Local taverna in Armenistis — fresh seafood, local Ikarian wine.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Ikaria hotel / villa</span></div>
+        </div>
       </div>
     </div>
 
-    <div class="trav-card" data-groups="DK">
-      <div class="trav-code" style="background:var(--blue)">DK</div>
-      <div>
-        <div class="trav-name">Denes &amp; Kayleen Marantos</div>
-        <div class="trav-members">Denes Marantos · Kayleen Marantos</div>
-        <div class="trav-legs">Greece → Kalamata → Singapore 3 nights → home</div>
+    <div class="day" data-g="SF AA CE JM DK M C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Wed–Mon</div><div class="day-d">16–21 Sep</div></div><span class="day-loc">🏖️ Ikaria — 6 nights</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span><span class="w wDK">DK</span><span class="w wM">M</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🏖️</span><span class="rl">Beaches</span><span class="rv">Messakti, Livadi, Nas (cove with river), Seychelles beach. Hire a car to explore the north coast.</span></div>
+          <div class="row"><span class="ri">🎉</span><span class="rl">Festival</span><span class="rv">Panagiria — village festivals all summer. All-night dancing, food, wine. Ask locals which village is celebrating.</span></div>
+          <div class="row"><span class="ri">🧗</span><span class="rl">Explore</span><span class="rv">Nas ruins (ancient Artemis temple). Ikarian hot springs. Christos Raches — sleeps by day, parties all night.</span></div>
+          <div class="row"><span class="ri">🍷</span><span class="rl">Food</span><span class="rv">Ikarian red wine (pramnian) — extraordinary and cheap. Fresh octopus, grilled fish, local cheese. Eat late.</span></div>
+          <div class="row"><span class="ri">ℹ️</span><span class="rl">Note</span><span class="rv">Ikaria is a Blue Zone — one of the world's longevity hotspots. Slow down. Sleep in.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Ikaria hotel / villa · 6 nights</span></div>
+        </div>
       </div>
     </div>
 
-    <div class="trav-card" data-groups="AA">
-      <div class="trav-code" style="background:var(--purple)">AA</div>
-      <div>
-        <div class="trav-name">Alex &amp; Aleksandra Marantos</div>
-        <div class="trav-members">Alex Marantos · Aleksandra Marantos · Kosta Marantos · Ella Marantos</div>
-        <div class="trav-legs">Greece → Kalamata → Disney/Paris → Serbia → Florence → Rome → home ~16 Oct</div>
+    <div class="day conflict" data-g="SF AA CE JM DK M C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Tue</div><div class="day-d">22 Sep</div></div><span class="day-loc">⚠️ Groups split after Ikaria</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wDK">DK</span><span class="w wJM">JM</span><span class="w wM">M</span><span class="w wC">C</span></div>
+        <div class="splits">
+          <div class="sp" style="background:#e8f2ec;border:1px solid #b8d9c8"><div class="sp-lbl" style="color:#2a5c45">SF · AA · CE · DK → Kalamata</div>Fly Ikaria→Athens→Kalamata. Beach afternoon, local taverna dinner.</div>
+          <div class="sp" style="background:#fce8f0;border:1px solid #e8b8d0"><div class="sp-lbl" style="color:#a03060">JM → Egypt</div>Martine, Jake, Grace &amp; Annabelle fly Athens→Egypt. Skip Kalamata. Rejoin at Athens hotel 26 Sep.</div>
+        </div>
+        <div class="sp" style="background:#fef6e0;border:1px solid #e0cc88;margin:0 0.8rem 0.6rem"><div class="sp-lbl" style="color:#a07820">C · M — Stay in Greece</div>Christine and Manuel stay in Greece (no Kalamata). C rejoins Athens hotel 26 Sep then flies to Barcelona. M heads to UK ~3 Oct.</div>
       </div>
     </div>
 
-    <div class="trav-card" data-groups="CE">
-      <div class="trav-code" style="background:var(--orange)">CE</div>
-      <div>
-        <div class="trav-name">Christos &amp; Erin Marantos</div>
-        <div class="trav-members">Christos Marantos · Erin Kite · Zachary Marantos · Harry Marantos · Alyssa Marantos</div>
-        <div class="trav-legs">Greece → Kalamata → Disney/Paris → Singapore 3 nights → home</div>
+    <div class="day" data-g="SF AA CE DK" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Wed–Fri</div><div class="day-d">23–25 Sep</div></div><span class="day-loc">🫒 Kalamata / Vasilitsi — 3 nights</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wDK">DK</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🏖️</span><span class="rl">Beach</span><span class="rv">Vasilitsi beach — long, sandy, rarely crowded. Stoupa also great for families.</span></div>
+          <div class="row"><span class="ri">🚗</span><span class="rl">Day trip</span><span class="rv"><strong>Methoni</strong> (Venetian fortress) or <strong>Koroni</strong> (hilltop castle) or <strong>Pylos</strong> (beautiful bay). ~45min drive.</span></div>
+          <div class="row"><span class="ri">🫒</span><span class="rl">Local</span><span class="rv">Kalamata market. Kalamata olives — you're at the source. Local honey and oils.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Kardamo (Stoupa) for fresh seafood. Simple grilled fish at the harbour.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Kalamata / Vasilitsi villa or hotel</span></div>
+        </div>
       </div>
     </div>
 
-    <div class="trav-card" data-groups="JM">
-      <div class="trav-code" style="background:var(--pink)">JM</div>
-      <div>
-        <div class="trav-name">Martine &amp; Jake Sawyer</div>
-        <div class="trav-members">Martine Hatzi · Jake Sawyer · Grace Sawyer · Annabelle Sawyer</div>
-        <div class="trav-legs">Greece → Egypt → Disney/Paris → Paris city → home 3 Oct</div>
-      </div>
-    </div>
-
-    <div class="trav-card" data-groups="GG">
-      <div class="trav-code" style="background:var(--red)">GG</div>
-      <div>
-        <div class="trav-name">Greg &amp; Gail Mann</div>
-        <div class="trav-members">Greg Mann · Gail Mann</div>
-        <div class="trav-legs">Athens → Ikaria → home → fly back for Barcelona only (~2–6 Oct)</div>
+    <div class="day" data-g="SF AA CE JM C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sat</div><div class="day-d">26 Sep</div></div><span class="day-loc">✈️ Athens Airport Hotel · DK farewell</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Travel</span><span class="rv">SF, AA, CE from Kalamata. JM return from Egypt. C from Greece. All meet at Athens airport hotel. In 26 Sep, Out 27 Sep.</span></div>
+          <div class="row"><span class="ri">👋</span><span class="rl">Farewell</span><span class="rv"><strong>Denes &amp; Kay (DK) depart for Singapore today.</strong> M also departing for UK shortly.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Hotel restaurant — early night, Disney flight tomorrow.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Athens airport hotel</span></div>
+        </div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══ NOTES ══ -->
-<div id="panel-notes" class="panel">
-  <p class="section-title">⚠️ Decisions needed</p>
-  <div class="open-list">
-    <div class="open-row urgent"><span>⚠️</span><span><strong>Disney QR passes</strong> — test on iPhone immediately. Android Play Store issues in AU.</span></div>
-    <div class="open-row urgent"><span>⚠️</span><span><strong>Florence vs Chianti</strong> — awaiting Max's recommendation on day-of transfer logistics.</span></div>
-    <div class="open-row urgent"><span>⚠️</span><span><strong>Barcelona hotel room cost</strong> for Greg &amp; Gail (GG) — Corner Hotel Eixample TBC.</span></div>
-    <div class="open-row urgent"><span>⚠️</span><span><strong>SF: Dubai→Adelaide</strong> connecting flight — confirm with Max or Emirates.</span></div>
-    <div class="open-row urgent"><span>⚠️</span><span><strong>AA: Serbia→Florence</strong> flight (~8 Oct) — book after Florence/Chianti confirmed.</span></div>
-    <div class="open-row urgent"><span>⚠️</span><span><strong>C: Athens→Barcelona</strong> direct flight (27 Sep) — confirm routing.</span></div>
+<!-- ═══ DK SINGAPORE ═══ -->
+<div class="city" data-g="DK">
+  <div class="city-hdr bg-transit" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/sg.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">DK — Singapore &amp; Home</span><span class="city-dates">~26–29 Sep</span><span class="city-chev">▼</span>
   </div>
-
-  <p class="section-title">🎟️ Pre-book these now</p>
-  <div class="open-list">
-    <div class="open-row"><span>🎟️</span><span>Acropolis — timed entry (all groups)</span></div>
-    <div class="open-row"><span>🎟️</span><span>Eiffel Tower — timed entry</span></div>
-    <div class="open-row"><span>🎟️</span><span>Notre-Dame — timed entry (post-restoration)</span></div>
-    <div class="open-row"><span>🎟️</span><span>Musée d'Orsay &amp; Musée de l'Orangerie</span></div>
-    <div class="open-row"><span>🎟️</span><span>Sagrada Família — book months ahead</span></div>
-    <div class="open-row"><span>🎟️</span><span>Colosseum + Roman Forum — official skip-the-line only</span></div>
-    <div class="open-row"><span>🎟️</span><span>Vatican Museums + Sistine Chapel — skip-the-line</span></div>
-    <div class="open-row"><span>🎟️</span><span>Accademia (David) — if Florence city base chosen</span></div>
-    <div class="open-row"><span>🎟️</span><span>Bernabéu match or tour — check 2026 Real Madrid fixtures</span></div>
-  </div>
-
-  <p class="section-title">✅ Confirmed</p>
-  <div class="open-list">
-    <div class="open-row"><span>✅</span><span>AF1533 ATH→CDG dep 14:40 arr 17:15 — 27 Sep (SF + Disney groups)</span></div>
-    <div class="open-row"><span>✅</span><span>AF1648 CDG→BCN dep 13:00 — 30 Sep (SF)</span></div>
-    <div class="open-row"><span>✅</span><span>EK98 FCO→DXB dep 15:45 arr 23:30 — 16 Oct (SF)</span></div>
-    <div class="open-row"><span>✅</span><span>Disneyland Paris passes — QR codes sent (⚠️ test on iPhone)</span></div>
-    <div class="open-row"><span>✅</span><span>Private car transfers: CDG→Disneyland hotel · FCO pickup 1pm 16 Oct</span></div>
+  <div class="city-body">
+    <div class="day" data-g="DK" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sat</div><div class="day-d">~26 Sep</div></div><span class="day-loc"><img src="https://flagcdn.com/32x24/sg.png" style="height:18px;vertical-align:middle;border-radius:2px;"> Kalamata → Singapore · 3 nights · Home</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wDK">DK</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Flight</span><span class="rv">Kalamata → Singapore (via Athens). 3 nights in Singapore then fly home.</span></div>
+          <div class="row"><span class="ri">🏠</span><span class="rl">Home</span><span class="rv">Back in Adelaide ~29 Sep.</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-</div><!-- /content -->
+<!-- ═══ M UK ═══ -->
+<div class="city" data-g="M">
+  <div class="city-hdr bg-transit" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/gb.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">M — UK &amp; Home</span><span class="city-dates">~3 Oct</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+    <div class="day" data-g="M" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">~Thu</div><div class="day-d">~3 Oct</div></div><span class="day-loc"><img src="https://flagcdn.com/32x24/gb.png" style="height:18px;vertical-align:middle;border-radius:2px;"> Greece → UK → Home</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wM">M</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Travel</span><span class="rv">Manuel flies from Greece to UK while Christine heads to Barcelona. Home from UK — date TBC.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DISNEYLAND ═══ -->
+<div class="city" data-g="SF AA CE JM">
+  <div class="city-hdr bg-disney" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="data:image/png;base64,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" style="height:20px;vertical-align:middle;filter:invert(1);"></span><span class="city-name">Disneyland Paris</span><span class="city-dates">27–29 Sep</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+
+    <div class="day" data-g="SF AA CE JM" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sun</div><div class="day-d">27 Sep</div></div><span class="day-loc">✈️ Athens → Paris · Disney hotel</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Flight</span><span class="rv"><strong>AF1533</strong> · ATH → CDG · Dep <strong>14:40</strong> · Arr <strong>17:15</strong> · Confirmed (SF) · Others same flight TBC</span></div>
+          <div class="row"><span class="ri">🚗</span><span class="rl">Transfer</span><span class="rv">Private car CDG → Disneyland hotel. Confirmed with Max.</span></div>
+          <div class="row"><span class="ri">🏨</span><span class="rl">Hotel</span><span class="rv">Disneyland Paris hotel · In 27 Sep · Out 30 Sep · <span class="warn">QR passes confirmed — test on iPhone NOW. Android issues in AU.</span></span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Disney Village — Annette's Diner or hotel restaurant. Early night for parks tomorrow.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Disneyland Paris hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF AA CE JM" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Mon</div><div class="day-d">28 Sep</div></div><span class="day-loc">🏰 Disneyland Park — Day 1</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🎟️</span><span class="rl">Tickets</span><span class="rv">QR passes pre-paid. <span class="warn">Test each QR on each phone before arrival at gates.</span></span></div>
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Disneyland Park</strong> — gates open early. Priority: Pirates of the Caribbean, Phantom Manor, Big Thunder Mountain. Use Premier Access app.</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv">Fantasyland for younger kids. Main Street parade ~3pm. Star Wars Hyperspace Mountain.</span></div>
+          <div class="row"><span class="ri">🌙</span><span class="rl">Evening</span><span class="rv">Disney Illuminations — castle projections and fireworks. Stay for this.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Walt's Restaurant (inside park) or Blue Lagoon (inside Pirates of the Caribbean — book ahead).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Disneyland Paris hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF AA CE JM" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Tue</div><div class="day-d">29 Sep</div></div><span class="day-loc">🎬 Walt Disney Studios — Day 2</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wCE">CE</span><span class="w wJM">JM</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Walt Disney Studios</strong> — Avengers Campus, Crush's Coaster, RC Racer. Go early.</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv">Toy Story Playland. Cars Road Trip. Or back to Disneyland Park for anything missed.</span></div>
+          <div class="row"><span class="ri">🌙</span><span class="rl">Evening</span><span class="rv">Final Disney dinner. Pack up — <strong>CE fly Singapore tomorrow morning.</strong> Others move to Paris city hotel.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Bistrot Chez Rémy (Ratatouille) or PYM Kitchen (Avengers Campus).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Disneyland Paris hotel — last night</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ CE SINGAPORE ═══ -->
+<div class="city" data-g="CE">
+  <div class="city-hdr bg-transit" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/sg.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">CE — Singapore &amp; Home</span><span class="city-dates">~30 Sep – 3 Oct</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+    <div class="day" data-g="CE" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Wed</div><div class="day-d">~30 Sep</div></div><span class="day-loc"><img src="https://flagcdn.com/32x24/sg.png" style="height:18px;vertical-align:middle;border-radius:2px;"> Disney → Singapore · 3 nights · Home</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wCE">CE</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Flight</span><span class="rv">Christos, Erin, Zachary, Harry &amp; Alyssa fly direct Disneyland Paris → Singapore. 3 nights then home.</span></div>
+          <div class="row"><span class="ri">🏠</span><span class="rl">Home</span><span class="rv">Back in Adelaide ~3 Oct.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PARIS CITY ═══ -->
+<div class="city" data-g="SF AA JM">
+  <div class="city-hdr bg-paris" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/fr.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">Paris — City</span><span class="city-dates">30 Sep – 3 Oct</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+
+    <div class="day" data-g="SF AA JM" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Wed</div><div class="day-d">30 Sep</div></div><span class="day-loc">🗼 Disney → Paris City · Check in</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wJM">JM</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🚌</span><span class="rl">Transfer</span><span class="rv">Check out Disney hotel → Paris city hotel. RER A train (~40min) or taxi.</span></div>
+          <div class="row"><span class="ri">🏨</span><span class="rl">Hotel</span><span class="rv">Paris city hotel · 30 Sep–3 Oct · Saint-Germain or 7th arr · TBC</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv">Easy walk along the Seine. Explore the neighbourhood.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Le Relais de l'Entrecôte (steak-frites, always worth the queue) or Bouillon Chartier (classic brasserie).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Paris city hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF AA JM" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Thu</div><div class="day-d">1 Oct</div></div><span class="day-loc">🗼 Eiffel Tower · Notre-Dame · Seine Cruise</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wJM">JM</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Eiffel Tower</strong> — go early. <span class="warn">Pre-book timed entry.</span> Stairs to 2nd floor, lift to summit.</span></div>
+          <div class="row"><span class="ri">⛵</span><span class="rl">Mid-morn</span><span class="rv"><strong>Seine River Cruise</strong> — 1hr from near Eiffel Tower. Kids love it. Covers Notre-Dame, Louvre from the water.</span></div>
+          <div class="row"><span class="ri">🏛️</span><span class="rl">Afternoon</span><span class="rv"><strong>Notre-Dame Cathedral</strong> — just reopened. <span class="warn">Timed entry required.</span> Île Saint-Louis — ice cream at Berthillon.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Bistrot Paul Bert (great steak tartare — book ahead) or Café de Flore.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Paris city hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF AA JM" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Fri</div><div class="day-d">2 Oct</div></div><span class="day-loc">🎨 Musée d'Orsay · Orangerie · Montmartre</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wJM">JM</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Musée d'Orsay</strong> — Monet, Renoir, Van Gogh, Degas. <span class="warn">Pre-book timed entry.</span> Building (converted train station) is itself extraordinary.</span></div>
+          <div class="row"><span class="ri">🌺</span><span class="rl">Mid-morn</span><span class="rv"><strong>Musée de l'Orangerie</strong> — 5min walk. Monet's Water Lilies in oval rooms. Quieter and genuinely moving.</span></div>
+          <div class="row"><span class="ri">🌳</span><span class="rl">Afternoon</span><span class="rv">Tuileries Garden. Optional: Sacré-Cœur and Montmartre (funicular up, artists' square, great views).</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Le Bon Georges or crêperie in Montmartre. Last Paris night for JM.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Paris city hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day conflict" data-g="SF AA JM C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sat</div><div class="day-d">3 Oct</div></div><span class="day-loc">⚠️ Depart Paris — groups split</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wAA">AA</span><span class="w wJM">JM</span><span class="w wC">C</span></div>
+        <div class="splits">
+          <div class="sp" style="background:#e8f2ec;border:1px solid #b8d9c8"><div class="sp-lbl" style="color:#2a5c45">SF → Barcelona</div><strong>AF1648</strong> CDG→BCN dep 13:00. Private car to hotel. C arrives from Greece.</div>
+          <div class="sp" style="background:#f0e8f8;border:1px solid #c8a8e0"><div class="sp-lbl" style="color:#6a3a8a">AA → Serbia</div>Alex, Aleksandra, Kosta &amp; Ella fly Paris→Belgrade. 7 nights. Home via Dubai Emirates layover ~10 Oct.</div>
+        </div>
+        <div class="sp" style="background:#fce8f0;border:1px solid #e8b8d0;margin:0 0.8rem 0.6rem"><div class="sp-lbl" style="color:#a03060">JM → Home</div>Martine, Jake, Grace &amp; Annabelle fly home from Paris. Farewell! 👋</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ AA SERBIA ═══ -->
+<div class="city" data-g="AA">
+  <div class="city-hdr bg-transit" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/rs.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">AA — Serbia &amp; Home</span><span class="city-dates">3–10 Oct</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+    <div class="day" data-g="AA" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sat–Fri</div><div class="day-d">3–10 Oct</div></div><span class="day-loc"><img src="https://flagcdn.com/32x24/rs.png" style="height:18px;vertical-align:middle;border-radius:2px;"> Serbia — 7 nights · Home via Dubai</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wAA">AA</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Flight</span><span class="rv">Paris → Belgrade (city TBC). 7 nights in Serbia.</span></div>
+          <div class="row"><span class="ri">✈️</span><span class="rl">Home</span><span class="rv">Fly home via Dubai (Emirates layover) ~10 Oct. Confirm routing with Max.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BARCELONA ═══ -->
+<div class="city" data-g="SF C">
+  <div class="city-hdr bg-bcn" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/es.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">Barcelona</span><span class="city-dates">3–7 Oct · 4 nights</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sun</div><div class="day-d">4 Oct</div></div><span class="day-loc">🕌 Sagrada Família · Passeig de Gràcia</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🏨</span><span class="rl">Hotel</span><span class="rv">Corner Hotel Eixample (TBC). SF in from 3 Oct. C arrives today.</span></div>
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Sagrada Família</strong> — Gaudí's masterpiece. <span class="warn">Book months ahead — include tower access.</span> Allow 2+ hours.</span></div>
+          <div class="row"><span class="ri">🚶</span><span class="rl">Mid-morn</span><span class="rv"><strong>Passeig de Gràcia</strong> — Casa Batlló (the dragon house) and La Pedrera. One block of pure genius.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Cerveceria Catalana (tapas, arrive early) or Ciudad Condal.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Barcelona hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Mon</div><div class="day-d">5 Oct</div></div><span class="day-loc">🏰 Gothic Quarter · La Boqueria · El Born</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Gothic Quarter</strong> — medieval lanes, Barcelona Cathedral, Roman walls, Plaça Reial.</span></div>
+          <div class="row"><span class="ri">🛒</span><span class="rl">Mid-morn</span><span class="rv"><strong>La Boqueria Market</strong> — fresh juice, jamón, seafood snacks. Don't eat full meals here.</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv"><strong>El Born</strong> — great neighbourhood. Santa Maria del Mar church. Optional: Barceloneta beach.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Cal Pep (legendary tapas bar) or El Xampanyet (cava bar, anchovies).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Barcelona hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Tue</div><div class="day-d">6 Oct</div></div><span class="day-loc">🌿 Park Güell · Montjuïc</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Park Güell</strong> — Gaudí's mosaic park. <span class="warn">Timed entry — pre-book.</span> Incredible views over Barcelona.</span></div>
+          <div class="row"><span class="ri">🚠</span><span class="rl">Afternoon</span><span class="rv"><strong>Montjuïc</strong> — cable car up for panoramic views. Montjuïc Castle. Magic Fountain (evenings, free).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Barcelona hotel — last night</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ MADRID ═══ -->
+<div class="city" data-g="SF C">
+  <div class="city-hdr bg-mad" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/es.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">Madrid</span><span class="city-dates">7–10 Oct · 3 nights</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Wed</div><div class="day-d">7 Oct</div></div><span class="day-loc">🚄 Barcelona → Madrid · Arrive</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🚄</span><span class="rl">Train</span><span class="rv">AVE high-speed Barcelona Sants → Madrid Atocha · ~2h30min · Book in advance on Renfe.</span></div>
+          <div class="row"><span class="ri">🏨</span><span class="rl">Hotel</span><span class="rv">Madrid hotel · Salamanca / Retiro area recommended · TBC</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv"><strong>Retiro Park</strong> — the Central Park of Madrid. Crystal Palace, rowing boats on the lake.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Casa Lucio (famous huevos rotos) or La Castela.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Madrid hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Thu</div><div class="day-d">8 Oct</div></div><span class="day-loc">🏟️ Bernabéu · Royal Palace</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">⚽</span><span class="rl">Football</span><span class="rv"><strong>Real Madrid match</strong> — first choice. Check 2026 La Liga fixture. If no match: <strong>Bernabéu Stadium Tour</strong> — museum, pitch, dressing rooms.</span></div>
+          <div class="row"><span class="ri">🏛️</span><span class="rl">Afternoon</span><span class="rv"><strong>Royal Palace (Palacio Real)</strong> — largest in Western Europe. Throne room, armoury, ceiling frescoes. Allow 2hrs.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Sobrino de Botín — world's oldest restaurant (1725). Roast suckling pig. Book weeks ahead.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Madrid hotel</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Fri</div><div class="day-d">9 Oct</div></div><span class="day-loc">🎨 Prado · Plaza Mayor · La Latina tapas</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🎨</span><span class="rl">Morning</span><span class="rv"><strong>Prado Museum</strong> — Velázquez, Goya, El Greco, Bosch. <span class="warn">Pre-book timed entry.</span> Must-see: Las Meninas, Saturn Devouring His Son.</span></div>
+          <div class="row"><span class="ri">🏛️</span><span class="rl">Afternoon</span><span class="rv">Plaza Mayor, Puerta del Sol (km 0 of Spain), Mercado San Miguel — tapas lunch crawl.</span></div>
+          <div class="row"><span class="ri">🍷</span><span class="rl">Evening</span><span class="rv"><strong>La Latina tapas crawl</strong> — Cava Baja street. Bar Txirimiri → El Almendro → wherever feels right.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Madrid hotel — last night</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ FLORENCE ═══ -->
+<div class="city" data-g="SF C">
+  <div class="city-hdr bg-flr" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/it.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">Florence / Tuscany</span><span class="city-dates">10–13 Oct · 3 nights</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sat</div><div class="day-d">10 Oct</div></div><span class="day-loc">✈️ Madrid → Florence</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">✈️</span><span class="rl">Flight</span><span class="rv">Madrid MAD → Florence FLR · Axis to organise · TBC</span></div>
+          <div class="row"><span class="ri">🏨</span><span class="rl">Hotel</span><span class="rv"><span class="warn">Still deciding: Florence city OR Chianti agriturismo — awaiting Max's call.</span></span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Buca Mario (oldest restaurant in Florence, 1886) or Il Latini (communal tables, enormous portions).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Florence hotel or Chianti agriturismo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Sun</div><div class="day-d">11 Oct</div></div><span class="day-loc">🏛️ Duomo · David · Ponte Vecchio</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Accademia Gallery</strong> — Michelangelo's David. <span class="warn">Pre-book timed entry.</span> Bigger and more moving than you expect.</span></div>
+          <div class="row"><span class="ri">🕌</span><span class="rl">Mid-morn</span><span class="rv"><strong>Florence Duomo</strong> — Brunelleschi's dome. Climb it (414 steps, pre-book) for the view. Baptistery Gates of Paradise.</span></div>
+          <div class="row"><span class="ri">🌉</span><span class="rl">Afternoon</span><span class="rv">Piazza della Signoria (open-air sculpture). Walk to <strong>Ponte Vecchio</strong> — medieval bridge with gold shops. Cross to Oltrarno.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Trattoria da Ruggero (Florentine home cooking) or Buca dell'Orafo (classic bistecca fiorentina).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Florence / Chianti</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Mon</div><div class="day-d">12 Oct</div></div><span class="day-loc">🖼️ Uffizi · Oltrarno · Piazzale sunset</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🎨</span><span class="rl">Morning</span><span class="rv"><strong>Uffizi Gallery</strong> — Botticelli's Birth of Venus, Leonardo, Raphael, Caravaggio. <span class="warn">Pre-book.</span> 2–3hrs focused visit.</span></div>
+          <div class="row"><span class="ri">🏛️</span><span class="rl">Afternoon</span><span class="rv">Oltrarno — Florence's quieter left bank. Palazzo Pitti and Boboli Gardens. Artisan workshops on Via Maggio.</span></div>
+          <div class="row"><span class="ri">🌅</span><span class="rl">Sunset</span><span class="rv"><strong>Piazzale Michelangelo</strong> — the famous overlook above Florence. One of the great views in Europe. 15min walk or bus 13.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Final Florence dinner — bistecca fiorentina (the T-bone, shared). Or Dario Cecchini in Panzano if staying in Chianti.</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Florence / Chianti — last night</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ ROME ═══ -->
+<div class="city" data-g="SF C">
+  <div class="city-hdr bg-rom" onclick="toggleCity(this.parentElement)">
+    <span class="city-flag"><img src="https://flagcdn.com/32x24/it.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name">Rome</span><span class="city-dates">13–16 Oct · 3 nights</span><span class="city-chev">▼</span>
+  </div>
+  <div class="city-body">
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Tue</div><div class="day-d">13 Oct</div></div><span class="day-loc">🚄 Florence → Rome · Check in Prati</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🚄</span><span class="rl">Train</span><span class="rv">Florence Santa Maria Novella → Roma Termini · Frecciarossa ~1h30min · Axis to book</span></div>
+          <div class="row"><span class="ri">🏨</span><span class="rl">Hotel</span><span class="rv">Prati neighbourhood — across the Tiber from Vatican. Safe, walkable, great restaurants. TBC.</span></div>
+          <div class="row"><span class="ri">🌆</span><span class="rl">Evening</span><span class="rv">Walk to Castel Sant'Angelo — extraordinary lit up at night. Ponte Sant'Angelo. One of Rome's great evening walks.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Il Sorpasso (Prati, modern Roman, great aperitivo) or La Zanzara (classic trattoria, great pasta).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Rome hotel, Prati</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Wed</div><div class="day-d">14 Oct</div></div><span class="day-loc">🏟️ Colosseum · Roman Forum · Palatine Hill</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🏟️</span><span class="rl">Morning</span><span class="rv"><strong>Colosseum</strong> — <span class="warn">Official skip-the-line ONLY via coopculture.it. NEVER buy from touts outside.</span> Allow 1.5hrs.</span></div>
+          <div class="row"><span class="ri">🏛️</span><span class="rl">Mid-morn</span><span class="rv"><strong>Roman Forum &amp; Palatine Hill</strong> — same ticket. The Forum was the centre of the ancient world.</span></div>
+          <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv">Circus Maximus (free). Capitoline Hill — Michelangelo-designed piazza, best view over the Forum.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Roscioli (extraordinary — book ahead) or Armando al Pantheon (classic Roman since 1961).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Rome hotel, Prati</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Thu</div><div class="day-d">15 Oct</div></div><span class="day-loc">⛪ Vatican · Sistine Chapel · St Peter's</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🏛️</span><span class="rl">Morning</span><span class="rv"><strong>Vatican Museums</strong> — <span class="warn">Book skip-the-line at museivaticani.va — queues without are 3–4hrs.</span> Allow 3+ hours.</span></div>
+          <div class="row"><span class="ri">🎨</span><span class="rl">Mid-morn</span><span class="rv"><strong>Sistine Chapel</strong> — Michelangelo's ceiling and The Last Judgment. Genuinely awe-inspiring in person.</span></div>
+          <div class="row"><span class="ri">⛪</span><span class="rl">Afternoon</span><span class="rv"><strong>St Peter's Basilica</strong> — free entry. Largest church in the world. Climb the dome for views over Rome.</span></div>
+          <div class="row"><span class="ri">🌆</span><span class="rl">Evening</span><span class="rv">Trastevere — Rome's most atmospheric neighbourhood. Cobblestoned, ivy-covered, perfect for a final evening.</span></div>
+          <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv">Da Enzo al 29 (the cacio e pepe — book ahead) or Felice a Testaccio (the carbonara, best in Rome).</span></div>
+          <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Rome hotel, Prati</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day conflict" data-g="SF C" onclick="toggle(this)">
+      <div class="day-hdr"><div class="day-dt"><div class="day-dow">Fri</div><div class="day-d">16 Oct</div></div><span class="day-loc">🏛️ Pantheon morning · SF departs EK98</span><span class="day-chev">▼</span></div>
+      <div class="day-body">
+        <div class="who"><span class="w wSF">SF</span><span class="w wC">C</span></div>
+        <div class="details">
+          <div class="row"><span class="ri">🌅</span><span class="rl">Morning</span><span class="rv"><strong>Pantheon</strong> — best-preserved ancient building in the world (125 AD). The oculus lets in light and rain. Piazza Navona and Campo de' Fiori market nearby.</span></div>
+          <div class="row"><span class="ri">🍝</span><span class="rl">Last lunch</span><span class="rv">Final lunch together. Trevi Fountain — throw a coin. 10min walk from Pantheon.</span></div>
+          <div class="row"><span class="ri">🚗</span><span class="rl">SF departs</span><span class="rv"><strong>Private car collects SF at hotel 1:00pm → FCO Airport.</strong> Confirmed with Max.</span></div>
+          <div class="row"><span class="ri">✈️</span><span class="rl">SF flight</span><span class="rv"><strong>EK98</strong> · Rome FCO → Dubai DXB · Dep <strong>15:45</strong> · Arr <strong>23:30</strong> · Emirates · Confirmed. Dubai connection → Adelaide 18 Oct. Back to work 19 Oct.</span></div>
+          <div class="row"><span class="ri">👋</span><span class="rl">Christine</span><span class="rv">Christine departs Rome — routing TBC. Safe travels! 🌍</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /wrap -->
 
 <script>
-let activeFilter = 'All';
+let cur = 'All';
 
-function setFilter(group, btn) {
-  activeFilter = group;
+function go(g, btn) {
+  cur = g;
+  // update buttons
   document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  applyFilter();
-}
-
-function setFilterDropdown(group) {
-  activeFilter = group;
-  applyFilter();
-}
-
-function applyFilter() {
-  // Route cards
-  document.querySelectorAll('.route-card').forEach(card => {
-    const groups = card.dataset.groups || '';
-    card.style.display = (activeFilter === 'All' || groups.includes(activeFilter)) ? '' : 'none';
+  if (btn) btn.classList.add('active');
+  else {
+    const b = document.querySelector('.fbtn-' + g);
+    if (b) b.classList.add('active');
+  }
+  // close everything first
+  document.querySelectorAll('.city').forEach(c => c.classList.remove('open'));
+  document.querySelectorAll('.day').forEach(d => d.classList.remove('open'));
+  // filter city sections
+  document.querySelectorAll('.city').forEach(city => {
+    const cg = city.dataset.g || '';
+    city.classList.toggle('hidden', g !== 'All' && !cg.split(' ').includes(g));
   });
-  // Day items
-  document.querySelectorAll('.day-item').forEach(item => {
-    const groups = item.dataset.groups || '';
-    item.classList.toggle('hidden', activeFilter !== 'All' && !groups.includes(activeFilter));
-  });
-  // Booking items
-  document.querySelectorAll('.booking-item').forEach(item => {
-    const groups = item.dataset.groups || '';
-    item.classList.toggle('hidden', activeFilter !== 'All' && !groups.includes(activeFilter));
-  });
-  // Traveller cards
-  document.querySelectorAll('.trav-card').forEach(card => {
-    const groups = card.dataset.groups || '';
-    card.style.display = (activeFilter === 'All' || groups.includes(activeFilter)) ? '' : 'none';
+  // filter days
+  document.querySelectorAll('.day').forEach(day => {
+    const dg = day.dataset.g || '';
+    day.classList.toggle('hidden', g !== 'All' && !dg.split(' ').includes(g));
   });
 }
 
-function showTab(id, btn) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  btn.classList.add('active');
+function toggle(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.day.open').forEach(d => d.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
 }
-
-function toggleDay(el) {
-  el.classList.toggle('open');
+function toggleCity(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.city.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
 }
 </script>
 </body>
