@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Europe 2026 — Family Trip</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --ink:      #1c1a17;
+    --paper:    #faf7f2;
+    --warm:     #f0ebe0;
+    --rule:     #e2dbd0;
+    --green:    #2a5c45;
+    --green-lt: #e8f2ec;
+    --blue:     #1e4a7a;
+    --blue-lt:  #e6eff8;
+    --gold:     #b8860b;
+    --gold-lt:  #fef9e7;
+    --red:      #c0392b;
+    --serif:    'Playfair Display', Georgia, serif;
+    --sans:     'Inter', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* ── MASTHEAD ───────────────────────────────────────────── */
+  .masthead {
+    background: var(--green);
+    color: white;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .masthead-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin-bottom: 0.5rem;
+  }
+  .masthead h1 {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+  .masthead-sub {
+    opacity: 0.75;
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+  }
+  .masthead-stats {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    padding: 0.45rem 0.9rem;
+    text-align: center;
+    min-width: 80px;
+  }
+  .stat-val { font-size: 1.3rem; font-weight: 700; font-family: var(--serif); }
+  .stat-lbl { font-size: 0.6rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.1rem; }
+
+  /* ── TABS ───────────────────────────────────────────────── */
+  .tab-bar {
+    background: white;
+    border-bottom: 2px solid var(--rule);
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 0.9rem 1.2rem;
+    border: none;
+    border-bottom: 3px solid transparent;
+    background: none;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 0.84rem;
+    color: #888;
+    white-space: nowrap;
+    font-weight: 500;
+    transition: color 0.15s;
+    margin-bottom: -2px;
+  }
+  .tab-btn.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+    font-weight: 600;
+  }
+
+  /* ── LAYOUT ─────────────────────────────────────────────── */
+  .content { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── SECTION HEADERS ────────────────────────────────────── */
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--green);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.4rem;
+    margin: 1.5rem 0 0.85rem;
+  }
+  .section-title:first-child { margin-top: 0; }
+
+  /* ── ROUTE CARDS ────────────────────────────────────────── */
+  .route-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+  @media (max-width: 600px) { .route-grid { grid-template-columns: 1fr; } }
+
+  .route-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1.5px solid var(--rule);
+  }
+  .route-card.sf { border-color: var(--green); }
+  .route-card.aa { border-color: var(--blue); }
+
+  .route-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .route-label.sf { color: var(--green); }
+  .route-label.aa { color: var(--blue); }
+
+  .route-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.28rem 0;
+    border-bottom: 1px solid #f4f0e8;
+    font-size: 0.82rem;
+  }
+  .route-row:last-child { border-bottom: none; }
+  .route-city { font-weight: 600; flex: 1; }
+  .route-date { color: #888; font-size: 0.72rem; white-space: nowrap; }
+  .nights-badge {
+    font-size: 0.63rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .nights-badge.sf { background: var(--green-lt); color: var(--green); }
+  .nights-badge.aa { background: var(--blue-lt); color: var(--blue); }
+
+  /* ── TOGETHER BANNER ────────────────────────────────────── */
+  .together-note {
+    background: var(--green-lt);
+    border: 1px solid #b8d9c8;
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    font-size: 0.81rem;
+    color: var(--green);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* ── ITINERARY ──────────────────────────────────────────── */
+  .day-item {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    margin-bottom: 0.4rem;
+    overflow: hidden;
+  }
+  .day-item.split-day { border-color: #f0c040; }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .day-header:hover { background: #faf7f2; }
+
+  .day-date {
+    font-size: 0.7rem;
+    color: #999;
+    width: 80px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .day-loc {
+    font-weight: 600;
+    font-size: 0.88rem;
+    flex: 1;
+  }
+  .day-chevron {
+    font-size: 0.65rem;
+    color: #bbb;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .day-item.open .day-chevron { transform: rotate(180deg); }
+
+  .day-body {
+    display: none;
+    padding: 0.75rem 1rem 1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .day-item.open .day-body { display: block; }
+
+  .day-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+  @media (max-width: 500px) { .day-split-grid { grid-template-columns: 1fr; } }
+
+  .day-panel {
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.81rem;
+    line-height: 1.45;
+  }
+  .day-panel.sf { background: var(--green-lt); border: 1px solid #b8d9c8; }
+  .day-panel.aa { background: var(--blue-lt); border: 1px solid #b0cce8; }
+  .day-panel.both { background: var(--green-lt); border: 1px solid #b8d9c8; }
+
+  .panel-who {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+  .panel-who.sf { color: var(--green); }
+  .panel-who.aa { color: var(--blue); }
+  .panel-who.both { color: var(--green); }
+
+  /* ── STATUS BADGES ──────────────────────────────────────── */
+  .badge {
+    font-size: 0.66rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-confirmed { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+  .badge-book      { background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+  .badge-prebook   { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+  .badge-tbc       { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+  /* ── OPEN ITEMS ─────────────────────────────────────────── */
+  .open-list {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .open-row {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid #f4f0e8;
+    font-size: 0.83rem;
+    align-items: flex-start;
+  }
+  .open-row:last-child { border-bottom: none; }
+  .open-row.urgent { background: #fffbf0; }
+  .open-icon { flex-shrink: 0; margin-top: 1px; }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-eyebrow">Family Holiday · 2026</div>
+  <h1>Europe 2026 🌍</h1>
+  <p class="masthead-sub">11 Sep – 18 Oct · Adelaide → Greece → Paris → Barcelona → Madrid → Florence → Rome → Home</p>
+  <div class="masthead-stats">
+    <div class="stat"><div class="stat-val">38</div><div class="stat-lbl">Days</div></div>
+    <div class="stat"><div class="stat-val">7</div><div class="stat-lbl">Countries</div></div>
+    <div class="stat"><div class="stat-val">11 Sep</div><div class="stat-lbl">Depart ADL</div></div>
+    <div class="stat"><div class="stat-val">18 Oct</div><div class="stat-lbl">Home ADL</div></div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview', this)">🗺️ Overview</button>
+  <button class="tab-btn" onclick="showTab('itinerary', this)">📅 Itinerary</button>
+  <button class="tab-btn" onclick="showTab('notes', this)">📌 Key Notes</button>
+</div>
+
+<!-- ── OVERVIEW ───────────────────────────────────────────── -->
+<div class="content">
+<div id="panel-overview" class="panel active">
+
+  <p class="section-title">Our Routes</p>
+
+  <div class="route-grid">
+    <div class="route-card sf">
+      <div class="route-label sf">🟢 Sam &amp; Fiona</div>
+      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-badge sf">2n</span><span class="route-date">13–14 Sep</span></div>
+      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-badge sf">7n</span><span class="route-date">15–21 Sep</span></div>
+      <div class="route-row"><span>🫒</span><span class="route-city">Kalamata</span><span class="nights-badge sf">4n</span><span class="route-date">22–25 Sep</span></div>
+      <div class="route-row"><span>🏰</span><span class="route-city">Paris — Disney + City</span><span class="nights-badge sf">6n</span><span class="route-date">27 Sep–3 Oct</span></div>
+      <div class="route-row"><span>🦜</span><span class="route-city">Barcelona</span><span class="nights-badge sf">4n</span><span class="route-date">3–7 Oct</span></div>
+      <div class="route-row"><span>⚽</span><span class="route-city">Madrid</span><span class="nights-badge sf">3n</span><span class="route-date">7–10 Oct</span></div>
+      <div class="route-row"><span>🌸</span><span class="route-city">Florence/Tuscany</span><span class="nights-badge sf">3n</span><span class="route-date">10–13 Oct</span></div>
+      <div class="route-row"><span>🏛️</span><span class="route-city">Rome</span><span class="nights-badge sf">3n</span><span class="route-date">13–16 Oct</span></div>
+      <div class="route-row"><span>✈️</span><span class="route-city">EK98 → Dubai → Adelaide</span><span class="nights-badge sf"></span><span class="route-date">16 Oct · home 18 Oct</span></div>
+    </div>
+
+    <div class="route-card aa">
+      <div class="route-label aa">🔵 Alex &amp; Alex</div>
+      <div class="route-row"><span>🏛️</span><span class="route-city">Athens</span><span class="nights-badge aa">2n</span><span class="route-date">13–14 Sep</span></div>
+      <div class="route-row"><span>🏖️</span><span class="route-city">Ikaria</span><span class="nights-badge aa">7n</span><span class="route-date">15–21 Sep</span></div>
+      <div class="route-row"><span>🫒</span><span class="route-city">Kalamata</span><span class="nights-badge aa">4n</span><span class="route-date">22–25 Sep</span></div>
+      <div class="route-row"><span>🏰</span><span class="route-city">Paris — Disney + City</span><span class="nights-badge aa">6n</span><span class="route-date">27 Sep–3 Oct</span></div>
+      <div class="route-row"><span>🇷🇸</span><span class="route-city">Serbia</span><span class="nights-badge aa">5n</span><span class="route-date">3–8 Oct</span></div>
+      <div class="route-row"><span>🌸</span><span class="route-city">Florence/Tuscany</span><span class="nights-badge aa">~5n</span><span class="route-date">~8–13 Oct</span></div>
+      <div class="route-row"><span>🏛️</span><span class="route-city">Rome</span><span class="nights-badge aa">3n</span><span class="route-date">13–16 Oct</span></div>
+      <div class="route-row"><span>✈️</span><span class="route-city">Rome → Home</span><span class="nights-badge aa"></span><span class="route-date">~16 Oct</span></div>
+    </div>
+  </div>
+
+  <div class="together-note">
+    ✅ <strong>Everyone together:</strong> Greece (13–26 Sep) · Paris Disney + City (27 Sep–3 Oct) · Florence/Tuscany (from ~8 Oct) · Rome (13–16 Oct)
+  </div>
+
+</div>
+
+<!-- ── ITINERARY ──────────────────────────────────────────── -->
+<div id="panel-itinerary" class="panel">
+  <p class="section-title">Day by Day — click to expand</p>
+
+  <!-- GREECE BLOCK -->
+  <div class="day-item" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">13–14 Sep</span>
+      <span class="day-loc">🏛️ Athens</span>
+      <span class="badge badge-prebook">Pre-book</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-panel both">
+        <div class="panel-who both">🟢🔵 All together</div>
+        Day 1: Arrive, recover, easy walk around Plaka.<br>
+        Day 2: Acropolis + Acropolis Museum (pre-book entry). Dinner at Kuzina or Mani Mani.
+      </div>
+    </div>
+  </div>
+
+  <div class="day-item" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">15–21 Sep</span>
+      <span class="day-loc">🏖️ Ikaria — 7 nights</span>
+      <span class="badge badge-tbc">TBC</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-panel both">
+        <div class="panel-who both">🟢🔵 All together</div>
+        Seven nights on the island. Beach days, village walks, Panagiria festival (if dates align), local tavernas. Slow pace — this is the rest leg before the city marathon.
+      </div>
+    </div>
+  </div>
+
+  <div class="day-item" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">22–25 Sep</span>
+      <span class="day-loc">🫒 Kalamata / Vasilitsi</span>
+      <span class="badge badge-tbc">TBC</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-panel both">
+        <div class="panel-who both">🟢🔵 All together</div>
+        Peloponnese coast. Optional day trip to Methoni, Koroni, or Pylos. Beach, pool, final Peloponnese dinner.
+      </div>
+    </div>
+  </div>
+
+  <!-- PARIS -->
+  <div class="day-item" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">27–29 Sep</span>
+      <span class="day-loc">🏰 Disneyland Paris — ALL</span>
+      <span class="badge badge-confirmed">Confirmed</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-panel both">
+        <div class="panel-who both">🟢🔵 All together</div>
+        Fly Athens → Paris (AF1533, dep 14:40). Private car to Disneyland hotel. 2 full days in the parks — passes pre-paid, QR codes sent. <strong>Note: test QR on iPhone — Android Play Store issues in AU.</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-item" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">30 Sep–3 Oct</span>
+      <span class="day-loc">🗼 Paris — City</span>
+      <span class="badge badge-tbc">TBC</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-panel both">
+        <div class="panel-who both">🟢🔵 All together</div>
+        Eiffel Tower · Notre-Dame · Seine river cruise · Musée d'Orsay · Musée de l'Orangerie · Sacré-Cœur (optional). Louvre skipped — already done. Pre-book everything.
+      </div>
+    </div>
+  </div>
+
+  <!-- SPLIT -->
+  <div class="day-item split-day" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">3–7 Oct</span>
+      <span class="day-loc">⚠️ Routes split — BCN vs Serbia</span>
+      <span class="badge badge-book">Book</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-split-grid">
+        <div class="day-panel sf">
+          <div class="panel-who sf">🟢 Sam &amp; Fiona (+ Chris Hatzi)</div>
+          Barcelona 4 nights. Sagrada Família · Gothic Quarter · La Boqueria · Park Güell · Gaudí sites. Uncle Greg &amp; Aunty Gail join ~2 Oct. Possible match. Hotel TBC (Corner Hotel Eixample suggested).
+        </div>
+        <div class="day-panel aa">
+          <div class="panel-who aa">🔵 Alex &amp; Alex</div>
+          🇷🇸 Serbia — 5 nights (Belgrade TBC). Then fly to join everyone for Florence/Tuscany from ~8 Oct.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK TOGETHER -->
+  <div class="day-item" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">7–10 Oct</span>
+      <span class="day-loc">⚽ Madrid — ALL</span>
+      <span class="badge badge-tbc">TBC</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-panel both">
+        <div class="panel-who both">🟢🔵 All together</div>
+        Bernabéu (match if available, else stadium tour) · Royal Palace · Plaza Mayor · Retiro Park · Prado Museum.
+      </div>
+    </div>
+  </div>
+
+  <div class="day-item" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">10–13 Oct</span>
+      <span class="day-loc">🌸 Florence/Tuscany — ALL</span>
+      <span class="badge badge-tbc">TBC</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-panel both">
+        <div class="panel-who both">🟢🔵 All together</div>
+        <strong>Still deciding: Florence city base vs Chianti agriturismo.</strong><br>
+        Florence: David (Accademia) · Duomo · Ponte Vecchio · Uffizi.<br>
+        Chianti: winery days · Greve · Panzano · no self-drive after tastings.
+      </div>
+    </div>
+  </div>
+
+  <div class="day-item" onclick="toggleDay(this)">
+    <div class="day-header">
+      <span class="day-date">13–16 Oct</span>
+      <span class="day-loc">🏛️ Rome — ALL</span>
+      <span class="badge badge-prebook">Pre-book</span>
+      <span class="day-chevron">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="day-panel both">
+        <div class="panel-who both">🟢🔵 All together</div>
+        Colosseum + Roman Forum (skip-the-line) · Vatican Museums + Sistine Chapel (skip-the-line) · St Peter's Basilica · Pantheon (16 Oct morning).<br><br>
+        <strong>16 Oct:</strong> Sam &amp; Fiona depart 1pm private car → FCO → EK98 dep 15:45 → Dubai → Adelaide 18 Oct.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── KEY NOTES ──────────────────────────────────────────── -->
+<div id="panel-notes" class="panel">
+  <p class="section-title">⚠️ Decisions needed</p>
+  <div class="open-list">
+    <div class="open-row urgent"><span class="open-icon">⚠️</span><span><strong>Disney QR passes</strong> — test on iPhone immediately. Android Play Store issues in AU — may not scan.</span></div>
+    <div class="open-row urgent"><span class="open-icon">⚠️</span><span><strong>Florence vs Chianti</strong> — awaiting Max's recommendation on day-of transfer logistics.</span></div>
+    <div class="open-row urgent"><span class="open-icon">⚠️</span><span><strong>Uncle Greg &amp; Aunty Gail</strong> — Barcelona room cost (2–6 Oct) TBC. Corner Hotel Eixample to confirm.</span></div>
+    <div class="open-row urgent"><span class="open-icon">⚠️</span><span><strong>SF: Dubai→Adelaide</strong> connecting flight number unknown — confirm with Max or Emirates.</span></div>
+    <div class="open-row urgent"><span class="open-icon">⚠️</span><span><strong>AA: Serbia→Florence</strong> flight (~8 Oct) — book once Florence/Chianti decision confirmed.</span></div>
+  </div>
+
+  <p class="section-title">📋 Pre-book these now</p>
+  <div class="open-list">
+    <div class="open-row"><span class="open-icon">🎟️</span><span>Acropolis — timed entry</span></div>
+    <div class="open-row"><span class="open-icon">🎟️</span><span>Eiffel Tower — timed entry</span></div>
+    <div class="open-row"><span class="open-icon">🎟️</span><span>Notre-Dame — timed entry (post-restoration)</span></div>
+    <div class="open-row"><span class="open-icon">🎟️</span><span>Musée d'Orsay &amp; Musée de l'Orangerie</span></div>
+    <div class="open-row"><span class="open-icon">🎟️</span><span>Sagrada Família — book months ahead</span></div>
+    <div class="open-row"><span class="open-icon">🎟️</span><span>Colosseum + Roman Forum — skip-the-line official only</span></div>
+    <div class="open-row"><span class="open-icon">🎟️</span><span>Vatican Museums + Sistine Chapel — skip-the-line</span></div>
+    <div class="open-row"><span class="open-icon">🎟️</span><span>Accademia (David) — if Florence city base chosen</span></div>
+  </div>
+
+  <p class="section-title">✅ Already confirmed</p>
+  <div class="open-list">
+    <div class="open-row"><span class="open-icon">✅</span><span>AF1533 ATH→CDG dep 14:40 arr 17:15 — 27 Sep</span></div>
+    <div class="open-row"><span class="open-icon">✅</span><span>EK98 FCO→DXB dep 15:45 arr 23:30 — 16 Oct (SF)</span></div>
+    <div class="open-row"><span class="open-icon">✅</span><span>Disneyland Paris passes — QR codes sent (test iPhone)</span></div>
+    <div class="open-row"><span class="open-icon">✅</span><span>Private car transfers: CDG → Disneyland hotel · FCO pickup 1pm 16 Oct</span></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleDay(el) {
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
