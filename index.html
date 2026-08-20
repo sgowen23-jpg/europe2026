@@ -180,7 +180,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
 <div class="wrap">
 
 <!-- ═══ ADELAIDE / TRANSIT ═══ -->
-<div class="city" data-g="SF AA CE JM DK M C">
+<div class="city" data-g="SF AA CE JM DK M C" data-autopen>
   <div class="city-hdr bg-adelaide" onclick="toggleCity(this.parentElement)">
     <span class="city-flag"><img src="https://flagcdn.com/32x24/au.png" style="height:18px;vertical-align:middle;border-radius:2px;"></span><span class="city-name" data-kid-name="🎬 The Adventure Begins!">Adelaide</span><span class="city-dates">11–13 Sep</span><span class="city-chev">▼</span>
   </div>
@@ -1035,7 +1035,16 @@ function toggle(el) {
 function toggleCity(el) {
   const isOpen = el.classList.contains('open');
   document.querySelectorAll('.city.open').forEach(c => c.classList.remove('open'));
-  if (!isOpen) el.classList.add('open');
+  if (!isOpen) {
+    el.classList.add('open');
+    // Auto-open the day inside single-item sections (or sections flagged data-autopen),
+    // so opening the city reveals its content without a second click.
+    const days = [...el.querySelectorAll('.day')].filter(d => !d.classList.contains('hidden'));
+    if (days.length === 1 || el.hasAttribute('data-autopen')) {
+      document.querySelectorAll('.day.open').forEach(d => d.classList.remove('open'));
+      if (days[0]) days[0].classList.add('open');
+    }
+  }
 }
 </script>
 </body>
