@@ -98,8 +98,6 @@ body.landing .masthead,body.landing .filter-bar,body.landing .wrap{display:none;
 .fam-tile:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,40,70,0.10);}
 .ft-code{font-size:1.7rem;font-weight:300;letter-spacing:0.05em;line-height:1;}
 .ft-name{font-size:0.72rem;font-weight:500;color:#555;}
-.everyone-tile{width:100%;max-width:440px;margin-top:0.7rem;background:#fff;border:1.5px solid #cfcfc8;border-radius:14px;padding:0.95rem;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.9rem;font-weight:600;color:#555;transition:transform .15s ease,box-shadow .15s ease;box-shadow:0 1px 2px rgba(20,40,70,0.05);}
-.everyone-tile:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,40,70,0.08);}
 .ft-SF{border-color:#2a5c45;} .ft-SF .ft-code{color:#2a5c45;}
 .ft-C{border-color:#a07820;} .ft-C .ft-code{color:#a07820;}
 .ft-M{border-color:#1a6b6b;} .ft-M .ft-code{color:#1a6b6b;}
@@ -107,6 +105,7 @@ body.landing .masthead,body.landing .filter-bar,body.landing .wrap{display:none;
 .ft-AA{border-color:#6a3a8a;} .ft-AA .ft-code{color:#6a3a8a;}
 .ft-CE{border-color:#c05a10;} .ft-CE .ft-code{color:#c05a10;}
 .ft-JM{border-color:#a03060;} .ft-JM .ft-code{color:#a03060;}
+.ft-All{border-color:#8a8a82;} .ft-All .ft-code{font-size:1.5rem;} .ft-All .ft-name{color:#8a8a82;font-weight:600;}
 .mast-logo{cursor:pointer;}
 .disney-logo{filter:none;}
 body.kids-view .disney-logo{filter:invert(1);}
@@ -222,8 +221,8 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
     <button class="fam-tile ft-AA" onclick="pickFamily('AA')"><span class="ft-code">AA</span><span class="ft-name">Alex &amp; Alex</span></button>
     <button class="fam-tile ft-CE" onclick="pickFamily('CE')"><span class="ft-code">CE</span><span class="ft-name">Christos &amp; Erin</span></button>
     <button class="fam-tile ft-JM" onclick="pickFamily('JM')"><span class="ft-code">JM</span><span class="ft-name">Martine &amp; Jake</span></button>
+    <button class="fam-tile ft-All" onclick="pickFamily('All')"><span class="ft-code">👥</span><span class="ft-name">Everyone</span></button>
   </div>
-  <button class="everyone-tile" onclick="pickFamily('All')">👥 Everyone · the whole trip</button>
 </div>
 
 <div id="kidsBanner">
