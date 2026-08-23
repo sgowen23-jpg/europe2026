@@ -54,9 +54,36 @@ body{font-family:'Inter',sans-serif;background:#faf7f2;color:#1c1a17;font-size:1
 .city-dates{font-size:0.7rem;opacity:0.75;}
 .city-chev{font-size:0.6rem;opacity:0.7;transition:transform 0.2s;}
 .city.open .city-chev{transform:rotate(180deg);}
-/* Adult view: uniform off-white city headers with blue outline + blue text
-   (overrides the per-country .bg-* gradients; Kids view keeps its colours). */
-body:not(.kids-view) .city-hdr{background:#f3f5f4;color:#214e75;border:1.5px solid #214e75;}
+/* ── Refined premium theme (adult view only; Kids view keeps its colours) ── */
+/* timeline spine down the left of the itinerary */
+body:not(.kids-view) .wrap{position:relative;padding-left:30px;}
+body:not(.kids-view) .wrap::before{content:'';position:absolute;left:12px;top:10px;bottom:26px;width:2px;background:linear-gradient(180deg,#214e75,rgba(33,78,117,0.10));border-radius:2px;}
+body:not(.kids-view) .city{margin-bottom:0.6rem;}
+/* city header as a soft floating card (replaces the per-country gradients) */
+body:not(.kids-view) .city-hdr{
+  position:relative;background:#fff;color:#214e75;
+  padding:0.74rem 1rem;border-radius:12px;
+  border:1px solid rgba(33,78,117,0.12);
+  box-shadow:0 1px 2px rgba(20,40,70,0.05),0 3px 10px rgba(20,40,70,0.045);
+  transition:box-shadow .18s ease,transform .18s ease,border-color .18s ease;
+}
+body:not(.kids-view) .city-hdr:hover{opacity:1;transform:translateY(-1px);box-shadow:0 7px 20px rgba(20,40,70,0.10);}
+body:not(.kids-view) .city.open .city-hdr{box-shadow:0 7px 20px rgba(20,40,70,0.10);border-color:rgba(33,78,117,0.24);}
+/* timeline node — outline dot, fills solid when the city is open */
+body:not(.kids-view) .city-hdr::before{
+  content:'';position:absolute;left:-23px;top:50%;transform:translateY(-50%);
+  width:12px;height:12px;border-radius:50%;background:#fff;
+  border:2.5px solid #214e75;box-shadow:0 0 0 4px #faf7f2;z-index:2;transition:background .18s ease;
+}
+body:not(.kids-view) .city.open .city-hdr::before{background:#214e75;}
+/* type refinements */
+body:not(.kids-view) .city-name{font-size:1.05rem;letter-spacing:0.005em;}
+body:not(.kids-view) .city-dates{font-size:0.68rem;font-weight:500;letter-spacing:0.02em;opacity:0.72;}
+/* smooth reveal when a city opens */
+@keyframes cityReveal{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
+body:not(.kids-view) .city.open .city-body{animation:cityReveal .22s ease;}
+/* trip countdown pill in the masthead */
+.trip-count{display:inline-block;margin-top:0.5rem;font-size:0.7rem;font-weight:600;color:#214e75;background:rgba(33,78,117,0.08);border:1px solid rgba(33,78,117,0.18);padding:0.22rem 0.65rem;border-radius:999px;letter-spacing:0.01em;}
 .disney-logo{filter:none;}
 body.kids-view .disney-logo{filter:invert(1);}
 .city-body{display:none;padding-top:0.3rem;}
@@ -169,6 +196,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
     <div class="mast-text">
       <h1 id="mastTitle">Hatzing a Dynasty 26</h1>
       <p id="mastSub">11 Sep – 17 Oct · Select your name to see your trip</p>
+      <div class="trip-count" id="tripCount"></div>
     </div>
   </div>
 </div>
@@ -1091,6 +1119,20 @@ function toggleCity(el) {
         localStorage.setItem('iosHintDismissed', '1');
       };
     }
+  })();
+</script>
+
+<!-- Trip countdown -->
+<script>
+  (function(){
+    var el = document.getElementById('tripCount');
+    if (!el) return;
+    var start = new Date(2026, 8, 11);           // 11 Sep 2026 (month is 0-indexed)
+    var now = new Date(); now.setHours(0,0,0,0);
+    var days = Math.round((start - now) / 86400000);
+    el.textContent = days > 0 ? ('✈️ ' + days + ' days to go')
+                   : days === 0 ? '✈️ Departure day!'
+                   : '🌍 On the trip now';
   })();
 </script>
 
