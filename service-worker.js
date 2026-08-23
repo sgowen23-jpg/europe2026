@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'hatzing26-v4';
+const CACHE_VERSION = 'hatzing26-v5';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 const CORE_ASSETS = [
   './',
@@ -36,44 +36,56 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Network-first for the HTML page, with a timeout fallback to cache.
+async function networkFirst(req) {
+  const cache = await caches.open(CACHE_VERSION);
+  try {
+    const network = fetch(req);
+    // If the network is slow/flaky, fall back to cache after 4s.
+    const res = await Promise.race([
+      network,
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
+    ]);
+    cache.put('./index.html', res.clone());
+    return res;
+  } catch {
+    return (await cache.match('./index.html')) || (await cache.match(req)) || Response.error();
+  }
+}
+
+// Cache-first for stable assets (icons, manifest, flags, fonts).
+async function cacheFirst(req, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(req);
+  if (cached) return cached;
+  try {
+    const res = await fetch(req);
+    cache.put(req, res.clone());
+    return res;
+  } catch {
+    return cached || Response.error();
+  }
+}
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
 
-  // Runtime cache-first for the cross-origin assets (flags + Google Fonts)
-  // so offline still shows flags and the correct fonts.
-  if (RUNTIME_HOSTS.includes(url.hostname)) {
-    event.respondWith(
-      caches.open(RUNTIME_CACHE).then(async (cache) => {
-        const cached = await cache.match(req);
-        if (cached) return cached;
-        try {
-          const res = await fetch(req);
-          cache.put(req, res.clone());
-          return res;
-        } catch {
-          return cached || Response.error();
-        }
-      })
-    );
+  // The itinerary page itself: NETWORK-FIRST so content updates flow through
+  // automatically whenever online. Falls back to the cached page when offline.
+  if (req.mode === 'navigate') {
+    event.respondWith(networkFirst(req));
     return;
   }
 
-  // App shell: cache-first, fall back to network, then to cached index for navigations.
-  event.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) return cached;
-      return fetch(req)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE_VERSION).then((c) => c.put(req, copy));
-          return res;
-        })
-        .catch(() => {
-          if (req.mode === 'navigate') return caches.match('./index.html');
-        });
-    })
-  );
+  // Cross-origin flags + Google Fonts: cache-first (stable, needed offline).
+  if (RUNTIME_HOSTS.includes(url.hostname)) {
+    event.respondWith(cacheFirst(req, RUNTIME_CACHE));
+    return;
+  }
+
+  // Same-origin static assets (icons, manifest): cache-first.
+  event.respondWith(cacheFirst(req, CACHE_VERSION));
 });

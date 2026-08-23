@@ -1097,10 +1097,21 @@ function toggleCity(el) {
 <!-- PWA service worker registration (scope-safe relative path for /europe2026/) -->
 <script>
   if ('serviceWorker' in navigator) {
+    // Auto-reload once when a new service worker takes control (new version is live).
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js').catch((e) =>
-        console.warn('SW registration failed:', e)
-      );
+      navigator.serviceWorker.register('service-worker.js').then((reg) => {
+        reg.update();
+        // Re-check for a new version whenever the app is brought back to the foreground.
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update();
+        });
+      }).catch((e) => console.warn('SW registration failed:', e));
     });
   }
 </script>
