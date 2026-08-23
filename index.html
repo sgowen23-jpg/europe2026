@@ -106,6 +106,9 @@ body.landing .masthead,body.landing .filter-bar,body.landing .wrap{display:none;
 .ft-CE{border-color:#c05a10;} .ft-CE .ft-code{color:#c05a10;}
 .ft-JM{border-color:#a03060;} .ft-JM .ft-code{color:#a03060;}
 .ft-All{border-color:#8a8a82;} .ft-All .ft-code{font-size:1.5rem;} .ft-All .ft-name{color:#8a8a82;font-weight:600;}
+.kids-mode-btn{width:100%;max-width:440px;margin-top:1rem;background:linear-gradient(90deg,#fb923c,#f472b6,#a78bfa);color:#fff;border:none;border-radius:14px;padding:0.95rem;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:800;letter-spacing:0.02em;box-shadow:0 4px 14px rgba(244,114,182,0.35);transition:transform .15s ease,box-shadow .15s ease;}
+.kids-mode-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(244,114,182,0.45);}
+body.landing #kidsBanner{display:none;}
 .mast-logo{cursor:pointer;}
 .disney-logo{filter:none;}
 body.kids-view .disney-logo{filter:invert(1);}
@@ -223,6 +226,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
     <button class="fam-tile ft-JM" onclick="pickFamily('JM')"><span class="ft-code">JM</span><span class="ft-name">Martine &amp; Jake</span></button>
     <button class="fam-tile ft-All" onclick="pickFamily('All')"><span class="ft-code">👥</span><span class="ft-name">Everyone</span></button>
   </div>
+  <button class="kids-mode-btn" onclick="pickKidsMode()">🎡 Kids mode</button>
 </div>
 
 <div id="kidsBanner">
@@ -1098,8 +1102,17 @@ function pickFamily(g) {
   go(g, null);
   window.scrollTo(0, 0);
 }
+function pickKidsMode() {
+  document.body.classList.remove('landing');
+  go('All', null);
+  var kidsBtn = document.querySelectorAll('.viewbtn')[1];
+  setView('kids', kidsBtn);
+  window.scrollTo(0, 0);
+}
 function showWelcome() {
   document.body.classList.add('landing');
+  // reset to the neutral adult state so the landing always looks clean
+  setView('adult', document.querySelectorAll('.viewbtn')[0]);
   window.scrollTo(0, 0);
 }
 function go(g, btn) {
