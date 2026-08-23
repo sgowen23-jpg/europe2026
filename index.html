@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hatzing a Dynasty 26</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<meta name="theme-color" content="#1f4e79" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<!-- iOS standalone hints -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Hatzing" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&family=Inter:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -1046,6 +1054,42 @@ function toggleCity(el) {
     }
   }
 }
+</script>
+
+<!-- iOS "Add to Home Screen" hint (Safari has no auto install prompt) -->
+<div id="ios-install-hint" style="display:none;position:fixed;left:12px;right:12px;bottom:12px;
+     background:#1f4e79;color:#fff;padding:12px 14px;border-radius:12px;font:14px system-ui;
+     box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:9999;">
+  Install: tap <strong>Share</strong> then <strong>Add to Home Screen</strong>.
+  <span id="ios-install-close" style="float:right;cursor:pointer;font-weight:bold;">✕</span>
+</div>
+<script>
+  (function () {
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isSafari = /^((?!crios|fxios|edgios).)*safari/i.test(navigator.userAgent);
+    const standalone = window.navigator.standalone === true;
+    const dismissed = localStorage.getItem('iosHintDismissed') === '1';
+    if (isIOS && isSafari && !standalone && !dismissed) {
+      const el = document.getElementById('ios-install-hint');
+      if (el) el.style.display = 'block';
+      const close = document.getElementById('ios-install-close');
+      if (close) close.onclick = () => {
+        el.style.display = 'none';
+        localStorage.setItem('iosHintDismissed', '1');
+      };
+    }
+  })();
+</script>
+
+<!-- PWA service worker registration (scope-safe relative path for /europe2026/) -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js').catch((e) =>
+        console.warn('SW registration failed:', e)
+      );
+    });
+  }
 </script>
 </body>
 </html>
