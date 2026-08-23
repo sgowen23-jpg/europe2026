@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'hatzing26-v3';
+const CACHE_VERSION = 'hatzing26-v4';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 const CORE_ASSETS = [
   './',
