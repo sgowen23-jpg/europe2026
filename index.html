@@ -254,29 +254,6 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
   </div>
 </div>
 
-<div class="filter-bar">
-  <span class="filter-label">Who are you?</span>
-  <div class="btns">
-    <button class="fbtn fbtn-All active" onclick="go('All',this)">Everyone</button>
-    <button class="fbtn fbtn-SF"  onclick="go('SF',this)">Sam &amp; Fiona</button>
-    <button class="fbtn fbtn-C"   onclick="go('C',this)">Christine</button>
-    <button class="fbtn fbtn-M"   onclick="go('M',this)">Manuel</button>
-    <button class="fbtn fbtn-DK"  onclick="go('DK',this)">Denes &amp; Kay</button>
-    <button class="fbtn fbtn-AA"  onclick="go('AA',this)">Alex &amp; Alex</button>
-    <button class="fbtn fbtn-CE"  onclick="go('CE',this)">Christos &amp; Erin</button>
-    <button class="fbtn fbtn-JM"  onclick="go('JM',this)">Martine &amp; Jake</button>
-  </div>
-  <select class="mob-select" onchange="go(this.value,null)">
-    <option value="All">Everyone</option>
-    <option value="SF">Sam &amp; Fiona</option>
-    <option value="C">Christine</option>
-    <option value="M">Manuel</option>
-    <option value="DK">Denes &amp; Kay</option>
-    <option value="AA">Alex &amp; Alex</option>
-    <option value="CE">Christos &amp; Erin</option>
-    <option value="JM">Martine &amp; Jake</option>
-  </select>
-</div>
 </div>
 
 <div class="wrap">
@@ -1076,7 +1053,7 @@ function setView(view, btn) {
   if (sub.dataset.adultText === undefined) sub.dataset.adultText = sub.innerHTML;
   if (view === 'kids') {
     title.innerHTML = 'We\'re going to Disneyland baby!!! 🏰🎉';
-    const disneyDate = new Date('2026-09-27T00:00:00');
+    const disneyDate = new Date('2026-09-28T00:00:00');
     const today = new Date();
     today.setHours(0,0,0,0);
     const sleeps = Math.ceil((disneyDate - today) / 86400000);
