@@ -154,6 +154,33 @@ body.kids-view .disney-logo{filter:invert(1);}
 .tba{display:inline-block;font-size:0.58rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:0.03rem 0.34rem;border-radius:4px;background:#fbe4c2;color:#9a5a10;margin-right:0.35rem;vertical-align:middle;}
 .note{color:#a07820;}
 
+/* ── Food, Coffee & Drinks dropdown (nested inside first day card) ── */
+.fw{margin:.55rem 0 .1rem;border:1px solid #ead9be;border-radius:8px;overflow:hidden;background:#fbf5ea;}
+.fw-hdr{display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;cursor:pointer;user-select:none;}
+.fw-hdr:hover{background:#f6ecda;}
+.fw-icon{font-size:.95rem;flex-shrink:0;}
+.fw-title{flex:1;font-weight:700;font-size:.78rem;color:#8a5a1f;letter-spacing:.01em;}
+.fw-count{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#a98a5a;background:#f2e6cf;padding:.08rem .4rem;border-radius:20px;flex-shrink:0;}
+.fw-chev{font-size:.6rem;color:#c4ab7e;transition:transform .2s;flex-shrink:0;}
+.fw.open .fw-chev{transform:rotate(180deg);}
+.fw-body{display:none;padding:.15rem .7rem .5rem;border-top:1px solid #ead9be;}
+.fw.open .fw-body{display:block;}
+.rec{display:block;padding:.5rem;margin:0 -.5rem;border-bottom:1px solid #eaddc4;text-decoration:none;color:inherit;border-radius:6px;transition:background .12s;}
+.rec:last-child{border-bottom:none;}
+.rec:hover{background:#f6ecda;}
+.rec:active{background:#f0e2c8;}
+.rec-cue{display:flex;align-items:center;gap:.4rem;margin-bottom:.18rem;flex-wrap:wrap;}
+.rec-type{font-size:.9rem;}
+.rec-tag{font-size:.57rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a5a1f;}
+.rec-walk{font-size:.57rem;font-weight:600;color:#8a8272;background:#f2e6cf;padding:.03rem .36rem;border-radius:20px;}
+.rec-name{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:#1c1a17;line-height:1.15;margin-bottom:.1rem;}
+.rec-pin{font-size:.72rem;color:#8a5a1f;}
+.rec-meta{font-size:.72rem;color:#6a6355;line-height:1.4;}
+.rec-meta .near{color:#8a5a1f;font-weight:600;}
+.rec-addr{display:block;font-size:.72rem;color:#8a5a1f;font-weight:600;margin-top:.15rem;}
+.rec-addr::after{content:" ↗";font-size:.66rem;opacity:.7;}
+.detour{display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.03rem .36rem;border-radius:4px;background:#f3d9b0;color:#8a5a1f;}
+
 /* split panels */
 .splits{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin:0.5rem 0.8rem 0.5rem;}
 @media(max-width:480px){.splits{grid-template-columns:1fr;}}
@@ -339,6 +366,50 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
           <div class="row"><span class="ri">🏨</span><span class="rl">Hotels</span><span class="rv"><strong>Icon Collection</strong> (Ermou 67 &amp; Aiolou 15): C, M, SF. <strong>Four Street</strong> (Hermou St 55): CE (2-bed suite, 5 pax), MGB (2-bed Acropolis-view, 3 pax), AA (3-bed Acropolis-view, 4 pax). In 12 / out 16 Sep, room only.</span></div>
           <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv"><span class="idea">Idea</span>Easy first night — Strofi (rooftop Acropolis views) or a taverna in Plaka.</span></div>
           <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Athens — Icon Collection / Four Street</span></div>
+
+          <div class="fw" onclick="event.stopPropagation()">
+            <div class="fw-hdr" onclick="toggleFW(this)">
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">6 spots</span><span class="fw-chev">▼</span>
+            </div>
+            <div class="fw-body">
+              <a class="rec" data-q="Mokka Specialty Coffee, Athinas 44, Athens">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Morning coffee</span><span class="rec-walk">~4 min walk</span></div>
+                <div class="rec-name">Mokka Specialty Coffee <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Coffee + light breakfast · <span class="near">near Icon Collection hotel</span></div>
+                <span class="rec-addr">Athinas 44, Athens</span>
+              </a>
+              <a class="rec" data-q="Dope Roasting Co, Vissis 25, Athens">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Coffee stop</span><span class="rec-walk">~5 min walk</span></div>
+                <div class="rec-name">Dope Roasting Co. <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Serious specialty coffee + light breakfast · <span class="near">near Icon Collection hotel</span></div>
+                <span class="rec-addr">Vissis 25, Athens</span>
+              </a>
+              <a class="rec" data-q="Lukumades, Aiolou 21, Athens">
+                <div class="rec-cue"><span class="rec-type">🍩</span><span class="rec-tag">Dessert / snack</span><span class="rec-walk">~2 min walk</span></div>
+                <div class="rec-name">Lukumades <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Fresh loukoumades (Greek doughnuts) · <span class="near">same Aiolou street as the hotel</span></div>
+                <span class="rec-addr">Aiolou 21, Athens</span>
+              </a>
+              <a class="rec" data-q="O Thanasis, Mitropoleos 69, Athens">
+                <div class="rec-cue"><span class="rec-type">🥙</span><span class="rec-tag">Quick lunch</span><span class="rec-walk">~5 min walk</span></div>
+                <div class="rec-name">O Thanasis <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Souvlaki &amp; kebabs · <span class="near">near Monastiraki &amp; hotel</span></div>
+                <span class="rec-addr">Mitropoleos 69, Athens</span>
+              </a>
+              <a class="rec" data-q="Brettos Bar, Kidathineon 41, Plaka, Athens">
+                <div class="rec-cue"><span class="rec-type">🍷</span><span class="rec-tag">Before / after dinner</span><span class="rec-walk">~2 min from Elies</span></div>
+                <div class="rec-name">Brettos <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Historic distillery bar — wine, beer, spirits · <span class="near">near your Elies Tavern dinner (15 Sep)</span></div>
+                <span class="rec-addr">Kidathineon 41, Plaka, Athens</span>
+              </a>
+              <a class="rec" data-q="Low Profile Bar, Voulis 7, Athens">
+                <div class="rec-cue"><span class="rec-type">🥃</span><span class="rec-tag">After dinner</span><span class="rec-walk">~6 min walk</span></div>
+                <div class="rec-name">Low Profile <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Whisky &amp; cocktails · <span class="near">near Icon Collection hotel</span></div>
+                <span class="rec-addr">Voulis 7, Athens</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -402,6 +473,32 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
           <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv">Check in. <span class="idea">Idea</span>First swim at Messakti or Livadi beach.</span></div>
           <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv"><span class="idea">Idea</span>Local taverna in Armenistis — fresh seafood, local Ikarian wine.</span></div>
           <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Ikaria — Lemonia Suites</span></div>
+
+          <div class="fw" onclick="event.stopPropagation()">
+            <div class="fw-hdr" onclick="toggleFW(this)">
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">3 spots</span><span class="fw-chev">▼</span>
+            </div>
+            <div class="fw-body">
+              <a class="rec" data-q="Paschalia taverna, Armenistis, Ikaria">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Lunch / dinner</span><span class="rec-walk">~4 min walk</span></div>
+                <div class="rec-name">Paskhalia <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Family taverna on the bay — Greek home cooking &amp; Ikarian wine · <span class="near">Armenistis waterfront, near Lemonia Suites</span></div>
+                <span class="rec-addr">Armenistis, Ikaria</span>
+              </a>
+              <a class="rec" data-q="bakery Armenistis Ikaria">
+                <div class="rec-cue"><span class="rec-type">🥐</span><span class="rec-tag">Breakfast / coffee</span><span class="rec-walk">~4 min walk</span></div>
+                <div class="rec-name">Armenistis village bakeries &amp; cafés <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Spanakopita, tiropita, pastries + Greek coffee · <span class="near">Armenistis is a 2-min-walk village — everything is close</span></div>
+                <span class="rec-addr">Armenistis village centre, Ikaria</span>
+              </a>
+              <a class="rec" data-q="Nas beach tavernas, Ikaria">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Sunset dinner</span><span class="detour">Worth the detour</span></div>
+                <div class="rec-name">Nas tavernas <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Clifftop tavernas over the gorge &amp; ancient Artemis temple — famous sunsets · <span class="near">~10 min drive west of Armenistis</span></div>
+                <span class="rec-addr">Nas, Ikaria</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -454,6 +551,32 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
           <div class="row"><span class="ri">🚗</span><span class="rl">Day trip</span><span class="rv"><span class="idea">Idea</span><strong>Methoni</strong> (Venetian fortress) or <strong>Koroni</strong> (hilltop castle) or <strong>Pylos</strong> (beautiful bay). ~45min drive.</span></div>
           <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv"><span class="idea">Idea</span>Kardamo (Stoupa) for fresh seafood. Simple grilled fish at the harbour.</span></div>
           <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Kalamata — Evripidou 7 Units · 4 nights</span></div>
+
+          <div class="fw" onclick="event.stopPropagation()">
+            <div class="fw-hdr" onclick="toggleFW(this)">
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">3 spots</span><span class="fw-chev">▼</span>
+            </div>
+            <div class="fw-body">
+              <a class="rec" data-q="Borsalino, Evripidou 2, Kalamata">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Coffee / beer / drinks</span><span class="rec-walk">~2 min walk</span></div>
+                <div class="rec-name">Borsalino <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Easy all-day café-bar (also the AFL Grand Final spot) · <span class="near">right by Evripidou 7 Units</span></div>
+                <span class="rec-addr">Evripidou 2, Kalamata</span>
+              </a>
+              <a class="rec" data-q="Bistroteca, Plateia Vasileos Georgiou 18, Kalamata">
+                <div class="rec-cue"><span class="rec-type">🥐</span><span class="rec-tag">Breakfast / brunch</span><span class="rec-walk">~7 min walk</span></div>
+                <div class="rec-name">Bistroteca <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Brunch, coffee &amp; evening cocktails on the main square · <span class="near">near Evripidou 7 Units</span></div>
+                <span class="rec-addr">Plateia Vasileos Georgiou 18, Kalamata</span>
+              </a>
+              <a class="rec" data-q="Kardamo restaurant, Sidirodromikou Stathmou 21, Kalamata">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Lunch / dinner</span><span class="rec-walk">~10 min walk</span></div>
+                <div class="rec-name">Kardamo <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Modern Greek &amp; Mediterranean, local produce · <span class="near">near Evripidou 7 Units</span></div>
+                <span class="rec-addr">Sidirodromikou Stathmou 21, Kalamata</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -663,6 +786,44 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
           <div class="row"><span class="ri">☀️</span><span class="rl">Afternoon</span><span class="rv"><span class="idea">Idea</span>Easy walk along the Seine. Explore the neighbourhood.</span></div>
           <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv"><span class="idea">Idea</span>Le Relais de l'Entrecôte (steak-frites, always worth the queue) or Bouillon Chartier (classic brasserie).</span></div>
           <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Paris city hotel</span></div>
+
+          <div class="fw" onclick="event.stopPropagation()">
+            <div class="fw-hdr" onclick="toggleFW(this)">
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">5 spots</span><span class="fw-chev">▼</span>
+            </div>
+            <div class="fw-body">
+              <a class="rec" data-q="Cafe de Flore, 172 Boulevard Saint-Germain, Paris">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Coffee / breakfast</span><span class="rec-walk">~14 min walk</span></div>
+                <div class="rec-name">Café de Flore <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">The classic Paris café experience · <span class="near">Saint-Germain, up from the hotel</span></div>
+                <span class="rec-addr">172 Boulevard Saint-Germain, 75006 Paris</span>
+              </a>
+              <a class="rec" data-q="Les Deux Magots, 6 Place Saint-Germain des Pres, Paris">
+                <div class="rec-cue"><span class="rec-type">🥐</span><span class="rec-tag">Breakfast / coffee</span><span class="rec-walk">~15 min walk</span></div>
+                <div class="rec-name">Les Deux Magots <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Grand literary café, breakfast &amp; light food · <span class="near">Saint-Germain-des-Prés</span></div>
+                <span class="rec-addr">6 Place Saint-Germain des Prés, 75006 Paris</span>
+              </a>
+              <a class="rec" data-q="Breizh Cafe Odeon, 1 Rue de l'Odeon, Paris">
+                <div class="rec-cue"><span class="rec-type">🥞</span><span class="rec-tag">Lunch / crêpes</span><span class="rec-walk">~12 min walk</span></div>
+                <div class="rec-name">Breizh Café (Odéon) <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Excellent buckwheat galettes &amp; crêpes · <span class="near">Odéon, on the way into Saint-Germain</span></div>
+                <span class="rec-addr">1 Rue de l'Odéon, 75006 Paris</span>
+              </a>
+              <a class="rec" data-q="Dilettantes, 22 Rue de Savoie, Paris">
+                <div class="rec-cue"><span class="rec-type">🥂</span><span class="rec-tag">Before dinner</span><span class="rec-walk">~16 min walk</span></div>
+                <div class="rec-name">Dilettantes <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Champagne &amp; wine bar · <span class="near">between Saint-Germain &amp; Notre-Dame (your day-2 stop)</span></div>
+                <span class="rec-addr">22 Rue de Savoie, 75006 Paris</span>
+              </a>
+              <a class="rec" data-q="Golden Promise Whisky Bar, 11 Rue Tiquetonne, Paris">
+                <div class="rec-cue"><span class="rec-type">🥃</span><span class="rec-tag">Whisky</span><span class="detour">Worth the detour</span></div>
+                <div class="rec-name">Golden Promise <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">One of Europe's best whisky bars · <span class="near">Montorgueil (2nd arr) — ~25 min by Métro, a dedicated trip</span></div>
+                <span class="rec-addr">11 Rue Tiquetonne, 75002 Paris</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -800,6 +961,56 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
           <div class="row"><span class="ri">🚶</span><span class="rl">Idea</span><span class="rv"><span class="idea">Idea</span><strong>Passeig de Gràcia</strong> — Casa Batlló (the dragon house) and La Pedrera.</span></div>
           <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner · Booked</span><span class="rv"><strong>Confirmed: Can Culleretes</strong>, Carrer d'en Quintana 5 (Barri Gòtic) — 8:00pm, table for 7. Barcelona's oldest restaurant (1786), traditional Catalan. Tel 933173022. 🚶 ~2 km from the Corner Hotel — ~25-min walk, or a short taxi/metro.</span></div>
           <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Barcelona — Corner Hotel</span></div>
+
+          <div class="fw" onclick="event.stopPropagation()">
+            <div class="fw-hdr" onclick="toggleFW(this)">
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">7 spots</span><span class="fw-chev">▼</span>
+            </div>
+            <div class="fw-body">
+              <a class="rec" data-q="BierCaB, Carrer de Muntaner 55, Barcelona">
+                <div class="rec-cue"><span class="rec-type">🍺</span><span class="rec-tag">Beer / casual food</span><span class="rec-walk">~10 min walk</span></div>
+                <div class="rec-name">BierCaB <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Big craft-beer taplist + burgers · <span class="near">near The Corner Hotel</span></div>
+                <span class="rec-addr">Carrer de Muntaner 55, Barcelona</span>
+              </a>
+              <a class="rec" data-q="Nomad Coffee, Passatge de Sert 12, Barcelona">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Serious coffee</span><span class="rec-walk">~5 min from El Born</span></div>
+                <div class="rec-name">Nomad Coffee <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Barcelona's best specialty roaster · <span class="near">near your El Born wander (day 2)</span></div>
+                <span class="rec-addr">Passatge de Sert 12, Barcelona</span>
+              </a>
+              <a class="rec" data-q="Granja M Viader, Carrer d'en Xucla 4-6, Barcelona">
+                <div class="rec-cue"><span class="rec-type">🍫</span><span class="rec-tag">Breakfast / chocolate</span><span class="rec-walk">~3 min from La Boqueria</span></div>
+                <div class="rec-name">Granja M. Viader <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">1870 café — thick hot chocolate &amp; cacaolat · <span class="near">near La Boqueria &amp; Can Culleretes dinner</span></div>
+                <span class="rec-addr">Carrer d'en Xuclà 4-6, Barcelona</span>
+              </a>
+              <a class="rec" data-q="Mercat de la Boqueria, La Rambla 91, Barcelona">
+                <div class="rec-cue"><span class="rec-type">🥪</span><span class="rec-tag">Lunch / snacks</span><span class="rec-walk">~5 min from Gothic Qtr</span></div>
+                <div class="rec-name">La Boqueria <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Market stalls — tapas, juices, jamón · <span class="near">on La Rambla by the Gothic Quarter &amp; Can Culleretes</span></div>
+                <span class="rec-addr">La Rambla 91, Barcelona</span>
+              </a>
+              <a class="rec" data-q="La Vinya del Senyor, Placa de Santa Maria 5, Barcelona">
+                <div class="rec-cue"><span class="rec-type">🍷</span><span class="rec-tag">Afternoon wine / cava</span><span class="rec-walk">~6 min from Can Culleretes</span></div>
+                <div class="rec-name">La Vinya del Senyor <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Terrace wine bar facing Santa Maria del Mar · <span class="near">El Born, near your Can Culleretes dinner</span></div>
+                <span class="rec-addr">Plaça de Santa Maria 5, Barcelona</span>
+              </a>
+              <a class="rec" data-q="Paradiso, Carrer de Rera Palau 4, Barcelona">
+                <div class="rec-cue"><span class="rec-type">🍸</span><span class="rec-tag">Evening cocktails</span><span class="rec-walk">~7 min from Can Culleretes</span></div>
+                <div class="rec-name">Paradiso <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Famous speakeasy behind a pastrami bar · <span class="near">El Born, near your Can Culleretes dinner</span></div>
+                <span class="rec-addr">Carrer de Rera Palau 4, Barcelona</span>
+              </a>
+              <a class="rec" data-q="La Whiskeria, Carrer de les Sitges 3, Barcelona">
+                <div class="rec-cue"><span class="rec-type">🥃</span><span class="rec-tag">After dinner</span><span class="rec-walk">~5 min from Pl. Catalunya</span></div>
+                <div class="rec-name">La Whiskeria <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Large whisky selection · <span class="near">off Plaça Catalunya, on the way back from Can Culleretes</span></div>
+                <span class="rec-addr">Carrer de les Sitges 3, Barcelona</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -851,6 +1062,50 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
           <div class="row"><span class="ri">☀️</span><span class="rl">Idea</span><span class="rv"><span class="idea">Idea</span><strong>Retiro Park</strong> — the Central Park of Madrid. Crystal Palace, rowing boats on the lake.</span></div>
           <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv"><span class="idea">Idea</span>Casa Lucio (famous huevos rotos) or La Castela.</span></div>
           <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Madrid — Inhala Hotel Garden</span></div>
+
+          <div class="fw" onclick="event.stopPropagation()">
+            <div class="fw-hdr" onclick="toggleFW(this)">
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">6 spots</span><span class="fw-chev">▼</span>
+            </div>
+            <div class="fw-body">
+              <a class="rec" data-q="HanSo Cafe, Calle del Pez 20, Madrid">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Morning coffee</span><span class="rec-walk">~4 min walk</span></div>
+                <div class="rec-name">HanSo Café <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Specialty coffee + brunch in Malasaña · <span class="near">near Inhala Hotel Garden</span></div>
+                <span class="rec-addr">Calle del Pez 20, Madrid</span>
+              </a>
+              <a class="rec" data-q="1862 Dry Bar, Calle del Pez 27, Madrid">
+                <div class="rec-cue"><span class="rec-type">🍸</span><span class="rec-tag">Evening drinks</span><span class="rec-walk">~4 min walk</span></div>
+                <div class="rec-name">1862 Dry Bar <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Classic cocktails, relaxed · <span class="near">near Inhala &amp; HanSo Café</span></div>
+                <span class="rec-addr">Calle del Pez 27, Madrid</span>
+              </a>
+              <a class="rec" data-q="Chocolateria San Gines, Pasadizo de San Gines 5, Madrid">
+                <div class="rec-cue"><span class="rec-type">🍫</span><span class="rec-tag">Churros</span><span class="rec-walk">~2 min from Sol</span></div>
+                <div class="rec-name">Chocolatería San Ginés <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">The churros + chocolate institution (since 1894) · <span class="near">by Puerta del Sol / Plaza Mayor</span></div>
+                <span class="rec-addr">Pasadizo de San Ginés 5, Madrid</span>
+              </a>
+              <a class="rec" data-q="Mercado de San Miguel, Plaza de San Miguel, Madrid">
+                <div class="rec-cue"><span class="rec-type">🥪</span><span class="rec-tag">Food / wine / beer</span><span class="rec-walk">~2 min from Plaza Mayor</span></div>
+                <div class="rec-name">Mercado de San Miguel <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Gourmet market — tapas, wine, cava counters · <span class="near">beside Plaza Mayor</span></div>
+                <span class="rec-addr">Plaza de San Miguel, Madrid</span>
+              </a>
+              <a class="rec" data-q="La Venencia, Calle de Echegaray 7, Madrid">
+                <div class="rec-cue"><span class="rec-type">🍷</span><span class="rec-tag">Sherry</span><span class="rec-walk">~4 min from Sol</span></div>
+                <div class="rec-name">La Venencia <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Time-capsule sherry bar, cash only, no photos · <span class="near">near Puerta del Sol</span></div>
+                <span class="rec-addr">Calle de Echegaray 7, Madrid</span>
+              </a>
+              <a class="rec" data-q="Angelita Madrid, Calle de la Reina 4, Madrid">
+                <div class="rec-cue"><span class="rec-type">🍷</span><span class="rec-tag">Your booked dinner</span><span class="rec-walk">~10 min walk</span></div>
+                <div class="rec-name">Angelita <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Booked 7 Oct, 7:00pm — wine bar + Mediterranean/Spanish · <span class="near">~10 min from Inhala Hotel Garden</span></div>
+                <span class="rec-addr">Calle de la Reina 4, Madrid</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -902,6 +1157,56 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
           <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv"><span class="idea">Idea</span>Buca Mario (oldest restaurant in Florence, 1886) or Il Latini (communal tables, enormous portions).</span></div>
           <div class="row"><span class="ri">🍝</span><span class="rl">Dinner idea</span><span class="rv"><span class="idea">Idea</span><strong>Ristorante Il Morellino</strong>, Via del Parione 26R — 4.9★, €20–30. Renowned for its <strong>pear ravioli</strong>. 🚶 ~1 km / ~13-min walk from MH Florence.</span></div>
           <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Florence — MH Florence Hotel &amp; Spa</span></div>
+
+          <div class="fw" onclick="event.stopPropagation()">
+            <div class="fw-hdr" onclick="toggleFW(this)">
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">7 spots</span><span class="fw-chev">▼</span>
+            </div>
+            <div class="fw-body">
+              <a class="rec" data-q="Manifattura, Piazza di San Pancrazio 1, Firenze">
+                <div class="rec-cue"><span class="rec-type">🍸</span><span class="rec-tag">Aperitivo / cocktails</span><span class="rec-walk">~7 min walk</span></div>
+                <div class="rec-name">Manifattura <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">All-Italian cocktails &amp; spirits · <span class="near">near MH Florence, on the way into the centre</span></div>
+                <span class="rec-addr">Piazza di San Pancrazio 1, Firenze</span>
+              </a>
+              <a class="rec" data-q="Caffe Gilli, Via Roma 1R, Firenze">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Coffee / pastries</span><span class="rec-walk">~10 min walk</span></div>
+                <div class="rec-name">Caffè Gilli <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Grand 1733 café on Piazza della Repubblica · <span class="near">near MH Florence &amp; the sightseeing route</span></div>
+                <span class="rec-addr">Via Roma 1/R, Firenze</span>
+              </a>
+              <a class="rec" data-q="All'Antico Vinaio, Via dei Neri 65R, Firenze">
+                <div class="rec-cue"><span class="rec-type">🥪</span><span class="rec-tag">Quick lunch</span><span class="rec-walk">~2 min from Uffizi</span></div>
+                <div class="rec-name">All'Antico Vinaio <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Famous schiacciata sandwiches (expect a queue) · <span class="near">by the Uffizi / historic centre</span></div>
+                <span class="rec-addr">Via dei Neri 65R, Firenze</span>
+              </a>
+              <a class="rec" data-q="Ditta Artigianale, Via dei Neri 32R, Firenze">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Proper morning coffee</span><span class="rec-walk">~2 min from Uffizi</span></div>
+                <div class="rec-name">Ditta Artigianale (Via dei Neri) <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Florence's specialty-coffee pioneer + breakfast · <span class="near">by the Uffizi / historic centre</span></div>
+                <span class="rec-addr">Via dei Neri 30/32R, Firenze</span>
+              </a>
+              <a class="rec" data-q="Enoteca Pitti Gola e Cantina, Piazza de' Pitti 16, Firenze">
+                <div class="rec-cue"><span class="rec-type">🍷</span><span class="rec-tag">Tuscan wine</span><span class="rec-walk">~1 min from Pitti Palace</span></div>
+                <div class="rec-name">Enoteca Pitti Gola e Cantina <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Small wine bar + light food facing the palace · <span class="near">Pitti Palace / Oltrarno</span></div>
+                <span class="rec-addr">Piazza de' Pitti 16, Firenze</span>
+              </a>
+              <a class="rec" data-q="Archea Brewery, Via dei Serragli 44R, Firenze">
+                <div class="rec-cue"><span class="rec-type">🍺</span><span class="rec-tag">Craft beer</span><span class="rec-walk">~5 min in Oltrarno</span></div>
+                <div class="rec-name">Archea Brewery <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Florence craft-beer pub · <span class="near">Oltrarno wander</span></div>
+                <span class="rec-addr">Via dei Serragli 44R, Firenze</span>
+              </a>
+              <a class="rec" data-q="Love Craft, Borgo San Frediano 24R, Firenze">
+                <div class="rec-cue"><span class="rec-type">🥃</span><span class="rec-tag">After dinner</span><span class="rec-walk">~5 min in Oltrarno</span></div>
+                <div class="rec-name">Love Craft <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Whisky &amp; cocktails · <span class="near">San Frediano, Oltrarno</span></div>
+                <span class="rec-addr">Borgo San Frediano 24/R, Firenze</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -953,6 +1258,50 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
           <div class="row"><span class="ri">🌆</span><span class="rl">Idea</span><span class="rv"><span class="idea">Idea</span>Walk to Castel Sant'Angelo — extraordinary lit up at night. Ponte Sant'Angelo.</span></div>
           <div class="row"><span class="ri">🍽️</span><span class="rl">Dinner</span><span class="rv"><span class="idea">Idea</span>Il Sorpasso (modern Roman, great aperitivo) or La Zanzara (classic trattoria, great pasta).</span></div>
           <div class="row"><span class="ri">🛏️</span><span class="rl">Overnight</span><span class="rv">Rome — Rome Life Hotel</span></div>
+
+          <div class="fw" onclick="event.stopPropagation()">
+            <div class="fw-hdr" onclick="toggleFW(this)">
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">6 spots</span><span class="fw-chev">▼</span>
+            </div>
+            <div class="fw-body">
+              <a class="rec" data-q="Sant'Eustachio Il Caffe, Piazza di Sant'Eustachio 82, Roma">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Espresso</span><span class="rec-walk">~3 min from Pantheon</span></div>
+                <div class="rec-name">Sant'Eustachio Il Caffè <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Rome's most famous espresso · <span class="near">by the Pantheon (your free-time stop)</span></div>
+                <span class="rec-addr">Piazza di Sant'Eustachio 82, Roma</span>
+              </a>
+              <a class="rec" data-q="Tazza d'Oro, Via degli Orfani 84, Roma">
+                <div class="rec-cue"><span class="rec-type">☕</span><span class="rec-tag">Espresso / granita</span><span class="rec-walk">~1 min from Pantheon</span></div>
+                <div class="rec-name">Tazza d'Oro <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Espresso &amp; the classic granita di caffè · <span class="near">right by the Pantheon</span></div>
+                <span class="rec-addr">Via degli Orfani 84, Roma</span>
+              </a>
+              <a class="rec" data-q="Forno Campo de' Fiori, Campo de' Fiori 22, Roma">
+                <div class="rec-cue"><span class="rec-type">🥐</span><span class="rec-tag">Breakfast / quick lunch</span><span class="rec-walk">~3 min from Roscioli</span></div>
+                <div class="rec-name">Forno Campo de' Fiori <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Pizza bianca &amp; bakery off the market square · <span class="near">near your Roscioli dinner</span></div>
+                <span class="rec-addr">Campo de' Fiori 22, Roma</span>
+              </a>
+              <a class="rec" data-q="Il Goccetto, Via dei Banchi Vecchi 14, Roma">
+                <div class="rec-cue"><span class="rec-type">🍷</span><span class="rec-tag">Wine before dinner</span><span class="rec-walk">~6 min from Roscioli</span></div>
+                <div class="rec-name">Il Goccetto <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Beloved old-Rome wine bar · <span class="near">near your Roscioli dinner</span></div>
+                <span class="rec-addr">Via dei Banchi Vecchi 14, Roma</span>
+              </a>
+              <a class="rec" data-q="Roscioli Salumeria con Cucina, Via dei Giubbonari 21, Roma">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Your booked dinner</span><span class="rec-walk">~25 min walk</span></div>
+                <div class="rec-name">Roscioli <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Booked 15 Oct, 9:30pm — deli/restaurant, iconic carbonara &amp; wine · <span class="near">~1.8 km from Rome Life Hotel</span></div>
+                <span class="rec-addr">Via dei Giubbonari 21, Roma</span>
+              </a>
+              <a class="rec" data-q="Gregory's Jazz Club, Via Gregoriana 54A, Roma">
+                <div class="rec-cue"><span class="rec-type">🥃</span><span class="rec-tag">Evening whisky / jazz</span><span class="rec-walk">~2 min from Spanish Steps</span></div>
+                <div class="rec-name">Gregory's Jazz Club <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Whisky, cocktails &amp; live jazz · <span class="near">by the Spanish Steps / Trevi</span></div>
+                <span class="rec-addr">Via Gregoriana 54/A, Roma</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1196,6 +1545,14 @@ function toggleCity(el) {
     }
   }
 }
+// Food & Wine dropdown: toggle without collapsing the day card, and
+// turn each recommendation into a Maps link built from its data-q query.
+function toggleFW(hdr){ hdr.closest('.fw').classList.toggle('open'); }
+document.querySelectorAll('a.rec[data-q]').forEach(function(a){
+  a.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a.dataset.q);
+  a.target = '_blank';
+  a.rel = 'noopener';
+});
 </script>
 
 <!-- iOS "Add to Home Screen" hint (Safari has no auto install prompt) -->
