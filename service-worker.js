@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'hatzing26-v5';
+const CACHE_VERSION = 'hatzing26-v6';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 const CORE_ASSETS = [
   './',
@@ -40,7 +40,7 @@ self.addEventListener('activate', (event) => {
 async function networkFirst(req) {
   const cache = await caches.open(CACHE_VERSION);
   try {
-    const network = fetch(req);
+    const network = fetch(req, { cache: 'no-store' });
     // If the network is slow/flaky, fall back to cache after 4s.
     const res = await Promise.race([
       network,
