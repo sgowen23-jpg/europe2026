@@ -272,7 +272,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
   <div class="mast-brand">
     <img class="mast-logo" src="icon-192.png" alt="Hatzing logo" onclick="showWelcome()" title="Back to Who's going?">
     <div class="mast-text">
-      <h1 id="mastTitle">Hatzing a Dynasty 26</h1>
+      <h1 id="mastTitle" onclick="gamesSecretTap()">Hatzing a Dynasty 26</h1>
       <p id="mastSub">11 Sep – 17 Oct · Select your name to see your trip</p>
       <div class="meta-row">
         <div class="trip-count" id="tripCount"></div>
@@ -1697,6 +1697,22 @@ document.querySelectorAll('a.rec[data-q]').forEach(function(a){
       }).catch((e) => console.warn('SW registration failed:', e));
     });
   }
+</script>
+<script>
+/* Hidden games section: tap the masthead title 5 times quickly to open games.html */
+(function(){
+  var taps = 0, timer = null;
+  window.gamesSecretTap = function(){
+    taps++;
+    if (timer) clearTimeout(timer);
+    if (taps >= 5) {
+      taps = 0;
+      window.location.href = 'games.html';
+      return;
+    }
+    timer = setTimeout(function(){ taps = 0; }, 1200);
+  };
+})();
 </script>
 </body>
 </html>

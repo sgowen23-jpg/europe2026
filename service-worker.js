@@ -1,8 +1,10 @@
-const CACHE_VERSION = 'hatzing26-v6';
+const CACHE_VERSION = 'hatzing26-v7';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 const CORE_ASSETS = [
   './',
   './index.html',
+  './games.html',
+  './chess.html',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
@@ -46,10 +48,12 @@ async function networkFirst(req) {
       network,
       new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
     ]);
-    cache.put('./index.html', res.clone());
+    // Cache each navigated page under its own URL so games.html / chess.html
+    // don't overwrite the itinerary's cached copy.
+    cache.put(req, res.clone());
     return res;
   } catch {
-    return (await cache.match('./index.html')) || (await cache.match(req)) || Response.error();
+    return (await cache.match(req)) || (await cache.match('./index.html')) || Response.error();
   }
 }
 
