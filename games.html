@@ -14,57 +14,52 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&family=Inter:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:#faf7f2;color:#1c1a17;font-size:14px;min-height:100vh;}
+body{font-family:'Inter',sans-serif;background:#faf7f2;color:#1c1a17;font-size:14px;}
 
-.masthead{background:#f3f5f4;color:#214e75;padding:1.4rem 1rem;border-bottom:1px solid #e2dbd0;}
-.masthead h1{font-family:'Playfair Display',serif;font-size:1.9rem;font-style:italic;color:#214e75;line-height:1.05;}
-.masthead p{opacity:0.75;font-size:0.82rem;color:#214e75;margin-top:0.2rem;}
+#games{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2.2rem 1.2rem 3rem;text-align:center;}
+#games h1{font-family:'Playfair Display',serif;font-style:italic;font-size:2rem;color:#214e75;line-height:1.05;margin-bottom:0.25rem;}
+.games-sub{font-size:0.82rem;color:#214e75;opacity:0.72;margin-bottom:0.55rem;}
+.games-q{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.16em;color:#9a9a94;font-weight:700;margin:1.5rem 0 0.85rem;}
 
-.wrap{max-width:640px;margin:0 auto;padding:1.2rem 1rem 3rem;}
+.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;width:100%;max-width:440px;}
+.game-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.35rem;background:#fff;border:1.5px solid;border-radius:14px;padding:1.15rem 0.6rem;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;transition:transform .15s ease,box-shadow .15s ease;box-shadow:0 1px 2px rgba(20,40,70,0.05);}
+.game-tile:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,40,70,0.10);}
+.gt-icon{font-size:2.4rem;line-height:1;}
+.gt-name{font-size:0.85rem;font-weight:600;color:#214e75;}
 
-.game-list{list-style:none;display:flex;flex-direction:column;gap:0.75rem;}
-.game-link{display:flex;align-items:center;gap:0.9rem;text-decoration:none;background:#fff;border:1px solid #e2dbd0;border-left:4px solid #1f4e79;border-radius:10px;padding:0.95rem 1.1rem;color:#1c1a17;transition:transform .08s ease, box-shadow .12s ease;}
-.game-link:hover,.game-link:active{transform:translateY(-1px);box-shadow:0 4px 14px rgba(31,78,121,0.14);}
-.game-icon{font-size:1.6rem;line-height:1;flex-shrink:0;}
-.game-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#214e75;}
-.game-desc{font-size:0.78rem;opacity:0.7;margin-top:0.1rem;}
-
-.back{display:inline-block;margin-top:1.6rem;font-size:0.82rem;color:#214e75;text-decoration:none;opacity:0.8;}
+.back{display:inline-block;margin-top:1.8rem;font-size:0.8rem;color:#214e75;text-decoration:none;opacity:0.75;}
 .back:hover{opacity:1;text-decoration:underline;}
 </style>
 </head>
 <body>
-<div class="masthead">
+<div id="games">
   <h1>Games</h1>
-  <p>A little something for the long travel days</p>
-</div>
+  <div class="games-sub">Something for the long travel days</div>
+  <div class="games-q">Pick a game</div>
 
-<div class="wrap">
-  <ul class="game-list" id="gameList"></ul>
+  <div class="game-grid" id="gameGrid"></div>
+
   <a class="back" href="index.html">&larr; Back to the trip</a>
 </div>
 
 <script>
-/* Add a new game by appending one entry below, then drop its .html file in the project root. */
+/* Add a game by appending one entry, then drop its .html in the project root. */
 var GAMES = [
-  { title: 'Chess', href: 'chess.html', icon: '♞', desc: 'Play offline, one device' }
-  // { title: 'Sudoku', href: 'sudoku.html', icon: '\u{1F522}', desc: 'Number puzzles' },
+  { name: 'Chess', href: 'chess.html', icon: '♞', color: '#1e4a7a' }
+  // { name: 'Sudoku', href: 'sudoku.html', icon: '\u{1F522}', color: '#a07820' },
 ];
 
 (function(){
-  var list = document.getElementById('gameList');
+  var grid = document.getElementById('gameGrid');
   GAMES.forEach(function(g){
-    var li = document.createElement('li');
     var a = document.createElement('a');
-    a.className = 'game-link';
+    a.className = 'game-tile';
     a.href = g.href;
+    a.style.borderColor = g.color;
     a.innerHTML =
-      '<span class="game-icon">' + g.icon + '</span>' +
-      '<span><span class="game-title">' + g.title + '</span>' +
-      (g.desc ? '<span class="game-desc">' + g.desc + '</span>' : '') +
-      '</span>';
-    li.appendChild(a);
-    list.appendChild(li);
+      '<span class="gt-icon" style="color:' + g.color + '">' + g.icon + '</span>' +
+      '<span class="gt-name">' + g.name + '</span>';
+    grid.appendChild(a);
   });
 })();
 </script>
