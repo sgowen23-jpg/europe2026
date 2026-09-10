@@ -180,6 +180,7 @@ body.kids-view .disney-logo{filter:invert(1);}
 .rec-addr{display:block;font-size:.72rem;color:#8a5a1f;font-weight:600;margin-top:.15rem;}
 .rec-addr::after{content:" ↗";font-size:.66rem;opacity:.7;}
 .detour{display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.03rem .36rem;border-radius:4px;background:#f3d9b0;color:#8a5a1f;}
+.fw-sep{font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#a98a5a;padding:.5rem .5rem .1rem;margin:0 -.5rem;border-top:1px solid #ead9be;}
 
 /* split panels */
 .splits{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin:0.5rem 0.8rem 0.5rem;}
@@ -367,7 +368,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
 
           <div class="fw" onclick="event.stopPropagation()">
             <div class="fw-hdr" onclick="toggleFW(this)">
-              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">6 spots</span><span class="fw-chev">▼</span>
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">7 spots</span><span class="fw-chev">▼</span>
             </div>
             <div class="fw-body">
               <a class="rec" data-q="Mokka Specialty Coffee, Athinas 44, Athens">
@@ -405,6 +406,13 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
                 <div class="rec-name">Low Profile <span class="rec-pin">📍</span></div>
                 <div class="rec-meta">Whisky &amp; cocktails · <span class="near">near Icon Collection hotel</span></div>
                 <span class="rec-addr">Voulis 7, Athens</span>
+              </a>
+              <div class="fw-sep">Dinner ideas</div>
+              <a class="rec" data-q="Strofi Restaurant, Rovertou Galli 25, Athens">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Strofi <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Refined Greek, rooftop with floodlit Acropolis views · <span class="near">Makrigianni, below the Acropolis</span></div>
+                <span class="rec-addr">Rovertou Galli 25, Athens</span>
               </a>
             </div>
           </div>
@@ -779,7 +787,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
 
           <div class="fw" onclick="event.stopPropagation()">
             <div class="fw-hdr" onclick="toggleFW(this)">
-              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">5 spots</span><span class="fw-chev">▼</span>
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">9 spots</span><span class="fw-chev">▼</span>
             </div>
             <div class="fw-body">
               <a class="rec" data-q="Cafe de Flore, 172 Boulevard Saint-Germain, Paris">
@@ -811,6 +819,31 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
                 <div class="rec-name">Golden Promise <span class="rec-pin">📍</span></div>
                 <div class="rec-meta">One of Europe's best whisky bars · <span class="near">Montorgueil (2nd arr) — ~25 min by Métro, a dedicated trip</span></div>
                 <span class="rec-addr">11 Rue Tiquetonne, 75002 Paris</span>
+              </a>
+              <div class="fw-sep">Dinner ideas</div>
+              <a class="rec" data-q="Le Relais de l'Entrecote Saint-Germain, 20 Rue Saint-Benoit, Paris">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Le Relais de l'Entrecôte <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Steak-frites, one set menu, worth the queue · <span class="near">Saint-Germain (6th)</span></div>
+                <span class="rec-addr">20 Rue Saint-Benoît, 75006 Paris</span>
+              </a>
+              <a class="rec" data-q="Bouillon Chartier Grands Boulevards, 7 Rue du Faubourg Montmartre, Paris">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Bouillon Chartier <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Classic 1896 brasserie, cheap &amp; lively · <span class="near">Grands Boulevards (9th)</span></div>
+                <span class="rec-addr">7 Rue du Faubourg Montmartre, 75009 Paris</span>
+              </a>
+              <a class="rec" data-q="Bistrot Paul Bert, 18 Rue Paul Bert, Paris">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Bistrot Paul Bert <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Quintessential bistro, great steak tartare — book ahead · <span class="near">11th (Bastille)</span></div>
+                <span class="rec-addr">18 Rue Paul Bert, 75011 Paris</span>
+              </a>
+              <a class="rec" data-q="Le Bon Georges, 45 Rue Saint-Georges, Paris">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Le Bon Georges <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Market-driven bistro, superb produce · <span class="near">South Pigalle (9th)</span></div>
+                <span class="rec-addr">45 Rue Saint-Georges, 75009 Paris</span>
               </a>
             </div>
           </div>
@@ -950,7 +983,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
 
           <div class="fw" onclick="event.stopPropagation()">
             <div class="fw-hdr" onclick="toggleFW(this)">
-              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">7 spots</span><span class="fw-chev">▼</span>
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">9 spots</span><span class="fw-chev">▼</span>
             </div>
             <div class="fw-body">
               <a class="rec" data-q="BierCaB, Carrer de Muntaner 55, Barcelona">
@@ -994,6 +1027,19 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
                 <div class="rec-name">La Whiskeria <span class="rec-pin">📍</span></div>
                 <div class="rec-meta">Large whisky selection · <span class="near">off Plaça Catalunya, on the way back from Can Culleretes</span></div>
                 <span class="rec-addr">Carrer de les Sitges 3, Barcelona</span>
+              </a>
+              <div class="fw-sep">Dinner ideas</div>
+              <a class="rec" data-q="Cal Pep, Placa de les Olles 8, Barcelona">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Cal Pep <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Legendary counter tapas bar (go early, no bookings) · <span class="near">El Born, near Can Culleretes</span></div>
+                <span class="rec-addr">Plaça de les Olles 8, Barcelona</span>
+              </a>
+              <a class="rec" data-q="El Xampanyet, Carrer de Montcada 22, Barcelona">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">El Xampanyet <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Classic cava bar — anchovies &amp; tapas · <span class="near">El Born, near Can Culleretes</span></div>
+                <span class="rec-addr">Carrer de Montcada 22, Barcelona</span>
               </a>
             </div>
           </div>
@@ -1045,7 +1091,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
 
           <div class="fw" onclick="event.stopPropagation()">
             <div class="fw-hdr" onclick="toggleFW(this)">
-              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">7 spots</span><span class="fw-chev">▼</span>
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">9 spots</span><span class="fw-chev">▼</span>
             </div>
             <div class="fw-body">
               <a class="rec" data-q="HanSo Cafe, Calle del Pez 20, Madrid">
@@ -1089,6 +1135,19 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
                 <div class="rec-name">Angelita <span class="rec-pin">📍</span></div>
                 <div class="rec-meta">Booked 7 Oct, 7:00pm — wine bar + Mediterranean/Spanish · <span class="near">~10 min from Inhala Hotel Garden</span></div>
                 <span class="rec-addr">Calle de la Reina 4, Madrid</span>
+              </a>
+              <div class="fw-sep">Dinner ideas</div>
+              <a class="rec" data-q="Casa Lucio, Calle Cava Baja 35, Madrid">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Casa Lucio <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Old-Madrid institution — the famous huevos rotos · <span class="near">La Latina (Cava Baja)</span></div>
+                <span class="rec-addr">Calle de la Cava Baja 35, Madrid</span>
+              </a>
+              <a class="rec" data-q="La Castela, Calle del Doctor Castelo 22, Madrid">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">La Castela <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Buzzy tavern, great tapas at the bar · <span class="near">Retiro / Ibiza</span></div>
+                <span class="rec-addr">Calle del Doctor Castelo 22, Madrid</span>
               </a>
             </div>
           </div>
@@ -1141,7 +1200,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
 
           <div class="fw" onclick="event.stopPropagation()">
             <div class="fw-hdr" onclick="toggleFW(this)">
-              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">7 spots</span><span class="fw-chev">▼</span>
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">10 spots</span><span class="fw-chev">▼</span>
             </div>
             <div class="fw-body">
               <a class="rec" data-q="Manifattura, Piazza di San Pancrazio 1, Firenze">
@@ -1185,6 +1244,25 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
                 <div class="rec-name">Love Craft <span class="rec-pin">📍</span></div>
                 <div class="rec-meta">Whisky &amp; cocktails · <span class="near">San Frediano, Oltrarno</span></div>
                 <span class="rec-addr">Borgo San Frediano 24/R, Firenze</span>
+              </a>
+              <div class="fw-sep">Dinner ideas</div>
+              <a class="rec" data-q="Buca Mario, Piazza degli Ottaviani 16R, Firenze">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Buca Mario <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Classic Tuscan cellar restaurant (since 1886) · <span class="near">near MH Florence</span></div>
+                <span class="rec-addr">Piazza degli Ottaviani 16R, Firenze</span>
+              </a>
+              <a class="rec" data-q="Trattoria Il Latini, Via dei Palchetti 6R, Firenze">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Il Latini <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Communal tables, enormous Tuscan portions · <span class="near">near MH Florence</span></div>
+                <span class="rec-addr">Via dei Palchetti 6R, Firenze</span>
+              </a>
+              <a class="rec" data-q="Ristorante Il Morellino, Via del Parione 26R, Firenze">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Il Morellino <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Renowned for its pear ravioli · <span class="near">~13 min from MH Florence</span></div>
+                <span class="rec-addr">Via del Parione 26R, Firenze</span>
               </a>
             </div>
           </div>
@@ -1240,7 +1318,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
 
           <div class="fw" onclick="event.stopPropagation()">
             <div class="fw-hdr" onclick="toggleFW(this)">
-              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">6 spots</span><span class="fw-chev">▼</span>
+              <span class="fw-icon">🍴</span><span class="fw-title">Food, Coffee &amp; Drinks nearby</span><span class="fw-count">11 spots</span><span class="fw-chev">▼</span>
             </div>
             <div class="fw-body">
               <a class="rec" data-q="Sant'Eustachio Il Caffe, Piazza di Sant'Eustachio 82, Roma">
@@ -1278,6 +1356,37 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
                 <div class="rec-name">Gregory's Jazz Club <span class="rec-pin">📍</span></div>
                 <div class="rec-meta">Whisky, cocktails &amp; live jazz · <span class="near">by the Spanish Steps / Trevi</span></div>
                 <span class="rec-addr">Via Gregoriana 54/A, Roma</span>
+              </a>
+              <div class="fw-sep">Dinner ideas</div>
+              <a class="rec" data-q="Il Sorpasso, Via Properzio 31-33, Roma">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Il Sorpasso <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Modern Roman, great aperitivo &amp; charcuterie · <span class="near">Prati, near the Vatican</span></div>
+                <span class="rec-addr">Via Properzio 31-33, Roma</span>
+              </a>
+              <a class="rec" data-q="La Zanzara, Via Crescenzio 84, Roma">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">La Zanzara <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Buzzy all-day bistro, great pasta · <span class="near">Prati, near the Vatican</span></div>
+                <span class="rec-addr">Via Crescenzio 84, Roma</span>
+              </a>
+              <a class="rec" data-q="Armando al Pantheon, Salita de' Crescenzi 31, Roma">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Armando al Pantheon <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Classic Roman since 1961 — book ahead · <span class="near">beside the Pantheon</span></div>
+                <span class="rec-addr">Salita de' Crescenzi 31, Roma</span>
+              </a>
+              <a class="rec" data-q="Da Enzo al 29, Via dei Vascellari 29, Roma">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Da Enzo al 29 <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">Tiny Trastevere trattoria — the cacio e pepe · <span class="near">Trastevere</span></div>
+                <span class="rec-addr">Via dei Vascellari 29, Roma</span>
+              </a>
+              <a class="rec" data-q="Felice a Testaccio, Via Mastro Giorgio 29, Roma">
+                <div class="rec-cue"><span class="rec-type">🍽️</span><span class="rec-tag">Dinner idea</span></div>
+                <div class="rec-name">Felice a Testaccio <span class="rec-pin">📍</span></div>
+                <div class="rec-meta">The tonnarelli cacio e pepe &amp; carbonara · <span class="near">Testaccio</span></div>
+                <span class="rec-addr">Via Mastro Giorgio 29, Roma</span>
               </a>
             </div>
           </div>
