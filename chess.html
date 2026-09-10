@@ -2503,9 +2503,21 @@ document.getElementById('undoBtn').onclick=()=>{
 };
 document.getElementById('hintBtn').onclick=()=>{
   if(!opts.hints||busy||game.turn()!==humanSide||game.game_over())return;
-  const m=pickMove(DIFF[7]); // strongest for hint quality
-  if(m){hintMove={from:m.from,to:m.to};render();
-    setTimeout(()=>{hintMove=null;render();},2200);}
+  const btn=document.getElementById('hintBtn');
+  const label=btn.textContent;
+  // Guard against re-taps and show feedback; the search is synchronous, so
+  // defer it one tick to let the button repaint before it blocks the thread.
+  busy=true; btn.disabled=true; btn.textContent='💡 …';
+  setTimeout(()=>{
+    let m=null;
+    try{ m=pickMove({depth:3,rand:0}); } // depth 3, always best move: strong hint, fast on phones
+    catch(e){ console.error('hint failed',e); }
+    busy=false; btn.textContent=label; btn.disabled=!opts.hints;
+    if(m){
+      hintMove={from:m.from,to:m.to}; render();
+      setTimeout(()=>{hintMove=null;render();},2200);
+    }
+  },20);
 };
 
 // difficulty
