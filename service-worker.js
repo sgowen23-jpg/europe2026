@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'hatzing26-v8';
+const CACHE_VERSION = 'hatzing26-v9';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 const CORE_ASSETS = [
   './',
@@ -7,6 +7,7 @@ const CORE_ASSETS = [
   './chess.html',
   './diary.html',
   './diary-render.js',
+  './trip-map.js',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
