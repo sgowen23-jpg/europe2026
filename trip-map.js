@@ -83,10 +83,43 @@
     '.tm-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}',
     '.tm-actions .kids-mode-btn{grid-column:1/-1;max-width:none;margin:0;}',
     '.tm-actions .games-btn{max-width:none;margin:0;}',
-    '@media (prefers-reduced-motion:reduce){.tm-draw .tm-seg{animation:none;stroke-dashoffset:0;}}'
+    '@media (prefers-reduced-motion:reduce){.tm-draw .tm-seg{animation:none;stroke-dashoffset:0;}}',
+    /* Kids map */
+    '.tm-emoji{font-size:24px;text-anchor:middle;dominant-baseline:central;pointer-events:none;}',
+    '.tm-plane{font-size:40px;text-anchor:middle;dominant-baseline:central;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3));}',
+    '.tm-kids .tm-seg{stroke-width:8;}',
+    '.tm-kids .tm-map[data-sel] .tm-seg.on{stroke-width:10;}',
+    '.tm-kids .tm-stn circle{stroke:#ff8a3d;stroke-width:3.5;}',
+    '.tm-kids .tm-lbl{font-size:25px;font-weight:800;fill:#3b2a5a;}',
+    '.tm-kids h1{color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35);animation:sparkle 2s ease-in-out infinite;}',
+    '.tm-kids .tm-sub{color:#fff;opacity:1;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,.4);}',
+    '.tm-kids .tm-pill{background:#fff177;border-color:#fff177;color:#7a4a00;}',
+    '.tm-kids .tm-pill b{color:#7a4a00;}',
+    '.tm-kids .tm-logo{border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.2);}',
+    '.tm-kids .tm-key-h{font-size:clamp(.7rem,2.2vw,.95rem);color:#c2336f;}',
+    '.tm-kids .tm-krow{font-size:clamp(.72rem,2.3vw,1rem);font-weight:800;padding:.25rem .45rem;}',
+    '.tm-kids .tm-krow img{height:1.6em!important;width:1.6em!important;}',
+    '.tm-kids .tm-krow span{white-space:normal;line-height:1.5;}',
+    '.tm-kids .tm-detail h2 img,.tm-kids .tm-who img{height:1.5em!important;width:1.5em!important;}',
+    '.tm-kids .tm-mode{background:#fff;color:#214e75;border:2px solid #214e75;box-shadow:none;}'
   ].join('\n');
 
-  var GAP = 5.6, NS = 'http://www.w3.org/2000/svg';
+  /* Kids mode: only the families travelling with kids, fun names + stickers
+     (same names as the Kids itinerary). */
+  var KID_FAMS = ['AA', 'CE', 'MGB'];
+  var KID_CITY = {
+    ADL: ['🎉', 'Home!', [-30, 8, 'end']],
+    DXB: ['🏙️', 'Desert Skyscrapers', [30, 6, 'start']],
+    SIN: ['🦁', 'Lion City', [-28, 8, 'end']],
+    ATH: ['🏛️', 'Ancient Castle City', [-6, -34, 'end']],
+    IKA: ['🏖️', 'Island Paradise', [12, 50, 'middle']],
+    KAL: ['🌊', 'Beach Days', [-28, 18, 'end']],
+    NCE: ['🌅', 'Sunny Nice', [0, 50, 'middle']],
+    PAR: ['🏰', 'Disney & the Eiffel Tower!', [30, 8, 'start']],
+    BEG: ['🚀', 'Belgrade Adventure', [28, 8, 'start']]
+  };
+
+  var NS = 'http://www.w3.org/2000/svg';
   function mk(tag, attrs, parent) {
     var e = document.createElementNS(NS, tag);
     for (var k in attrs) e.setAttribute(k, attrs[k]);
@@ -99,23 +132,32 @@
     if (text != null) e.textContent = text;
     return e;
   }
+  function famById(id) { return FAMS.filter(function (f) { return f.id === id; })[0]; }
+  FAMS.forEach(function (f) {
+    f.stops = f.route.filter(function (c, i, a) { return c !== 'ADL' && a.indexOf(c) === i; });
+    f.europe = f.stops.filter(function (c) { return !CITIES[c].inset; }).length;
+  });
+  /* Kids' photos + names come from index.html's kidNames (site-authored HTML). */
+  function kidLabel(fid) {
+    try { if (typeof kidNames !== 'undefined' && kidNames[fid]) return kidNames[fid]; } catch (e) {}
+    return null;
+  }
 
   function build(root) {
     var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
     var europeTotal = Object.keys(CITIES).filter(function (c) { return !CITIES[c].inset; }).length;
+    var kids = false, sel = null, plane = null, planeRaf = 0;
 
     root.innerHTML =
-      '<button class="tm-itin" type="button" onclick="showWelcome()">📋 Itinerary</button>' +
+      '<button class="tm-itin" type="button"></button>' +
       '<div class="tm-page">' +
       '<img class="tm-logo" src="icon-192.png" alt="Hatzing logo">' +
-      '<h1>Hatzing a Dynasty 26</h1>' +
-      '<div class="tm-sub">11 Sep – 17 Oct 2026 · Greece &amp; Europe</div>' +
-      '<div class="tm-pill">🏠 Home again · <b>' + FAMS.length + '</b> families · <b>' + europeTotal + '</b> places · <b>37</b> days</div>' +
-      '<div class="tm-mapwrap"><svg class="tm-map tm-draw" viewBox="0 0 1000 1080" role="img" aria-label="Map of each family’s route through Europe"></svg>' +
-      '<div class="tm-key"><div class="tm-key-h">Who went where</div></div></div>' +
+      '<h1></h1><div class="tm-sub"></div><div class="tm-pill"></div>' +
+      '<div class="tm-mapwrap"><svg class="tm-map" viewBox="0 0 1000 1080" role="img" aria-label="Map of each family’s route through Europe"></svg>' +
+      '<div class="tm-key"></div></div>' +
       '<div class="tm-detail"></div>' +
       '<div class="tm-actions">' +
-      '<button class="kids-mode-btn" type="button" onclick="pickKidsMode()">🎡 Kids mode</button>' +
+      '<button class="kids-mode-btn tm-mode" type="button"></button>' +
       '<a class="games-btn diary-btn" href="diary.html">📸 Photo Diary</a>' +
       '<a class="games-btn" href="games.html">🎮 Games</a>' +
       '</div></div>';
@@ -126,81 +168,139 @@
     mk('rect', { class: 'tm-inset', x: INSET.x, y: INSET.y, width: INSET.w, height: INSET.h, rx: 18 }, svg);
     mk('path', { class: 'tm-land', d: INSET_LAND }, svg);
     mk('text', { class: 'tm-inset-t', x: INSET.x + 18, y: INSET.y + INSET.h - 18 }, svg).textContent = 'GETTING THERE';
-    var gLines = mk('g', {}, svg), gStn = mk('g', {}, svg), gLbl = mk('g', {}, svg);
+    var gLines = mk('g', {}, svg), gStn = mk('g', {}, svg), gLbl = mk('g', {}, svg), gPlane = mk('g', {}, svg);
+    var key = root.querySelector('.tm-key'), detail = root.querySelector('.tm-detail');
+    var groups = {}, stnEls = {}, lblEls = {}, routePath = {};
 
-    /* One entry per pair of places, listing every family that travelled it. */
-    var legs = {}, order = FAMS.map(function (f) { return f.id; });
-    FAMS.forEach(function (f) {
-      for (var i = 0; i < f.route.length - 1; i++) {
-        var a = f.route[i], b = f.route[i + 1], k = a < b ? a + '|' + b : b + '|' + a;
-        var L = legs[k] || (legs[k] = { a: a < b ? a : b, b: a < b ? b : a, fams: [], step: {} });
-        if (L.fams.indexOf(f.id) < 0) { L.fams.push(f.id); L.step[f.id] = i; }
-      }
-    });
+    function visibleFams() { return kids ? FAMS.filter(function (f) { return KID_FAMS.indexOf(f.id) >= 0; }) : FAMS; }
 
-    /* Shared legs are drawn as parallel curved lines, like a transit map. */
-    var groups = {}, through = {};
-    FAMS.forEach(function (f) { groups[f.id] = mk('g', {}, gLines); });
-    Object.keys(legs).forEach(function (k) {
-      var L = legs[k], A = CITIES[L.a], B = CITIES[L.b];
-      L.fams.sort(function (x, y) { return order.indexOf(x) - order.indexOf(y); });
-      var dx = B.x - A.x, dy = B.y - A.y, len = Math.hypot(dx, dy), nx = -dy / len, ny = dx / len;
-      var bend = len * 0.1, n = L.fams.length;
-      [L.a, L.b].forEach(function (c) { through[c] = Math.max(through[c] || 0, n); });
-      L.fams.forEach(function (fid, j) {
-        var off = (j - (n - 1) / 2) * GAP;
-        var cx = (A.x + B.x) / 2 + nx * (bend + off), cy = (A.y + B.y) / 2 + ny * (bend + off);
-        var p = mk('path', {
-          d: 'M' + (A.x + nx * off).toFixed(1) + ' ' + (A.y + ny * off).toFixed(1) + 'Q' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ' +
-            (B.x + nx * off).toFixed(1) + ' ' + (B.y + ny * off).toFixed(1),
-          class: 'tm-seg', 'data-f': fid, stroke: 'var(--' + fid + ')', pathLength: 1
-        }, groups[fid]);
-        p.style.animationDelay = (order.indexOf(fid) * 0.12 + L.step[fid] * 0.16).toFixed(2) + 's';
+    /* Draw routes, stations and labels for the families on show. */
+    function draw() {
+      gLines.innerHTML = ''; gStn.innerHTML = ''; gLbl.innerHTML = '';
+      groups = {}; stnEls = {}; lblEls = {}; routePath = {};
+      var fams = visibleFams(), order = fams.map(function (f) { return f.id; });
+      var GAP = kids ? 9 : 5.6;
+      var legs = {}, through = {};
+      fams.forEach(function (f) {
+        groups[f.id] = mk('g', {}, gLines);
+        for (var i = 0; i < f.route.length - 1; i++) {
+          var a = f.route[i], b = f.route[i + 1], k = a < b ? a + '|' + b : b + '|' + a;
+          var L = legs[k] || (legs[k] = { a: a < b ? a : b, b: a < b ? b : a, fams: [], step: {} });
+          if (L.fams.indexOf(f.id) < 0) { L.fams.push(f.id); L.step[f.id] = i; }
+        }
       });
-    });
+      /* Shared legs are drawn as parallel curved lines, like a transit map. */
+      function curve(A, B, off) {
+        var dx = B.x - A.x, dy = B.y - A.y, len = Math.hypot(dx, dy), nx = -dy / len, ny = dx / len, bend = len * 0.1;
+        var cx = (A.x + B.x) / 2 + nx * (bend + off), cy = (A.y + B.y) / 2 + ny * (bend + off);
+        return { m: [A.x + nx * off, A.y + ny * off], q: [cx, cy, B.x + nx * off, B.y + ny * off] };
+      }
+      function f1(n) { return n.toFixed(1); }
+      Object.keys(legs).forEach(function (k) {
+        var L = legs[k], A = CITIES[L.a], B = CITIES[L.b], n = L.fams.length;
+        L.fams.sort(function (x, y) { return order.indexOf(x) - order.indexOf(y); });
+        [L.a, L.b].forEach(function (c) { through[c] = Math.max(through[c] || 0, n); });
+        L.fams.forEach(function (fid, j) {
+          var c = curve(A, B, (j - (n - 1) / 2) * GAP);
+          var p = mk('path', {
+            d: 'M' + f1(c.m[0]) + ' ' + f1(c.m[1]) + 'Q' + c.q.map(f1).join(' '),
+            class: 'tm-seg', stroke: 'var(--' + fid + ')', pathLength: 1
+          }, groups[fid]);
+          p.style.animationDelay = (order.indexOf(fid) * 0.12 + L.step[fid] * 0.16).toFixed(2) + 's';
+        });
+      });
+      /* One continuous path per family, for the kids' plane to fly along. */
+      fams.forEach(function (f) {
+        var d = '';
+        for (var i = 0; i < f.route.length - 1; i++) {
+          var A = CITIES[f.route[i]], B = CITIES[f.route[i + 1]];
+          var c = curve(A, B, 0);
+          d += (i ? '' : 'M' + f1(c.m[0]) + ' ' + f1(c.m[1])) + 'Q' + c.q.map(f1).join(' ');
+        }
+        routePath[f.id] = d;
+      });
+      var cityIds = Object.keys(CITIES).filter(function (id) { return through[id]; });
+      cityIds.forEach(function (id) {
+        var c = CITIES[id], kc = kids && KID_CITY[id];
+        var r = kc ? 21 : Math.max(8, through[id] * GAP / 2 + 4);
+        var g = mk('g', { class: 'tm-stn', tabindex: 0, role: 'button', 'aria-label': kc ? kc[1] : c.name }, gStn);
+        mk('circle', { cx: c.x, cy: c.y, r: r }, g);
+        if (kc) mk('text', { x: c.x, y: c.y + 1, class: 'tm-emoji' }, g).textContent = kc[0];
+        g.addEventListener('click', function (e) { e.stopPropagation(); selectCity(id); });
+        g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCity(id); } });
+        stnEls[id] = g;
+        var l = kc ? kc[2] : (LBL[id] || [16, 6, 'start']);
+        var t = mk('text', { x: c.x + l[0], y: c.y + l[1], 'text-anchor': l[2], class: 'tm-lbl' + (c.inset ? ' in' : '') }, gLbl);
+        t.textContent = kc ? kc[1] : c.name;
+        lblEls[id] = t;
+      });
+      svg.classList.remove('tm-draw'); void svg.getBoundingClientRect(); svg.classList.add('tm-draw');
+    }
 
-    var stnEls = {}, lblEls = {};
-    Object.keys(CITIES).forEach(function (id) {
-      var c = CITIES[id], r = Math.max(8, (through[id] || 1) * GAP / 2 + 4);
-      var g = mk('g', { class: 'tm-stn', tabindex: 0, role: 'button', 'aria-label': c.name }, gStn);
-      mk('circle', { cx: c.x, cy: c.y, r: r }, g);
-      g.addEventListener('click', function (e) { e.stopPropagation(); selectCity(id); });
-      g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCity(id); } });
-      stnEls[id] = g;
-      var l = LBL[id] || [16, 6, 'start'];
-      var t = mk('text', { x: c.x + l[0], y: c.y + l[1], 'text-anchor': l[2], class: 'tm-lbl' + (c.inset ? ' in' : '') }, gLbl);
-      t.textContent = c.name;
-      lblEls[id] = t;
-    });
+    function buildKey() {
+      key.innerHTML = '';
+      key.appendChild(h('div', 'tm-key-h', kids ? 'Tap your name!' : 'Who went where'));
+      visibleFams().forEach(function (f) {
+        var b = h('button', 'tm-krow'); b.type = 'button';
+        b.dataset.f = f.id; b.style.setProperty('--c', 'var(--' + f.id + ')');
+        b.appendChild(h('i'));
+        var span = h('span');
+        var kl = kids && kidLabel(f.id);
+        if (kl) span.innerHTML = kl; else span.textContent = f.name;
+        b.appendChild(span);
+        if (!kids) b.appendChild(h('small', null, f.europe));
+        b.title = f.name + ': ' + f.europe + ' places in Europe';
+        b.onclick = function (e) { e.stopPropagation(); selectFam(f.id); };
+        key.appendChild(b);
+      });
+    }
 
-    var key = root.querySelector('.tm-key');
-    FAMS.forEach(function (f) {
-      f.stops = f.route.filter(function (c, i, a) { return c !== 'ADL' && a.indexOf(c) === i; });
-      var eu = f.stops.filter(function (c) { return !CITIES[c].inset; }).length;
-      var b = h('button', 'tm-krow'); b.type = 'button';
-      b.dataset.f = f.id; b.style.setProperty('--c', 'var(--' + f.id + ')');
-      b.appendChild(h('i')); b.appendChild(h('span', null, f.name)); b.appendChild(h('small', null, eu));
-      b.title = f.name + ': ' + eu + ' places in Europe';
-      b.onclick = function (e) { e.stopPropagation(); selectFam(f.id); };
-      key.appendChild(b);
-    });
-
-    var detail = root.querySelector('.tm-detail'), sel = null;
     function hint() {
       detail.style.removeProperty('--c');
-      detail.innerHTML = '<div class="tm-hint"><b>Tap a name</b> in the key to follow that family’s trip, or <b>tap a city</b> to see who was there. The full day-by-day plan is under <b>Itinerary</b>, top right.</div>';
+      detail.innerHTML = kids
+        ? '<div class="tm-hint"><b>Tap your name</b> and watch your plane fly the whole trip! ✈️ Tap a picture on the map to see who went there.</div>'
+        : '<div class="tm-hint"><b>Tap a name</b> in the key to follow that family’s trip, or <b>tap a city</b> to see who was there. The full day-by-day plan is under <b>Itinerary</b>, top right.</div>';
+    }
+    function stopPlane() {
+      cancelAnimationFrame(planeRaf);
+      gPlane.innerHTML = ''; plane = null;
     }
     function clearSel() {
       sel = null; svg.removeAttribute('data-sel'); key.classList.remove('has-sel');
       key.querySelectorAll('.tm-krow').forEach(function (r) { r.classList.remove('on'); });
       svg.querySelectorAll('.tm-seg.on').forEach(function (s) { s.classList.remove('on'); });
       Object.keys(stnEls).forEach(function (id) { stnEls[id].classList.remove('dim', 'on'); lblEls[id].classList.remove('dim'); });
+      stopPlane();
     }
+
+    /* The plane follows the family's whole route, nose pointing the way it flies. */
+    function fly(fid) {
+      stopPlane();
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var guide = mk('path', { d: routePath[fid], fill: 'none', stroke: 'none' }, gPlane);
+      var total = guide.getTotalLength();
+      plane = mk('text', { class: 'tm-plane' }, gPlane);
+      plane.textContent = '✈️';
+      var dur = Math.min(9000, Math.max(4500, total * 2.2)), t0 = null;
+      function frame(ts) {
+        if (!plane) return;
+        if (t0 == null) t0 = ts;
+        var k = Math.min(1, (ts - t0) / dur), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        var s = e * total, p = guide.getPointAtLength(s), q = guide.getPointAtLength(Math.min(total, s + 2));
+        if (s + 2 >= total) q = { x: p.x + (p.x - guide.getPointAtLength(s - 2).x), y: p.y + (p.y - guide.getPointAtLength(s - 2).y) };
+        var ang = Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI;
+        plane.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ') rotate(' + (ang + 45).toFixed(1) + ')');
+        if (k < 1) planeRaf = requestAnimationFrame(frame);
+        else { plane.textContent = '🎉'; plane.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + (p.y - 34).toFixed(1) + ')'); }
+      }
+      planeRaf = requestAnimationFrame(frame);
+    }
+
     function selectFam(fid) {
       if (sel === fid) { clearSel(); hint(); return; }
       clearSel();
       sel = fid;
-      var f = FAMS.filter(function (x) { return x.id === fid; })[0];
+      var f = famById(fid);
       svg.classList.remove('tm-draw');
       svg.setAttribute('data-sel', fid);
       groups[fid].querySelectorAll('.tm-seg').forEach(function (s) { s.classList.add('on'); });
@@ -211,33 +311,46 @@
         var off = f.route.indexOf(id) < 0;
         stnEls[id].classList.toggle('dim', off); lblEls[id].classList.toggle('dim', off);
       });
-      var eu = f.stops.filter(function (c) { return !CITIES[c].inset; }).length;
       detail.style.setProperty('--c', 'var(--' + fid + ')');
       detail.innerHTML = '';
-      var h2 = h('h2'); h2.appendChild(h('i')); h2.appendChild(h('span', null, f.name)); h2.appendChild(h('small', null, eu + ' places in Europe'));
+      var h2 = h('h2'); h2.appendChild(h('i'));
+      var nm = h('span'), kl = kids && kidLabel(fid);
+      if (kl) { nm.innerHTML = kl; nm.appendChild(document.createTextNode('’s adventure')); } else nm.textContent = f.name;
+      h2.appendChild(nm);
+      if (!kids) h2.appendChild(h('small', null, f.europe + ' places in Europe'));
       detail.appendChild(h2);
       var stops = h('div', 'tm-stops');
       f.route.forEach(function (c, i) {
-        if (i) stops.appendChild(h('em', null, '→'));
-        stops.appendChild(h('span', null, CITIES[c].name.replace(' & Disneyland', ' + Disney')));
+        if (i) stops.appendChild(h('em', null, kids ? '✈️' : '→'));
+        var kc = kids && KID_CITY[c];
+        stops.appendChild(h('span', null, kc ? kc[0] + ' ' + kc[1] : CITIES[c].name.replace(' & Disneyland', ' + Disney')));
       });
       detail.appendChild(stops);
-      var go = h('button', 'tm-go', 'Open ' + f.name + '’s itinerary →'); go.type = 'button';
-      go.onclick = function () { window.pickFamily(fid); };
-      detail.appendChild(go);
+      if (kids) {
+        var again = h('button', 'tm-go', '✈️ Fly it again'); again.type = 'button';
+        again.onclick = function () { fly(fid); };
+        detail.appendChild(again);
+        fly(fid);
+      } else {
+        var go = h('button', 'tm-go', 'Open ' + f.name + '’s itinerary →'); go.type = 'button';
+        go.onclick = function () { window.pickFamily(fid); };
+        detail.appendChild(go);
+      }
     }
     function selectCity(id) {
       clearSel();
       stnEls[id].classList.add('on');
-      var c = CITIES[id];
+      var c = CITIES[id], kc = kids && KID_CITY[id];
       detail.style.removeProperty('--c');
       detail.innerHTML = '';
-      var h2 = h('h2'); h2.appendChild(h('span', null, c.name)); h2.appendChild(h('small', null, c.dates));
+      var h2 = h('h2'); h2.appendChild(h('span', null, kc ? kc[0] + ' ' + kc[1] : c.name)); h2.appendChild(h('small', null, c.dates));
       detail.appendChild(h2);
       var who = h('div', 'tm-who');
-      FAMS.forEach(function (f) {
+      visibleFams().forEach(function (f) {
         if (f.route.indexOf(id) < 0) return;
-        var b = h('button', null, f.name); b.type = 'button';
+        var b = h('button'); b.type = 'button';
+        var kl = kids && kidLabel(f.id);
+        if (kl) b.innerHTML = kl; else b.textContent = f.name;
         b.style.setProperty('--c', 'var(--' + f.id + ')');
         b.onclick = function () { selectFam(f.id); };
         who.appendChild(b);
@@ -245,7 +358,25 @@
       detail.appendChild(who);
     }
     svg.addEventListener('click', function () { clearSel(); hint(); });
-    hint();
+
+    function applyMode() {
+      clearSel();
+      root.classList.toggle('tm-kids', kids);
+      root.querySelector('h1').textContent = kids ? 'Our Big Adventure! 🌍' : 'Hatzing a Dynasty 26';
+      root.querySelector('.tm-sub').textContent = kids ? 'Greece, Disneyland & beyond ✨' : '11 Sep – 17 Oct 2026 · Greece & Europe';
+      root.querySelector('.tm-pill').innerHTML = kids
+        ? '🎉 <b>37</b> days · <b>3</b> families · one <b>BIG</b> adventure'
+        : '🏠 Home again · <b>' + FAMS.length + '</b> families · <b>' + europeTotal + '</b> places · <b>37</b> days';
+      var itin = root.querySelector('.tm-itin');
+      itin.textContent = kids ? '📋 Our plan' : '📋 Itinerary';
+      itin.onclick = function () { if (kids) window.pickKidsMode(); else window.showWelcome(); };
+      var mode = root.querySelector('.tm-mode');
+      mode.textContent = kids ? '👔 Grown-up map' : '🎡 Kids mode';
+      mode.onclick = function () { window.showMap(!kids); };
+      draw(); buildKey(); hint();
+    }
+    window.tripMapSetKids = function (k) { if (!!k !== kids) { kids = !!k; applyMode(); } };
+    applyMode();
   }
 
   var root = document.getElementById('mapHome');

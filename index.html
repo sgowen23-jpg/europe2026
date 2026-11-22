@@ -275,7 +275,7 @@ body.kids-view .bg-serbia{background:linear-gradient(90deg,#fb7185,#fda4af);}
   <button class="kids-mode-btn" onclick="pickKidsMode()">🎡 Kids mode</button>
   <a class="games-btn diary-btn" href="diary.html">📸 Photo Diary</a>
   <a class="games-btn" href="games.html">🎮 Games</a>
-  <button class="back-to-map" onclick="showMap()">← Back to the trip map</button>
+  <button class="back-to-map" onclick="showMap(false)">← Back to the trip map</button>
 </div>
 
 <div id="kidsBanner">
@@ -1588,9 +1588,13 @@ function pickKidsMode() {
   setView('kids', kidsBtn);
   window.scrollTo(0, 0);
 }
-function showMap() {
+// Trip map home. showMap(true) = Kids map, showMap(false) = grown-up map,
+// showMap() keeps whichever mode is on (so the logo in Kids mode returns to the Kids map).
+function showMap(kids) {
+  if (kids === undefined) kids = document.body.classList.contains('kids-view');
   document.body.classList.add('landing', 'map-home');
-  setView('adult', document.querySelectorAll('.viewbtn')[0]);
+  setView(kids ? 'kids' : 'adult', document.querySelectorAll('.viewbtn')[kids ? 1 : 0]);
+  if (window.tripMapSetKids) window.tripMapSetKids(kids);
   window.scrollTo(0, 0);
 }
 function showWelcome() {
