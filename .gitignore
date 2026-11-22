@@ -1,3 +1,9 @@
 # Local-only assets (site embeds images as base64 in index.html)
 *.jpg
 Itinerary_Audit_Excel_vs_Site.md
+
+# ...except the photo diary's exported photos
+!diary/photos/*.jpg
+
+# map generator dependencies
+tools/trip-map/node_modules/

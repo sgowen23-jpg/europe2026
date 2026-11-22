@@ -1,10 +1,13 @@
-const CACHE_VERSION = 'hatzing26-v7';
+const CACHE_VERSION = 'hatzing26-v10';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 const CORE_ASSETS = [
   './',
   './index.html',
   './games.html',
   './chess.html',
+  './diary.html',
+  './diary-render.js',
+  './trip-map.js',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
@@ -76,6 +79,19 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
+
+  // Photo diary: photos skip the service worker (the browser's own HTTP cache
+  // handles them, so hundreds of MB don't pile up in the offline cache), and
+  // the diary text + renderer are network-first so edits show up straight away.
+  if (url.origin === location.origin && url.pathname.includes('/diary/photos/')) return;
+  if (url.origin === location.origin && /\/(diary\/diary\.json|diary-render\.js)$/.test(url.pathname)) {
+    event.respondWith(fetch(req, { cache: 'no-cache' }).then((res) => {
+      const copy = res.clone();
+      caches.open(CACHE_VERSION).then((c) => c.put(req, copy));
+      return res;
+    }).catch(() => caches.match(req).then((r) => r || Response.error())));
+    return;
+  }
 
   // The itinerary page itself: NETWORK-FIRST so content updates flow through
   // automatically whenever online. Falls back to the cached page when offline.

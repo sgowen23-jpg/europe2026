@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo Diary · Hatzing a Dynasty 26</title>
+<meta name="theme-color" content="#1f4e79" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Diary" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:#faf7f2;}
+</style>
+</head>
+<body>
+<div id="diary"></div>
+<script src="diary-render.js"></script>
+<script>
+/* Content lives in diary/diary.json, with photos in diary/photos/.
+   Both are produced by diary-picker.html. */
+(function () {
+  var box = document.getElementById('diary');
+  var opts = {
+    homeHref: 'index.html',
+    emptyText: 'We’re home and sorting through the photos. The diary will appear here soon.'
+  };
+  fetch('diary/diary.json', { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) { DiaryRender.render(box, data, opts); })
+    .catch(function () {
+      DiaryRender.render(box, { title: 'A Photo Diary', subtitle: 'Greece & Europe · Sep–Oct 2026', chapters: [] }, opts);
+    });
+})();
+</script>
+</body>
+</html>
