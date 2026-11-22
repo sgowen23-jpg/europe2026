@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Photo Picker · Hatzing a Dynasty 26</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1a17;--muted:#7b756c;--accent:#214e75;--paper:#faf7f2;--rule:#e2dbd0;--pick:#2a8a55;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;}
+button,input,textarea,select{font:inherit;}
+.btn{background:#fff;border:1.5px solid var(--accent);color:var(--accent);border-radius:9px;padding:.45rem .85rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn:hover{background:#eef3f8;}
+.btn.solid{background:var(--accent);color:#fff;}
+.btn.solid:hover{background:#183d5e;}
+.btn:disabled{opacity:.45;cursor:default;}
+a{color:var(--accent);}
+
+/* start screen */
+#start{max-width:640px;margin:0 auto;padding:4rem 20px;text-align:center;}
+#start h1{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:2.4rem;margin:0 0 .4rem;}
+#start .sub{color:var(--muted);margin-bottom:2rem;}
+.steps{text-align:left;background:#fff;border:1px solid var(--rule);border-radius:14px;padding:1.2rem 1.4rem;margin:0 0 2rem;line-height:1.7;}
+.steps ol{margin:0;padding-left:1.2rem;}
+.big{font-size:1.05rem;padding:.9rem 1.6rem;border-radius:12px;}
+.tip{font-size:.82rem;color:var(--muted);margin-top:1.5rem;line-height:1.6;text-align:left;background:#f3efe7;border-radius:10px;padding:.8rem 1rem;}
+#loadmsg{margin-top:1.5rem;color:var(--accent);font-weight:600;}
+.bar{height:6px;background:#e7e1d6;border-radius:6px;overflow:hidden;margin-top:.6rem;}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .15s;}
+
+/* toolbar */
+#tool{display:none;position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--rule);box-shadow:0 2px 10px rgba(0,0,0,.04);}
+.tool-in{display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:center;padding:.6rem 16px;max-width:1400px;margin:0 auto;}
+.count{font-weight:700;color:var(--accent);margin-right:auto;}
+.count small{font-weight:500;color:var(--muted);}
+.seg{display:inline-flex;border:1.5px solid var(--rule);border-radius:9px;overflow:hidden;}
+.seg button{border:0;background:#fff;padding:.4rem .7rem;cursor:pointer;color:var(--muted);font-weight:600;}
+.seg button.on{background:var(--accent);color:#fff;}
+label.chk{display:flex;align-items:center;gap:.35rem;color:var(--muted);font-size:.82rem;cursor:pointer;}
+select{border:1.5px solid var(--rule);border-radius:9px;padding:.4rem .5rem;background:#fff;}
+
+/* days */
+#days{max-width:1400px;margin:0 auto;padding:1rem 16px 6rem;}
+.day{margin:1.6rem 0 2.4rem;scroll-margin-top:70px;}
+.day-hd{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;align-items:start;background:#fff;border:1px solid var(--rule);border-radius:12px;padding:.8rem 1rem;margin-bottom:.7rem;}
+.day-date{font-family:"Playfair Display",serif;font-size:1.25rem;color:var(--accent);font-weight:700;white-space:nowrap;}
+.day-date small{display:block;font-family:Inter,sans-serif;font-size:.74rem;color:var(--muted);font-weight:500;margin-top:.15rem;}
+.day-fields{display:grid;grid-template-columns:180px 1fr;gap:.45rem;}
+.day-fields input,.day-fields textarea{width:100%;border:1.5px solid var(--rule);border-radius:8px;padding:.42rem .6rem;background:#fdfcfa;}
+.day-fields input:focus,.day-fields textarea:focus{outline:none;border-color:var(--accent);background:#fff;}
+.day-fields textarea{grid-column:1/-1;min-height:2.4rem;resize:vertical;line-height:1.55;}
+@media(max-width:700px){.day-hd{grid-template-columns:1fr;}.day-fields{grid-template-columns:1fr;}}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;}
+.th{position:relative;aspect-ratio:1;background:#ebe5db;border-radius:6px;overflow:hidden;cursor:pointer;outline:3px solid transparent;outline-offset:-3px;}
+.th img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .15s;}
+.th .nm{position:absolute;inset:auto 0 0 0;font-size:.62rem;color:#8a8378;padding:.3rem;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.th.picked{outline-color:var(--pick);}
+.th .tick{position:absolute;top:6px;left:6px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.35);border:2px solid #fff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;}
+.th:not(.picked) .tick{color:transparent;}
+.th.picked .tick{background:var(--pick);}
+.th .zoom{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;border:0;cursor:zoom-in;opacity:0;transition:opacity .12s;font-size:.9rem;}
+.th:hover .zoom{opacity:1;}
+.th .flags{position:absolute;bottom:5px;right:6px;display:flex;gap:3px;}
+.th .flags span{background:rgba(0,0,0,.55);color:#fff;font-size:.6rem;padding:1px 5px;border-radius:4px;font-weight:600;}
+.hide-unpicked .th:not(.picked){display:none;}
+.hide-unpicked .day.nopicks{display:none;}
+
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:200;background:rgba(14,14,14,.97);display:none;flex-direction:column;}
+#lb.on{display:flex;}
+#lb .stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;position:relative;}
+#lb .stage img{max-width:94vw;max-height:100%;object-fit:contain;}
+#lb .nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:0;color:#fff;font-size:2.6rem;padding:1rem;cursor:pointer;opacity:.7;}
+#lb .nav:hover{opacity:1;}
+#lb .prev{left:0;}#lb .next{right:0;}
+#lb .x{position:absolute;top:.6rem;right:.8rem;background:none;border:0;color:#fff;font-size:2rem;cursor:pointer;opacity:.8;}
+#lb .panel{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:center;padding:.8rem 16px 1rem;color:#ccc;}
+#lb .panel input[type=text]{flex:1;min-width:220px;max-width:560px;border:1px solid #444;background:#222;color:#fff;border-radius:8px;padding:.5rem .7rem;}
+#lb .lbbtn{background:#2a2a2a;color:#eee;border:1px solid #444;border-radius:8px;padding:.45rem .8rem;cursor:pointer;font-weight:600;}
+#lb .lbbtn.on{background:var(--pick);border-color:var(--pick);color:#fff;}
+#lb .info{width:100%;text-align:center;font-size:.75rem;color:#888;}
+
+/* modal + preview */
+.modal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px;}
+.modal.on{display:flex;}
+.card{background:#fff;border-radius:16px;max-width:560px;width:100%;padding:1.4rem 1.5rem;max-height:90vh;overflow:auto;}
+.card h2{font-family:"Playfair Display",serif;color:var(--accent);margin:0 0 .8rem;}
+.card label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin:.8rem 0 .3rem;}
+.card input,.card textarea{width:100%;border:1.5px solid var(--rule);border-radius:8px;padding:.5rem .65rem;}
+.card textarea{min-height:6rem;line-height:1.55;}
+.card .row{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1.2rem;flex-wrap:wrap;}
+.card p{line-height:1.6;}
+#preview{position:fixed;inset:0;z-index:250;background:var(--paper);overflow:auto;display:none;}
+#preview.on{display:block;}
+#previewBar{position:fixed;top:12px;right:12px;z-index:260;display:none;}
+#previewBar.on{display:block;}
+</style>
+</head>
+<body>
+
+<div id="start">
+  <h1>Photo Picker</h1>
+  <div class="sub">Sort the trip photos and write the diary. Everything stays on this computer until you export.</div>
+  <div class="steps"><ol>
+    <li><b>Choose the folder</b> with all your trip photos (copy them off the phone first).</li>
+    <li><b>Click a photo</b> to pick it for the diary. Click again to un-pick.</li>
+    <li>Add a <b>place, title and a few lines</b> for each day. Captions are optional (open a photo with 🔍).</li>
+    <li>Hit <b>Preview</b> to see the real diary page, then <b>Export</b> to download the finished photos.</li>
+  </ol></div>
+  <button class="btn solid big" id="pickFolder">📁 Choose photos folder</button>
+  <div style="margin-top:.8rem"><a href="#" id="pickFiles">or choose individual photos</a> · <a href="#" id="loadJson">load a saved diary.json</a></div>
+  <input type="file" id="folderInput" webkitdirectory multiple hidden>
+  <input type="file" id="filesInput" accept="image/*,.heic,.heif" multiple hidden>
+  <input type="file" id="jsonInput" accept=".json,application/json" hidden>
+  <div id="loadmsg"></div>
+  <div class="bar" id="loadbar" hidden><i></i></div>
+  <div class="tip"><b>iPhone tip:</b> before copying, set <i>Settings › Photos › Transfer to Mac or PC</i> to <b>Automatic</b> so photos arrive as JPGs. HEIC photos still work here, they are just slower in Chrome and Edge.<br><b>Your work is saved</b> in this browser as you go. If you come back later, choose the same folder and your picks and notes will still be there.</div>
+</div>
+
+<div id="tool"><div class="tool-in">
+  <div class="count" id="count"></div>
+  <div class="seg" id="viewSeg"><button data-v="all" class="on">All</button><button data-v="picked">Picked only</button></div>
+  <label class="chk"><input type="checkbox" id="showOutside"> Photos outside trip dates</label>
+  <select id="jump"></select>
+  <button class="btn" id="addMore">+ Add photos</button>
+  <button class="btn" id="detailsBtn">Diary details</button>
+  <button class="btn" id="previewBtn">👀 Preview</button>
+  <button class="btn solid" id="exportBtn">⬇ Export</button>
+</div></div>
+
+<div id="days"></div>
+
+<div id="lb">
+  <button class="x" id="lbX" aria-label="Close">×</button>
+  <div class="stage"><img id="lbImg" alt=""><button class="nav prev" id="lbPrev" aria-label="Previous">‹</button><button class="nav next" id="lbNext" aria-label="Next">›</button></div>
+  <div class="panel">
+    <button class="lbbtn" id="lbPick">✓ Pick</button>
+    <input type="text" id="lbCap" placeholder="Caption (optional)">
+    <button class="lbbtn" id="lbWide" title="Show this photo full width in the diary">⬌ Full width</button>
+    <button class="lbbtn" id="lbCover" title="Use as the big photo at the top of the diary">★ Cover</button>
+    <div class="info" id="lbInfo"></div>
+  </div>
+</div>
+
+<div class="modal" id="details"><div class="card">
+  <h2>Diary details</h2>
+  <label for="dTitle">Title</label><input id="dTitle" placeholder="A Photo Diary of Europe">
+  <label for="dKicker">Small line above the title</label><input id="dKicker" placeholder="Hatzing a Dynasty · 2026">
+  <label for="dSub">Subtitle</label><input id="dSub" placeholder="Greece, France, Spain &amp; Italy · Sep–Oct 2026">
+  <label for="dIntro">Introduction (shown under the cover photo)</label><textarea id="dIntro" placeholder="Five weeks, two kids, one very full suitcase..."></textarea>
+  <label for="dSign">Closing line</label><input id="dSign" placeholder="The end. Thanks for coming along.">
+  <div class="row"><button class="btn solid" id="detailsDone">Done</button></div>
+</div></div>
+
+<div class="modal" id="exportModal"><div class="card">
+  <h2>Export</h2>
+  <div id="exportBody"></div>
+  <div class="bar" id="exportBar"><i></i></div>
+  <div class="row"><button class="btn" id="exportClose">Close</button></div>
+</div></div>
+
+<div id="preview"></div>
+<div id="previewBar"><button class="btn solid" id="closePreview">× Close preview</button></div>
+
+<script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="diary-render.js"></script>
+<script>
+(function () {
+'use strict';
+
+/* ── Settings ───────────────────────────────────────────── */
+var TRIP_START = '2026-09-11', TRIP_END = '2026-10-17';
+var EXPORT_MAX = 1600;          // longest edge of exported photos, px
+var EXPORT_QUALITY = 0.82;      // JPEG quality
+var PART_LIMIT = 20 * 1024 * 1024; // split zips so each fits GitHub's 25 MB upload limit
+var THUMB = 360;
+var STORE_KEY = 'diaryPicker.v1';
+
+/* Sam & Fiona's route, used to suggest a place for each day (editable). */
+var ROUTE = [
+  ['2026-09-11', 'Adelaide'], ['2026-09-12', 'Athens'], ['2026-09-16', 'Ikaria'],
+  ['2026-09-22', 'Kalamata'], ['2026-09-27', 'Disneyland Paris'], ['2026-09-30', 'Paris'],
+  ['2026-10-03', 'Barcelona'], ['2026-10-06', 'Madrid'], ['2026-10-09', 'Florence'],
+  ['2026-10-12', 'Rome'], ['2026-10-17', 'Home']
+];
+var COUNTRY = { Adelaide: 'Australia', Home: 'Australia', Dubai: 'UAE', Athens: 'Greece', Ikaria: 'Greece',
+  Kalamata: 'Greece', Thessaloniki: 'Greece', 'Disneyland Paris': 'France', Paris: 'France', Nice: 'France',
+  Valencia: 'Spain', Barcelona: 'Spain', Madrid: 'Spain', Florence: 'Italy', Rome: 'Italy', Singapore: 'Singapore' };
+
+/* ── State ──────────────────────────────────────────────── */
+var photos = [];          // {id, file, name, heic, ts, day, thumb, w, h}
+var byId = {};
+var saved = load();
+var view = 'all';
+var heicLib = null;
+
+function blank() { return { meta: {}, picks: {}, days: {} }; }
+function load() {
+  try { var s = JSON.parse(localStorage.getItem(STORE_KEY)); if (s && s.picks) return s; } catch (e) {}
+  return blank();
+}
+var saveTimer = null;
+function save() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(function () {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(saved)); } catch (e) {}
+  }, 250);
+}
+
+var $ = function (id) { return document.getElementById(id); };
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function isoDay(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function inTrip(day) { return day >= TRIP_START && day <= TRIP_END; }
+function defaultPlace(day) {
+  var p = '';
+  ROUTE.forEach(function (r) { if (day >= r[0]) p = r[1]; });
+  return inTrip(day) ? p : '';
+}
+function dayInfo(day) {
+  if (!saved.days[day]) saved.days[day] = {};
+  var d = saved.days[day];
+  if (d.place == null) d.place = defaultPlace(day);
+  return d;
+}
+
+/* ── Loading files ──────────────────────────────────────── */
+$('pickFolder').onclick = function () { $('folderInput').click(); };
+$('pickFiles').onclick = function (e) { e.preventDefault(); $('filesInput').click(); };
+$('addMore').onclick = function () { $('folderInput').click(); };
+$('loadJson').onclick = function (e) { e.preventDefault(); $('jsonInput').click(); };
+$('folderInput').onchange = function () { ingest(this.files); this.value = ''; };
+$('filesInput').onchange = function () { ingest(this.files); this.value = ''; };
+$('jsonInput').onchange = function () {
+  var f = this.files[0]; this.value = '';
+  if (!f) return;
+  f.text().then(function (t) { importJson(JSON.parse(t)); }).catch(function () { alert('That file could not be read as a diary.json.'); });
+};
+
+var IMG_RE = /\.(jpe?g|png|webp|heic|heif|gif)$/i;
+
+function ingest(fileList) {
+  var files = Array.prototype.filter.call(fileList, function (f) { return IMG_RE.test(f.name) && !byId[f.name + '|' + f.size]; });
+  var skipped = fileList.length - files.length;
+  if (!files.length) { $('loadmsg').textContent = 'No new photos found there' + (skipped ? ' (' + skipped + ' videos or other files skipped).' : '.'); return; }
+  $('loadmsg').textContent = 'Reading dates from ' + files.length + ' photos…';
+  $('loadbar').hidden = false;
+  var done = 0, i = 0, out = [];
+  function next() {
+    if (i >= files.length) return Promise.resolve();
+    var f = files[i++];
+    return readDate(f).then(function (ts) {
+      var d = new Date(ts);
+      out.push({ id: f.name + '|' + f.size, file: f, name: f.name, heic: /\.hei[cf]$/i.test(f.name), ts: ts, day: isoDay(d) });
+      done++;
+      if (done % 10 === 0 || done === files.length) {
+        $('loadbar').firstChild.style.width = (100 * done / files.length) + '%';
+        $('loadmsg').textContent = 'Reading dates… ' + done + ' / ' + files.length;
+      }
+    }).then(next);
+  }
+  var workers = [];
+  for (var w = 0; w < 6; w++) workers.push(next());
+  Promise.all(workers).then(function () {
+    out.forEach(function (p) {
+      var s = saved.picks[p.id];
+      if (s && s.w) { p.w = s.w; p.h = s.h; }
+      photos.push(p); byId[p.id] = p;
+    });
+    photos.sort(function (a, b) { return a.ts - b.ts || (a.name < b.name ? -1 : 1); });
+    $('start').style.display = 'none';
+    $('tool').style.display = 'block';
+    // If nothing falls inside the trip dates, show everything rather than an empty page.
+    if (!photos.some(function (p) { return inTrip(p.day); })) $('showOutside').checked = true;
+    renderDays();
+  });
+}
+
+function readDate(f) {
+  return exifr.parse(f, { pick: ['DateTimeOriginal', 'CreateDate'] })
+    .then(function (x) {
+      var d = x && (x.DateTimeOriginal || x.CreateDate);
+      return d instanceof Date && !isNaN(d) ? d.getTime() : f.lastModified;
+    })
+    .catch(function () { return f.lastModified; });
+}
+
+/* ── Rendering the day list ─────────────────────────────── */
+var thumbObserver = null;
+
+function visiblePhotos() {
+  var all = $('showOutside').checked;
+  return photos.filter(function (p) { return all || inTrip(p.day); });
+}
+
+function renderDays() {
+  var box = $('days');
+  box.innerHTML = '';
+  if (thumbObserver) thumbObserver.disconnect();
+  thumbObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { thumbObserver.unobserve(en.target); queueThumb(byId[en.target.dataset.id], en.target); }
+    });
+  }, { rootMargin: '600px 0px' });
+
+  var groups = {}, order = [];
+  visiblePhotos().forEach(function (p) {
+    if (!groups[p.day]) { groups[p.day] = []; order.push(p.day); }
+    groups[p.day].push(p);
+  });
+
+  var jump = $('jump');
+  jump.innerHTML = '<option value="">Jump to day…</option>';
+  var places = {};
+  ROUTE.forEach(function (r) { places[r[1]] = 1; });
+  Object.keys(COUNTRY).forEach(function (k) { places[k] = 1; });
+  var dl = document.createElement('datalist'); dl.id = 'placeList';
+  Object.keys(places).forEach(function (pl) { var o = document.createElement('option'); o.value = pl; dl.appendChild(o); });
+  box.appendChild(dl);
+
+  order.forEach(function (day) {
+    var info = dayInfo(day);
+    var sec = document.createElement('section');
+    sec.className = 'day'; sec.id = 'day-' + day;
+    var hd = document.createElement('div'); hd.className = 'day-hd';
+    var dt = document.createElement('div'); dt.className = 'day-date';
+    dt.textContent = DiaryRender.prettyDate(day);
+    var small = document.createElement('small'); dt.appendChild(small);
+    var fields = document.createElement('div'); fields.className = 'day-fields';
+    var place = input('Place', info.place, function (v) { info.place = v; save(); });
+    place.setAttribute('list', 'placeList');
+    var title = input('Title for the day (optional)', info.title, function (v) { info.title = v; save(); });
+    var text = document.createElement('textarea');
+    text.placeholder = 'Diary entry: what happened today? (optional)';
+    text.value = info.text || '';
+    text.oninput = function () { info.text = text.value; save(); autoGrow(text); };
+    fields.appendChild(place); fields.appendChild(title); fields.appendChild(text);
+    hd.appendChild(dt); hd.appendChild(fields);
+    sec.appendChild(hd);
+    setTimeout(function () { autoGrow(text); }, 0);
+
+    var grid = document.createElement('div'); grid.className = 'grid';
+    groups[day].forEach(function (p) { grid.appendChild(tile(p)); });
+    sec.appendChild(grid);
+    box.appendChild(sec);
+    sec._small = small; sec._photos = groups[day];
+
+    var o = document.createElement('option');
+    o.value = day; o.textContent = DiaryRender.prettyDate(day) + (info.place ? ' · ' + info.place : '');
+    jump.appendChild(o);
+  });
+  if (!order.length) box.innerHTML = '<p style="text-align:center;color:#7b756c;padding:3rem">No photos between 11 Sep and 17 Oct. Tick "Photos outside trip dates" to see the rest.</p>';
+  updateCounts();
+}
+
+function input(ph, val, on) {
+  var i = document.createElement('input');
+  i.type = 'text'; i.placeholder = ph; i.value = val || '';
+  i.oninput = function () { on(i.value); };
+  return i;
+}
+function autoGrow(t) { t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight + 2, 400) + 'px'; }
+
+function tile(p) {
+  var t = document.createElement('div');
+  t.className = 'th'; t.dataset.id = p.id;
+  t.innerHTML = '<div class="nm"></div><div class="tick">✓</div><button class="zoom" title="Open larger">🔍</button><div class="flags"></div>';
+  t.querySelector('.nm').textContent = p.name;
+  t.onclick = function (e) {
+    if (e.target.classList.contains('zoom')) { openLb(p.id); return; }
+    togglePick(p.id);
+  };
+  t.ondblclick = function (e) { e.preventDefault(); openLb(p.id); };
+  paintTile(t, p);
+  if (p.thumb) setThumb(t, p); else thumbObserver.observe(t);
+  return t;
+}
+function paintTile(t, p) {
+  var s = saved.picks[p.id];
+  t.classList.toggle('picked', !!s);
+  var f = t.querySelector('.flags'); f.innerHTML = '';
+  if (s && s.cap) f.innerHTML += '<span>Aa</span>';
+  if (s && s.wide) f.innerHTML += '<span>⬌</span>';
+  if (saved.meta.cover === p.id) f.innerHTML += '<span>★</span>';
+}
+function setThumb(t, p) {
+  var img = t.querySelector('img');
+  if (!img) { img = document.createElement('img'); img.alt = ''; t.insertBefore(img, t.firstChild); }
+  img.src = p.thumb;
+}
+function tileOf(id) { return document.querySelector('.th[data-id="' + CSS.escape(id) + '"]'); }
+
+function togglePick(id) {
+  if (saved.picks[id]) delete saved.picks[id];
+  else { var p = byId[id]; saved.picks[id] = { w: p.w, h: p.h }; }
+  save();
+  var t = tileOf(id); if (t) paintTile(t, byId[id]);
+  updateCounts();
+}
+
+function updateCounts() {
+  var vis = visiblePhotos();
+  var n = vis.filter(function (p) { return saved.picks[p.id]; }).length;
+  $('count').innerHTML = n + ' picked <small>of ' + vis.length + ' photos</small>';
+  document.querySelectorAll('.day').forEach(function (sec) {
+    var k = sec._photos.filter(function (p) { return saved.picks[p.id]; }).length;
+    sec._small.textContent = sec._photos.length + ' photos' + (k ? ' · ' + k + ' picked' : '');
+    sec.classList.toggle('nopicks', !k);
+  });
+  $('exportBtn').disabled = !n;
+}
+
+$('viewSeg').onclick = function (e) {
+  var v = e.target.dataset.v; if (!v) return;
+  view = v;
+  this.querySelectorAll('button').forEach(function (b) { b.classList.toggle('on', b.dataset.v === v); });
+  $('days').classList.toggle('hide-unpicked', v === 'picked');
+};
+$('showOutside').onchange = renderDays;
+$('jump').onchange = function () {
+  var t = $('day-' + this.value); if (t) t.scrollIntoView({ behavior: 'smooth' });
+  this.value = '';
+};
+
+/* ── Decoding images (thumbnails, previews, export) ─────── */
+function loadHeicLib() {
+  if (heicLib) return heicLib;
+  heicLib = new Promise(function (res, rej) {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
+    s.onload = function () { res(window.heic2any); };
+    s.onerror = rej;
+    document.head.appendChild(s);
+  });
+  return heicLib;
+}
+function imgFromBlob(blob) {
+  return new Promise(function (res, rej) {
+    var url = URL.createObjectURL(blob), img = new Image();
+    img.onload = function () { res({ img: img, url: url }); };
+    img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('decode')); };
+    img.src = url;
+  });
+}
+/* Resolves to {img, url}. Browsers apply the photo's rotation automatically. */
+function decode(p) {
+  if (p._decoded) return p._decoded;
+  p._decoded = imgFromBlob(p.file).catch(function () {
+    if (!p.heic) throw new Error('decode');
+    return loadHeicLib().then(function (h) { return h({ blob: p.file, toType: 'image/jpeg', quality: 0.92 }); })
+      .then(function (out) { return imgFromBlob(Array.isArray(out) ? out[0] : out); });
+  });
+  // Keep only the HEIC conversions cached (they are slow); JPEGs decode fast.
+  p._decoded.then(function (d) { if (!p.heic) { p._decoded = null; } else { p._big = d.url; } }).catch(function () { p._decoded = null; });
+  return p._decoded;
+}
+function scaled(img, max, quality) {
+  var w = img.naturalWidth, h = img.naturalHeight, k = Math.min(1, max / Math.max(w, h));
+  var c = document.createElement('canvas');
+  c.width = Math.round(w * k); c.height = Math.round(h * k);
+  var g = c.getContext('2d');
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(img, 0, 0, c.width, c.height);
+  return new Promise(function (res) {
+    c.toBlob(function (b) { res({ blob: b, w: c.width, h: c.height }); }, 'image/jpeg', quality);
+  });
+}
+
+var thumbQ = [], thumbBusy = 0;
+function queueThumb(p, t) { thumbQ.push([p, t]); pumpThumbs(); }
+function pumpThumbs() {
+  while (thumbBusy < 4 && thumbQ.length) {
+    var job = thumbQ.shift(), p = job[0], t = job[1];
+    if (p.thumb) { setThumb(t, p); continue; }
+    runThumb(p, t);
+  }
+}
+function runThumb(p, t) {
+  thumbBusy++;
+  makeThumb(p)
+    .then(function () { setThumb(t, p); })
+    .catch(function () { t.querySelector('.nm').textContent = p.name + ' (can’t preview)'; })
+    .then(function () { thumbBusy--; pumpThumbs(); });
+}
+function makeThumb(p) {
+  return decode(p).then(function (d) {
+    p.w = d.img.naturalWidth; p.h = d.img.naturalHeight;
+    var s = saved.picks[p.id]; if (s) { s.w = p.w; s.h = p.h; save(); }
+    return scaled(d.img, THUMB, 0.75).then(function (r) {
+      if (!p.heic) URL.revokeObjectURL(d.url);
+      p.thumb = URL.createObjectURL(r.blob);
+    });
+  });
+}
+/* A large-enough URL for the lightbox and the preview. */
+function bigUrl(p) {
+  if (!p.heic) { if (!p._fileUrl) p._fileUrl = URL.createObjectURL(p.file); return Promise.resolve(p._fileUrl); }
+  if (p._big) return Promise.resolve(p._big);
+  return decode(p).then(function (d) { return d.url; });
+}
+
+/* ── Lightbox ───────────────────────────────────────────── */
+var lbList = [], lbIdx = 0;
+function openLb(id) {
+  lbList = visiblePhotos().filter(function (p) { return view === 'all' || saved.picks[p.id]; });
+  lbIdx = Math.max(0, lbList.findIndex(function (p) { return p.id === id; }));
+  $('lb').classList.add('on');
+  showLb();
+}
+function showLb() {
+  var p = lbList[lbIdx]; if (!p) return;
+  var img = $('lbImg');
+  img.src = p.thumb || '';
+  bigUrl(p).then(function (u) { if (lbList[lbIdx] === p) img.src = u; }).catch(function () {});
+  var s = saved.picks[p.id];
+  $('lbPick').classList.toggle('on', !!s);
+  $('lbPick').textContent = s ? '✓ Picked' : '✓ Pick';
+  $('lbCap').value = (s && s.cap) || '';
+  $('lbCap').disabled = !s;
+  $('lbCap').placeholder = s ? 'Caption (optional)' : 'Pick the photo to add a caption';
+  $('lbWide').classList.toggle('on', !!(s && s.wide));
+  $('lbWide').disabled = !s;
+  $('lbCover').classList.toggle('on', saved.meta.cover === p.id);
+  $('lbInfo').textContent = DiaryRender.prettyDate(p.day) + ' · ' + new Date(p.ts).toTimeString().slice(0, 5) + ' · ' + p.name + ' · ' + (lbIdx + 1) + ' / ' + lbList.length + '   (← → to move, space to pick, Esc to close)';
+}
+function lbMove(d) { lbIdx = (lbIdx + d + lbList.length) % lbList.length; showLb(); }
+$('lbPrev').onclick = function () { lbMove(-1); };
+$('lbNext').onclick = function () { lbMove(1); };
+$('lbX').onclick = function () { $('lb').classList.remove('on'); };
+$('lbPick').onclick = function () { togglePick(lbList[lbIdx].id); showLb(); };
+$('lbCap').oninput = function () {
+  var p = lbList[lbIdx], s = saved.picks[p.id]; if (!s) return;
+  s.cap = this.value; save(); var t = tileOf(p.id); if (t) paintTile(t, p);
+};
+$('lbWide').onclick = function () {
+  var p = lbList[lbIdx], s = saved.picks[p.id]; if (!s) return;
+  s.wide = !s.wide; save(); showLb(); var t = tileOf(p.id); if (t) paintTile(t, p);
+};
+$('lbCover').onclick = function () {
+  var p = lbList[lbIdx], old = saved.meta.cover;
+  saved.meta.cover = old === p.id ? null : p.id;
+  if (saved.meta.cover && !saved.picks[p.id]) togglePick(p.id);
+  save(); showLb();
+  [old, p.id].forEach(function (id) { var t = id && tileOf(id); if (t) paintTile(t, byId[id]); });
+};
+document.addEventListener('keydown', function (e) {
+  if (!$('lb').classList.contains('on')) return;
+  if (e.target === $('lbCap')) { if (e.key === 'Escape' || e.key === 'Enter') e.target.blur(); return; }
+  if (e.key === 'ArrowLeft') lbMove(-1);
+  else if (e.key === 'ArrowRight') lbMove(1);
+  else if (e.key === 'Escape') $('lb').classList.remove('on');
+  else if (e.key === ' ' || e.key === 'p' || e.key === 'P') { e.preventDefault(); $('lbPick').click(); }
+});
+
+/* ── Diary details ──────────────────────────────────────── */
+var DETAIL_FIELDS = { dTitle: 'title', dKicker: 'kicker', dSub: 'subtitle', dIntro: 'intro', dSign: 'signoff' };
+$('detailsBtn').onclick = function () {
+  Object.keys(DETAIL_FIELDS).forEach(function (k) { $(k).value = saved.meta[DETAIL_FIELDS[k]] || ''; });
+  $('details').classList.add('on');
+};
+Object.keys(DETAIL_FIELDS).forEach(function (k) {
+  $(k).oninput = function () { saved.meta[DETAIL_FIELDS[k]] = this.value; save(); };
+});
+$('detailsDone').onclick = function () { $('details').classList.remove('on'); };
+$('details').onclick = function (e) { if (e.target === this) this.classList.remove('on'); };
+
+/* ── Building diary.json ────────────────────────────────── */
+function exportName(p) {
+  var base = p.name.replace(/\.[^.]+$/, '').replace(/[^A-Za-z0-9_-]+/g, '-');
+  return 'photos/' + p.day + '_' + base + '.jpg';
+}
+function fmtRange(a, b) {
+  var M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var pa = a.split('-'), pb = b.split('-');
+  var da = +pa[2] + ' ' + M[+pa[1] - 1], db = +pb[2] + ' ' + M[+pb[1] - 1];
+  if (a === b) return da;
+  if (pa[1] === pb[1]) return +pa[2] + '–' + db;
+  return da + ' – ' + db;
+}
+/* srcOf(p) decides what goes in each photo's "src" field. */
+function buildData(srcOf) {
+  var m = saved.meta;
+  var days = {};
+  photos.forEach(function (p) {
+    if (!saved.picks[p.id]) return;
+    (days[p.day] = days[p.day] || []).push(p);
+  });
+  Object.keys(saved.days).forEach(function (d) {
+    var i = saved.days[d];
+    if (((i.text || '').trim() || (i.title || '').trim()) && !days[d]) days[d] = [];
+  });
+  var chapters = [], cur = null;
+  Object.keys(days).sort().forEach(function (d) {
+    var info = dayInfo(d), place = (info.place || '').trim() || 'More photos';
+    if (!cur || cur.place !== place) {
+      cur = { place: place, country: COUNTRY[place] || '', first: d, last: d, days: [] };
+      chapters.push(cur);
+    }
+    cur.last = d;
+    cur.days.push({
+      date: d, title: info.title || '', text: info.text || '',
+      photos: days[d].map(function (p) {
+        var s = saved.picks[p.id];
+        var o = { src: srcOf(p), orig: p.id, w: s.w || p.w || 4, h: s.h || p.h || 3 };
+        if (s.cap) o.caption = s.cap;
+        if (s.wide) o.wide = true;
+        return o;
+      })
+    });
+  });
+  var cover = m.cover && byId[m.cover] && saved.picks[m.cover] ? srcOf(byId[m.cover]) : null;
+  if (!cover) {
+    // No cover chosen: use the first landscape photo picked.
+    photos.some(function (p) { var s = saved.picks[p.id]; if (s && (s.w || p.w) > (s.h || p.h)) { cover = srcOf(p); return true; } });
+  }
+  return {
+    title: m.title || 'A Photo Diary of Europe',
+    kicker: m.kicker || 'Hatzing a Dynasty · 2026',
+    subtitle: m.subtitle || 'Greece, France, Spain & Italy · Sep–Oct 2026',
+    intro: m.intro || '',
+    signoff: m.signoff || '',
+    cover: cover,
+    chapters: chapters.map(function (c) {
+      return { place: c.place, country: c.country, dates: fmtRange(c.first, c.last), days: c.days };
+    })
+  };
+}
+
+/* ── Preview ────────────────────────────────────────────── */
+$('previewBtn').onclick = function () {
+  var picked = photos.filter(function (p) { return saved.picks[p.id]; });
+  var urls = {};
+  // Make sure every picked photo has a viewable URL (HEIC needs converting first).
+  $('previewBtn').disabled = true; $('previewBtn').textContent = 'Preparing…';
+  Promise.all(picked.map(function (p) {
+    return bigUrl(p).then(function (u) { urls[p.id] = u; }, function () { urls[p.id] = p.thumb || ''; });
+  })).then(function () {
+    var data = buildData(function (p) { return p.id; });
+    DiaryRender.render($('preview'), data, { src: function (ph) { return urls[ph.src] || ''; }, emptyText: 'Pick some photos first.' });
+    $('preview').classList.add('on'); $('previewBar').classList.add('on');
+    $('preview').scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }).then(function () { $('previewBtn').disabled = false; $('previewBtn').textContent = '👀 Preview'; });
+};
+$('closePreview').onclick = function () {
+  $('preview').classList.remove('on'); $('previewBar').classList.remove('on');
+  document.body.style.overflow = '';
+};
+
+/* ── Export ─────────────────────────────────────────────── */
+$('exportClose').onclick = function () { $('exportModal').classList.remove('on'); };
+$('exportBtn').onclick = function () {
+  var picked = photos.filter(function (p) { return saved.picks[p.id]; });
+  var body = $('exportBody'), bar = $('exportBar').firstChild;
+  $('exportModal').classList.add('on');
+  $('exportClose').disabled = true;
+  bar.style.width = '0';
+  body.innerHTML = '<p>Resizing ' + picked.length + ' photos for the web… keep this tab open.</p>';
+  var outs = [], i = 0;
+  function step() {
+    if (i >= picked.length) return Promise.resolve();
+    var p = picked[i++];
+    return decode(p).then(function (d) {
+      return scaled(d.img, EXPORT_MAX, EXPORT_QUALITY).then(function (r) {
+        if (!p.heic) URL.revokeObjectURL(d.url);
+        var s = saved.picks[p.id]; s.w = r.w; s.h = r.h;
+        outs.push({ path: exportName(p), blob: r.blob });
+      });
+    }).catch(function () { outs.push({ path: null, name: p.name }); })
+      .then(function () {
+        bar.style.width = (100 * i / picked.length) + '%';
+        body.firstChild.textContent = 'Resizing photos… ' + i + ' / ' + picked.length + ' (keep this tab open)';
+      }).then(step);
+  }
+  step().then(function () {
+    save();
+    var failed = outs.filter(function (o) { return !o.path; });
+    var good = outs.filter(function (o) { return o.path; });
+    var data = buildData(exportName);
+    // Split photos into zips under the size limit; diary.json goes in part 1.
+    var parts = [[]], size = 0;
+    good.forEach(function (o) {
+      if (size + o.blob.size > PART_LIMIT && parts[parts.length - 1].length) { parts.push([]); size = 0; }
+      parts[parts.length - 1].push(o); size += o.blob.size;
+    });
+    var jsonText = JSON.stringify(data, null, 2);
+    body.firstChild.textContent = 'Packing ' + parts.length + ' zip file' + (parts.length > 1 ? 's' : '') + '…';
+    var chain = Promise.resolve(), links = [];
+    parts.forEach(function (list, k) {
+      chain = chain.then(function () {
+        var zip = new JSZip();
+        if (k === 0) zip.file('diary/diary.json', jsonText);
+        list.forEach(function (o) { zip.file('diary/' + o.path, o.blob); });
+        return zip.generateAsync({ type: 'blob', compression: 'STORE' }).then(function (b) {
+          var name = parts.length > 1 ? 'diary-part-' + (k + 1) + '-of-' + parts.length + '.zip' : 'diary.zip';
+          links.push({ name: name, url: URL.createObjectURL(b), size: b.size });
+        });
+      });
+    });
+    return chain.then(function () {
+      var mb = function (n) { return (n / 1048576).toFixed(1) + ' MB'; };
+      var html = '<p><b>Done!</b> ' + good.length + ' photos ready. Your browser should be downloading:</p><ul>';
+      links.forEach(function (l) { html += '<li><a href="' + l.url + '" download="' + l.name + '">' + l.name + '</a> (' + mb(l.size) + ')</li>'; });
+      html += '</ul>';
+      if (failed.length) html += '<p style="color:#a03030">Couldn’t read ' + failed.length + ' photo(s): ' + failed.map(function (f) { return f.name; }).join(', ') + '</p>';
+      html += '<p><b>Next:</b> upload the zip file' + (links.length > 1 ? 's' : '') + ' to GitHub (or send to Claude) and the diary goes live.</p>' +
+        '<p style="font-size:.85rem;color:#7b756c">Only changed the text? <a href="#" id="jsonOnly">Download just diary.json</a> (tiny, no photos).</p>';
+      body.innerHTML = html;
+      links.forEach(function (l, k) { setTimeout(function () { var a = document.createElement('a'); a.href = l.url; a.download = l.name; document.body.appendChild(a); a.click(); a.remove(); }, k * 700); });
+      $('jsonOnly').onclick = function (e) { e.preventDefault(); downloadJson(); };
+    });
+  }).catch(function (err) {
+    body.innerHTML = '<p style="color:#a03030">Export failed: ' + (err && err.message || err) + '</p>';
+  }).then(function () { $('exportClose').disabled = false; });
+};
+function downloadJson() {
+  var blob = new Blob([JSON.stringify(buildData(exportName), null, 2)], { type: 'application/json' });
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'diary.json';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ── Restore from a diary.json (e.g. on another computer) ─ */
+function importJson(data) {
+  var keep = { meta: {}, picks: {}, days: {} };
+  ['title', 'kicker', 'subtitle', 'intro', 'signoff'].forEach(function (k) { if (data[k]) keep.meta[k] = data[k]; });
+  (data.chapters || []).forEach(function (c) {
+    (c.days || []).forEach(function (d) {
+      keep.days[d.date] = { place: c.place, title: d.title || '', text: d.text || '' };
+      (d.photos || []).forEach(function (ph) {
+        if (!ph.orig) return;
+        keep.picks[ph.orig] = { w: ph.w, h: ph.h, cap: ph.caption || '', wide: !!ph.wide };
+        if (data.cover === ph.src) keep.meta.cover = ph.orig;
+      });
+    });
+  });
+  saved = keep; save();
+  $('loadmsg').textContent = 'Loaded ' + Object.keys(keep.picks).length + ' picks and ' + Object.keys(keep.days).length + ' days of notes. Now choose the photos folder.';
+  if (photos.length) renderDays();
+}
+})();
+</script>
+</body>
+</html>
