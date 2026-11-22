@@ -1574,6 +1574,46 @@ function setView(view, btn) {
       opt.innerHTML = view === 'kids' ? kidNames[code] : opt.dataset.adultText;
     }
   });
+  kidsText(view === 'kids');
+}
+
+/* Kids mode: swap grown-up names and family codes in the itinerary text for
+   the kids' names (or full names for families without kids), and restore
+   the original text when switching back. */
+const KID_TEXT = {AA: 'Kosta & Ella', CE: 'Zach, Harry & Alyssa', MGB: 'Grace & Bell',
+  SF: 'Sam & Fiona', DK: 'Denes & Kay', C: 'Christine', M: 'Manuel'};
+const KID_PHRASES = [
+  [/Christos, Erin, Zachary, Harry & Alyssa/g, KID_TEXT.CE],
+  [/Alex, Aleksandra, Kosta & Ella/g, KID_TEXT.AA],
+  [/Martine, Grace & Annabelle/g, KID_TEXT.MGB],
+  [/Christos & Erin/g, KID_TEXT.CE],
+  [/Alex & Alex/g, KID_TEXT.AA],
+  // lists of codes, e.g. "SF, AA, CE, MGB, M & C" or "SF · AA · CE · DK"
+  [/\b(?:SF|AA|CE|MGB|DK|M|C)(?:\s*(?:,|&|·|and)\s*(?:SF|AA|CE|MGB|DK|M|C)\b)+/g,
+    run => run.replace(/\b(SF|AA|CE|MGB|DK|M|C)\b/g, c => KID_TEXT[c])],
+  // a single multi-letter code on its own, e.g. "SF flight", "CE fly Singapore"
+  [/\b(SF|AA|CE|MGB|DK)\b/g, c => KID_TEXT[c]],
+  // tidy "Denes & Kay (DK)" which would otherwise read "Denes & Kay (Denes & Kay)"
+  [/([A-Z][^()]{2,40}) \(\1\)/g, '$1']
+];
+const kidTextNodes = [];
+function kidsText(on) {
+  if (!on) {
+    kidTextNodes.forEach(([n, orig]) => { n.textContent = orig; });
+    kidTextNodes.length = 0;
+    return;
+  }
+  const wrap = document.querySelector('.wrap');
+  if (!wrap || kidTextNodes.length) return;
+  const walker = document.createTreeWalker(wrap, NodeFilter.SHOW_TEXT);
+  const skip = '.wSF,.wC,.wM,.wDK,.wAA,.wCE,.wMGB,.fbtn,option,script,style';
+  let n;
+  while ((n = walker.nextNode())) {
+    if (!n.parentElement || n.parentElement.closest(skip)) continue;
+    let t = n.textContent;
+    KID_PHRASES.forEach(([re, to]) => { t = t.replace(re, to); });
+    if (t !== n.textContent) { kidTextNodes.push([n, n.textContent]); n.textContent = t; }
+  }
 }
 
 function pickFamily(g) {

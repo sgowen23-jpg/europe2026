@@ -81,7 +81,7 @@
     '.tm-who button{border:1.5px solid var(--c);background:#fff;color:var(--c);border-radius:20px;padding:.22rem .65rem;font:600 .78rem Inter,sans-serif;cursor:pointer;}',
     '.tm-go{margin-top:.75rem;display:inline-flex;gap:.4rem;align-items:center;background:var(--c,var(--tm-navy));color:#fff;border:0;border-radius:10px;padding:.55rem .9rem;font:700 .85rem Inter,sans-serif;cursor:pointer;}',
     '.tm-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}',
-    '.tm-actions .kids-mode-btn{grid-column:1/-1;max-width:none;margin:0;}',
+    '.tm-actions .kids-mode-btn{max-width:none;margin:0;}',
     '.tm-actions .games-btn{max-width:none;margin:0;}',
     '@media (prefers-reduced-motion:reduce){.tm-draw .tm-seg{animation:none;stroke-dashoffset:0;}}',
     /* Kids map */
@@ -159,7 +159,6 @@
       '<div class="tm-actions">' +
       '<button class="kids-mode-btn tm-mode" type="button"></button>' +
       '<a class="games-btn diary-btn" href="diary.html">📸 Photo Diary</a>' +
-      '<a class="games-btn" href="games.html">🎮 Games</a>' +
       '</div></div>';
 
     var svg = root.querySelector('.tm-map');
