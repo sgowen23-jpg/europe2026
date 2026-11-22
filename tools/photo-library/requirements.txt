@@ -1,0 +1,4 @@
+pillow
+numpy
+pillow-heif
+reverse_geocoder

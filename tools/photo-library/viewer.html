@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Europe 2026 Photo Library</title>
+<style>
+:root{--paper:#faf7f2;--ink:#1c1a17;--navy:#214e75;--muted:#7b756c;--rule:#e2dbd0;--warn:#a05a10;--card:#fff;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;}
+header{padding:1.2rem 16px .6rem;max-width:1500px;margin:0 auto;display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;}
+h1{font-family:Georgia,"Playfair Display",serif;font-style:italic;color:var(--navy);margin:0;font-size:1.7rem;}
+.meta{color:var(--muted);font-size:.8rem;}
+.bar{position:sticky;top:0;z-index:10;background:rgba(250,247,242,.97);border-bottom:1px solid var(--rule);}
+.bar-in{max-width:1500px;margin:0 auto;padding:.6rem 16px;display:flex;flex-wrap:wrap;gap:.45rem .6rem;align-items:center;}
+input[type=search],select{font:inherit;border:1.5px solid var(--rule);border-radius:8px;padding:.4rem .55rem;background:#fff;min-width:0;}
+input[type=search]{flex:1 1 220px;}
+.chips{max-width:1500px;margin:0 auto;padding:.1rem 16px .6rem;display:flex;flex-wrap:wrap;gap:.3rem;align-items:center;}
+.chips b{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-right:.2rem;}
+.chip{border:1.5px solid var(--rule);background:#fff;border-radius:20px;padding:.22rem .65rem;font:600 .76rem inherit;font-family:inherit;color:#33424f;cursor:pointer;}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+.chip small{opacity:.6;font-weight:500;margin-left:.2rem;}
+.count{font-weight:700;color:var(--navy);margin-left:auto;white-space:nowrap;}
+.clear{background:none;border:0;color:var(--navy);text-decoration:underline;cursor:pointer;font:inherit;}
+main{max-width:1500px;margin:0 auto;padding:.8rem 16px 4rem;}
+.dayhd{margin:1.4rem 0 .5rem;font-weight:700;color:var(--navy);display:flex;gap:.6rem;align-items:baseline;}
+.dayhd span{color:var(--muted);font-weight:500;font-size:.82rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;}
+.ph{background:var(--card);border:1px solid var(--rule);border-radius:8px;overflow:hidden;cursor:pointer;position:relative;}
+.ph img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#ebe5db;}
+.ph .cap{padding:.35rem .45rem;font-size:.72rem;color:#33424f;line-height:1.35;}
+.ph .cap div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ph .cap .t{color:var(--muted);}
+.badge{position:absolute;top:6px;left:6px;display:flex;gap:3px;flex-wrap:wrap;}
+.badge span{background:rgba(0,0,0,.6);color:#fff;font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:4px;}
+.badge .best{background:#2a7a55;}.badge .dup{background:#8a5a20;}.badge .rev{background:#a03030;}
+.empty{text-align:center;color:var(--muted);padding:4rem 1rem;}
+#det{position:fixed;inset:0;z-index:50;background:rgba(15,15,15,.92);display:none;}
+#det.on{display:flex;}
+#det .img{flex:1;display:flex;align-items:center;justify-content:center;min-width:0;padding:16px;}
+#det .img img{max-width:100%;max-height:100%;object-fit:contain;}
+#det aside{width:min(380px,100%);background:#fff;overflow:auto;padding:1.1rem 1.2rem;}
+#det h2{margin:0 0 .6rem;font-size:1.05rem;color:var(--navy);word-break:break-all;}
+#det dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.35rem .8rem;font-size:.82rem;}
+#det dt{color:var(--muted);}
+#det dd{margin:0;word-break:break-word;}
+#det .rv{color:#a03030;}
+#det .nav{display:flex;gap:.4rem;margin-top:1rem;flex-wrap:wrap;}
+#det button,#det a.btn{border:1.5px solid var(--navy);background:#fff;color:var(--navy);border-radius:8px;padding:.4rem .75rem;font:600 .8rem inherit;font-family:inherit;cursor:pointer;text-decoration:none;}
+@media(max-width:760px){#det{flex-direction:column;}#det aside{width:100%;max-height:50%;}}
+</style>
+</head>
+<body>
+<header><h1>Europe 2026 Photo Library</h1><div class="meta" id="meta"></div></header>
+<div class="bar"><div class="bar-in">
+  <input type="search" id="q" placeholder="Search filename, landmark, person, place, notes…">
+  <select id="fCountry"><option value="">All countries</option></select>
+  <select id="fCity"><option value="">All cities</option></select>
+  <select id="fDate"><option value="">All days</option></select>
+  <select id="fLandmark"><option value="">Any landmark</option></select>
+  <select id="fDup">
+    <option value="">All photos</option>
+    <option value="hide">Hide duplicates (keep best)</option>
+    <option value="groups">Only duplicate groups</option>
+    <option value="best">Only recommended best</option>
+  </select>
+  <select id="fReview"><option value="">Review: any</option><option value="yes">Needs review</option><option value="no">Checked / OK</option></select>
+  <button class="clear" id="clear">Clear</button>
+  <span class="count" id="count"></span>
+</div>
+<div class="chips" id="catChips"><b>Categories</b></div>
+<div class="chips" id="pplChips"></div>
+</div>
+<main id="out"></main>
+<div id="det"><div class="img"><img id="dImg" alt=""></div><aside id="dInfo"></aside></div>
+
+<script src="_catalogue/catalogue.js"></script>
+<script>
+(function () {
+  var C = window.CATALOGUE;
+  var out = document.getElementById('out');
+  if (!C) { out.innerHTML = '<p class="empty">Catalogue not found. Run <code>python photolib.py catalogue</code> first.</p>'; return; }
+  var P = C.photos;
+  var $ = function (id) { return document.getElementById(id); };
+  function split(s) { return (s || '').split(';').map(function (x) { return x.trim(); }).filter(Boolean); }
+  P.forEach(function (p) {
+    p._cats = split(p.categories); p._lm = split(p.landmarks); p._ppl = split(p.people);
+    p._text = [p.filename, p.landmarks, p.people, p.place, p.city, p.country, p.notes, p.categories].join(' ').toLowerCase();
+  });
+  $('meta').textContent = P.length + ' photos · catalogue built ' + C.generated.replace('T', ' ');
+
+  function uniq(list) { return Array.from(new Set(list.filter(Boolean))).sort(); }
+  function fill(sel, vals, label) {
+    var cur = sel.value;
+    sel.innerHTML = '<option value="">' + label + '</option>';
+    vals.forEach(function (v) { var o = document.createElement('option'); o.value = v[0]; o.textContent = v[1]; sel.appendChild(o); });
+    sel.value = vals.some(function (v) { return v[0] === cur; }) ? cur : '';
+  }
+  fill($('fCountry'), uniq(P.map(function (p) { return p.country; })).map(function (v) { return [v, v]; }), 'All countries');
+  fill($('fLandmark'), uniq([].concat.apply([], P.map(function (p) { return p._lm; }))).map(function (v) { return [v, v]; }), 'Any landmark');
+
+  var selCats = {}, selPpl = {};
+  function chipRow(box, items, store) {
+    items.forEach(function (it) {
+      var b = document.createElement('button'); b.className = 'chip'; b.type = 'button';
+      b.innerHTML = '<span></span><small></small>';
+      b.firstChild.textContent = it[0]; b.lastChild.textContent = it[1];
+      b.onclick = function () { store[it[0]] = !store[it[0]]; b.classList.toggle('on', !!store[it[0]]); render(); };
+      box.appendChild(b);
+    });
+  }
+  chipRow($('catChips'), C.categories.map(function (c) { return [c, P.filter(function (p) { return p._cats.indexOf(c) >= 0; }).length]; }), selCats);
+  var people = uniq([].concat.apply([], P.map(function (p) { return p._ppl; })));
+  if (people.length) {
+    $('pplChips').innerHTML = '<b>People</b>';
+    chipRow($('pplChips'), people.map(function (n) { return [n, P.filter(function (p) { return p._ppl.indexOf(n) >= 0; }).length]; }), selPpl);
+  }
+
+  function refreshDependent() {
+    var c = $('fCountry').value;
+    fill($('fCity'), uniq(P.filter(function (p) { return !c || p.country === c; }).map(function (p) { return p.city; })).map(function (v) { return [v, v]; }), 'All cities');
+    var ci = $('fCity').value;
+    var dates = uniq(P.filter(function (p) { return (!c || p.country === c) && (!ci || p.city === ci); }).map(function (p) { return p.date; }));
+    fill($('fDate'), dates.map(function (d) {
+      var p = P.filter(function (x) { return x.date === d; })[0];
+      return [d, d + (p && p.day ? ' · Day ' + p.day : '')];
+    }), 'All days');
+  }
+
+  var shown = [];
+  function match(p) {
+    var q = $('q').value.trim().toLowerCase();
+    if (q && q.split(/\s+/).some(function (w) { return p._text.indexOf(w) < 0; })) return false;
+    if ($('fCountry').value && p.country !== $('fCountry').value) return false;
+    if ($('fCity').value && p.city !== $('fCity').value) return false;
+    if ($('fDate').value && p.date !== $('fDate').value) return false;
+    if ($('fLandmark').value && p._lm.indexOf($('fLandmark').value) < 0) return false;
+    for (var c in selCats) if (selCats[c] && p._cats.indexOf(c) < 0) return false;
+    for (var n in selPpl) if (selPpl[n] && p._ppl.indexOf(n) < 0) return false;
+    var d = $('fDup').value;
+    if (d === 'hide' && p.duplicate_group && p.recommended_best !== 'yes') return false;
+    if (d === 'groups' && !p.duplicate_group) return false;
+    if (d === 'best' && p.recommended_best !== 'yes') return false;
+    var r = $('fReview').value;
+    if (r === 'yes' && !p.needs_review) return false;
+    if (r === 'no' && p.needs_review) return false;
+    return true;
+  }
+
+  function render() {
+    shown = P.filter(match);
+    $('count').textContent = shown.length + ' of ' + P.length;
+    out.innerHTML = '';
+    if (!shown.length) { out.innerHTML = '<p class="empty">No photos match these filters.</p>'; return; }
+    var lastKey = null, grid = null;
+    shown.slice(0, 1500).forEach(function (p, i) {
+      var key = (p.date || 'No date') + '|' + (p.city || '');
+      if (key !== lastKey) {
+        var hd = document.createElement('div'); hd.className = 'dayhd';
+        hd.textContent = (p.date || 'No date') + (p.day ? '  ·  Day ' + p.day : '');
+        var sp = document.createElement('span'); sp.textContent = [p.city, p.country].filter(Boolean).join(', ') || 'Location needs review';
+        hd.appendChild(sp); out.appendChild(hd);
+        grid = document.createElement('div'); grid.className = 'grid'; out.appendChild(grid);
+        lastKey = key;
+      }
+      var el = document.createElement('div'); el.className = 'ph';
+      var img = document.createElement('img'); img.loading = 'lazy'; img.alt = p.filename;
+      img.src = '_catalogue/thumbs/' + p.id + '.jpg';
+      el.appendChild(img);
+      var badge = document.createElement('div'); badge.className = 'badge';
+      if (p.recommended_best === 'yes') badge.innerHTML += '<span class="best">★ Best</span>';
+      else if (p.duplicate_group) badge.innerHTML += '<span class="dup">Dup</span>';
+      if (p.needs_review) badge.innerHTML += '<span class="rev">Review</span>';
+      el.appendChild(badge);
+      var cap = document.createElement('div'); cap.className = 'cap';
+      var l1 = document.createElement('div'); l1.textContent = p._lm[0] || p._cats.join(', ') || p.filename;
+      var l2 = document.createElement('div'); l2.className = 't'; l2.textContent = (p.date_taken || '').slice(11, 16) + ' · ' + p.filename;
+      cap.appendChild(l1); cap.appendChild(l2); el.appendChild(cap);
+      el.onclick = function () { openDet(i); };
+      grid.appendChild(el);
+    });
+    if (shown.length > 1500) { var m = document.createElement('p'); m.className = 'empty'; m.textContent = 'Showing the first 1,500. Narrow the filters to see the rest.'; out.appendChild(m); }
+  }
+
+  var cur = 0;
+  function openDet(i) {
+    cur = i; var p = shown[i];
+    var img = $('dImg');
+    img.onerror = function () { img.onerror = null; img.src = '_catalogue/thumbs/' + p.id + '.jpg'; };
+    img.src = p.library_path ? encodeURI(p.library_path) : '_catalogue/thumbs/' + p.id + '.jpg';
+    var rows = [
+      ['Date taken', p.date_taken], ['Day', p.day], ['Country', p.country], ['City', p.city], ['Place', p.place],
+      ['Location from', p.location_source], ['Categories', p.categories], ['Landmarks', p.landmarks], ['People', p.people],
+      ['Duplicates', p.duplicate_status], ['Quality score', p.quality_score], ['Camera', p.camera],
+      ['Original', p.original_path], ['Library copy', p.library_path], ['Notes', p.notes]
+    ];
+    var info = $('dInfo'); info.innerHTML = '';
+    var h = document.createElement('h2'); h.textContent = p.filename; info.appendChild(h);
+    var dl = document.createElement('dl');
+    rows.forEach(function (r) {
+      if (r[1] === '' || r[1] == null) return;
+      var dt = document.createElement('dt'); dt.textContent = r[0];
+      var dd = document.createElement('dd'); dd.textContent = r[1];
+      dl.appendChild(dt); dl.appendChild(dd);
+    });
+    if (p.needs_review) {
+      var dt = document.createElement('dt'); dt.textContent = 'Needs review';
+      var dd = document.createElement('dd'); dd.className = 'rv'; dd.textContent = p.needs_review;
+      dl.appendChild(dt); dl.appendChild(dd);
+    }
+    info.appendChild(dl);
+    var nav = document.createElement('div'); nav.className = 'nav';
+    nav.innerHTML = '<button type="button" data-d="-1">‹ Prev</button><button type="button" data-d="1">Next ›</button>' +
+      (p.library_path ? '<a class="btn" target="_blank"></a>' : '') + '<button type="button" data-x>Close</button>';
+    var a = nav.querySelector('a'); if (a) { a.href = encodeURI(p.library_path); a.textContent = 'Open photo'; }
+    nav.onclick = function (e) {
+      var t = e.target;
+      if (t.dataset.d) openDet((cur + +t.dataset.d + shown.length) % shown.length);
+      if (t.hasAttribute('data-x')) $('det').classList.remove('on');
+    };
+    info.appendChild(nav);
+    $('det').classList.add('on');
+  }
+  $('det').addEventListener('click', function (e) { if (e.target.id === 'det' || e.target.className === 'img') this.classList.remove('on'); });
+  document.addEventListener('keydown', function (e) {
+    if (!$('det').classList.contains('on')) return;
+    if (e.key === 'Escape') $('det').classList.remove('on');
+    if (e.key === 'ArrowRight') openDet((cur + 1) % shown.length);
+    if (e.key === 'ArrowLeft') openDet((cur - 1 + shown.length) % shown.length);
+  });
+
+  ['fCountry', 'fCity'].forEach(function (id) { $(id).onchange = function () { refreshDependent(); render(); }; });
+  ['fDate', 'fLandmark', 'fDup', 'fReview'].forEach(function (id) { $(id).onchange = render; });
+  var qt; $('q').oninput = function () { clearTimeout(qt); qt = setTimeout(render, 150); };
+  $('clear').onclick = function () {
+    ['q', 'fCountry', 'fCity', 'fDate', 'fLandmark', 'fDup', 'fReview'].forEach(function (id) { $(id).value = ''; });
+    Object.keys(selCats).forEach(function (k) { delete selCats[k]; });
+    Object.keys(selPpl).forEach(function (k) { delete selPpl[k]; });
+    document.querySelectorAll('.chip.on').forEach(function (c) { c.classList.remove('on'); });
+    refreshDependent();
+    render();
+  };
+  refreshDependent();
+  render();
+})();
+</script>
+</body>
+</html>
